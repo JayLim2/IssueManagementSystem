@@ -1,11 +1,14 @@
 package org.sergei.komarov.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
-@Entity
-@Table(name = "user_roles")
+//@Entity
+//@Table(name = "user_roles")
+@NoArgsConstructor
+@Data
 public class UserRole {
     private String name;
     private List<User> users;

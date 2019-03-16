@@ -1,18 +1,16 @@
 package org.sergei.komarov.models;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.List;
 
-@Entity
-@Table(name = "project_types")
+//@Entity
+//@Table(name = "project_types")
 @NoArgsConstructor
 @Data
 public class ProjectType {
-    @Id
+    //@Id
     private String title;
     private List<Project> projects;
 }

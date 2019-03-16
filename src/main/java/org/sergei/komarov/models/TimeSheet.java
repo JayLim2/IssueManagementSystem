@@ -3,16 +3,12 @@ package org.sergei.komarov.models;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "time_sheets")
+//@Entity
+//@Table(name = "time_sheets")
 @NoArgsConstructor
 @Data
 public class TimeSheet {
-    @Id
+    //@Id
     private int id;
     private Employee employee;
     private Issue issue;
