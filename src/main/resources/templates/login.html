@@ -13,10 +13,10 @@
     <form th:action="@{/login}" method="POST" class="form-signin">
         <br/>
 
-        <input type="text" id="login" name="login" th:placeholder="Email"
+        <input type="text" id="login" name="login" th:placeholder="Login"
                class="inputField"/> <br/>
-        <input type="password" th:placeholder="Password"
-               id="password" name="password" class="inputField"/> <br/>
+        <input type="password" id="password" name="password" th:placeholder="Password"
+               class="inputField"/> <br/>
 
         <input class="submitBtn" name="Submit" value="Войти в систему" type="Submit">
         <a href="/registration">Регистрация</a>

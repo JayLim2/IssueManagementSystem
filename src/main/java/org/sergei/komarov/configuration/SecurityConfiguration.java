@@ -1,13 +1,22 @@
 package org.sergei.komarov.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    /*private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final DataSource dataSource;
 
     @Value("${spring.queries.users-query}")
@@ -16,7 +25,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private String rolesQuery;
 
     @Autowired
-    public SecurityConfiguration(BCryptPasswordEncoder bCryptPasswordEncoder, DataSource dataSource) {
+    public SecurityConfiguration(BCryptPasswordEncoder bCryptPasswordEncoder,
+                                 DataSource dataSource) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.dataSource = dataSource;
     }
@@ -35,6 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring()
                 .antMatchers(
+                        "/api/**",
                         "/webjars/**",
                         "/css/**",
                         "/js/**",
@@ -58,8 +69,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/index")
                 .usernameParameter("login")
                 .passwordParameter("password")
-                .and().logout()
+                .and()
+                .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/");
-    }*/
+    }
 }
