@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="headerFragment">
-    <title th:include=":: #pageTitle">Layout Generic Title</title>
-    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <title th:include=":: #pageTitle"></title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
-    <script src="webjars/bootstrap/4.3.1/js/bootstrap.bundle.js"></script>
-    <script src="webjars/jquery/3.3.1/src/jquery.js"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1-2/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
 </head>

@@ -1,4 +1,4 @@
-package org.sergei.komarov.controllers;
+package org.sergei.komarov.controllers.api;
 
 import com.google.gson.JsonPrimitive;
 import org.sergei.komarov.models.Employee;

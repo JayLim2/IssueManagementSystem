@@ -6,3 +6,8 @@
     color:white;
     font-family: "Franklin Gothic Medium", sans-serif;
 }
+
+.dropdown-menu.dropdown-fix {
+    margin-top: 8px;
+    box-shadow: 0 0 20px 0 rgba(150, 150, 150, 0.5);
+}
