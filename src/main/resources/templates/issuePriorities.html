@@ -1,9 +1,38 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title></title>
+<head th:include="libs :: headerFragment">
+    <title id="pageTitle">Справочник приоритетов задач</title>
 </head>
 <body>
-TKEOKDFDS
+<div th:replace="menu :: menu"></div>
+
+<div class="container" style="padding-top:20px;">
+    <h1>Приоритеты задач</h1>
+
+    <div>
+        <table class="table" style="border:1px solid gray;">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Название приоритета</th>
+                <th scope="col" style="width:250px"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="priority : ${pr}">
+                <td scope="row" th:text="${priority}">
+                </td>
+                <td style="width:250px">
+                    <a class="btn btn-primary" href="#">
+                        Изменить
+                    </a>
+                    <a class="btn btn-danger" href="#">
+                        Удалить
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>
