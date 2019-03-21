@@ -16,8 +16,8 @@ public class IssuePriority {
     @SequenceGenerator(name = "issue_priorities_id_seq")
     private Integer id;
 
-    @Column(name = "priority_title", unique = true)
-    private String priorityTitle;
+    @Column(unique = true)
+    private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "priority")
     private List<Issue> issues;

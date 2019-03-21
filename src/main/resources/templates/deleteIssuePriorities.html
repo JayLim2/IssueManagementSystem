@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="libs :: headerFragment">
+    <title id="pageTitle">Удалить - Справочник приоритетов задач</title>
+</head>
+<body>
+<div th:replace="menu :: menu"></div>
+
+<div class="container" style="padding-top:20px;">
+    <h1>Удалить приоритет</h1>
+
+    <div th:if="${error != null}">
+        <div class="err-msg" th:text="${error}">
+        </div>
+    </div>
+
+    <div th:if="${info != null}"
+         th:text="${info}"
+         class="info-msg">
+    </div>
+</div>
+</body>
+</html>

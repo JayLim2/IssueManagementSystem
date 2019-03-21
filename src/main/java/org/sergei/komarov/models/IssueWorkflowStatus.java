@@ -12,8 +12,21 @@ import java.util.List;
 @Data
 public class IssueWorkflowStatus {
     @Id
-    private String statusTitle;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "workflow_status_id")
+    private Integer id;
+
+    @Column(unique = true)
+    private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "status")
     private List<Issue> issues;
+
+    @ManyToMany
+    @JoinTable(
+            name = "workflow_statuses_by_issue_types",
+            joinColumns = @JoinColumn(name = "workflow_status_id"),
+            inverseJoinColumns = @JoinColumn(name = "issue_type_id")
+    )
+    private List<IssueType> issueTypes;
 }

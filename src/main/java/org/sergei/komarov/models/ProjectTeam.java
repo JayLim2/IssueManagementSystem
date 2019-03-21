@@ -23,6 +23,6 @@ public class ProjectTeam {
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "project_role_name")
+    @JoinColumn(name = "project_role_id")
     private ProjectRole projectRole;
 }

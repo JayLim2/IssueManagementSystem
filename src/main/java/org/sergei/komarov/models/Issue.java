@@ -15,9 +15,8 @@ import java.util.List;
 @Data
 public class Issue implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "issue_id_seq")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private String title;
 
@@ -40,12 +39,23 @@ public class Issue implements Serializable {
     private Project project;
 
     @ManyToOne
+    @JoinColumn(name = "component_id")
+    private ProjectComponent component;
+
+    @ManyToOne
+    @JoinColumn(name = "version_id")
+    private ProjectVersion version;
+
+    @ManyToOne
+    @JoinColumn(name = "priority_id")
     private IssuePriority priority;
 
     @ManyToOne
+    @JoinColumn(name = "type_id")
     private IssueType type;
 
     @ManyToOne
+    @JoinColumn(name = "status_id")
     private IssueWorkflowStatus status;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")

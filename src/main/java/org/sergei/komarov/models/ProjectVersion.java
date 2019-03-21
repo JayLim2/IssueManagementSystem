@@ -6,14 +6,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "components")
+@Table(name = "versions")
 @NoArgsConstructor
 @Data
-public class Component {
+public class ProjectVersion {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "version_id")
+    private Integer id;
 
-    private String title;
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "project_id")

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="libs :: headerFragment">
-    <title id="pageTitle">Добавить - Справочник приоритетов задач</title>
+    <title id="pageTitle">Изменить - Справочник приоритетов задач</title>
 </head>
 <body>
 <div th:replace="menu :: menu"></div>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="table-cell">
                         <input type="text" class="input" name="name" placeholder="Например, Дефект"
-                               th:value="${entity.getPriorityTitle()}"/>
+                               th:value="${entity.getName()}"/>
                     </div>
                 </div>
                 <div class="table-row">

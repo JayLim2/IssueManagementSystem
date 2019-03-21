@@ -29,19 +29,47 @@ public class IssuePrioritiesHandbookController {
     @RequestMapping("/issuePriorities")
     public String getIssuePrioritiesHandbookViewPage(Model model) {
 
-        List<String> pr = Arrays.asList(
-                "Minor", "Normal", "Major", "Critical"
-        );
-
-        Map<String, List<String>> params = new HashMap<>();
-        params.put("pr", pr);
+        List<IssuePriority> issuePriorities = issuePrioritiesService.getAll();
+        Map<String, List<IssuePriority>> params = new HashMap<>();
+        params.put("entities", issuePriorities);
         model.addAllAttributes(params);
 
         return "issuePriorities";
     }
 
-    @RequestMapping("/issuePriorities/add")
+    @GetMapping("/issuePriorities/add")
     public String getIssuePrioritiesHandbookAddPage() {
+
+        return "addIssuePriorities";
+    }
+
+    @PostMapping("/issuePriorities/add")
+    public String getIssuePrioritiesHandbookAddPage(Model model,
+                                                    @RequestParam String name) {
+        Map<String, Object> attrs = new HashMap<>();
+
+        if (name == null) {
+            attrs.put("error", "NULL parameter");
+        } else {
+            IssuePriority issuePriority = new IssuePriority();
+            issuePriority.setName(name);
+            try {
+                issuePrioritiesService.save(issuePriority);
+                attrs.put("info", "Новый приоритет добавлен.");
+            } catch (TransactionSystemException e) {
+                Throwable e2 = SQLExceptionParser.getUnwrappedPSQLException(e);
+                String message = "???";
+                if (e2 != null) {
+                    e2.printStackTrace();
+                    message = e2.getMessage();
+                }
+                attrs.put("error", message);
+            } finally {
+                attrs.put("entity", issuePriority);
+            }
+        }
+
+        model.addAllAttributes(attrs);
 
         return "addIssuePriorities";
     }
@@ -79,7 +107,7 @@ public class IssuePrioritiesHandbookController {
             attrs.put("error", "NULL parameter");
         } else {
             IssuePriority issuePriority = issuePrioritiesService.getById(issuePriorityId);
-            issuePriority.setPriorityTitle(name);
+            issuePriority.setName(name);
             try {
                 issuePrioritiesService.save(issuePriority);
                 attrs.put("info", "Изменения сохранены.");
@@ -101,9 +129,33 @@ public class IssuePrioritiesHandbookController {
         return "editIssuePriorities";
     }
 
-    @RequestMapping("/issuePriorities/delete")
-    public String getIssuePrioritiesHandbookDeletePage() {
+    @GetMapping("/issuePriorities/delete/{issuePriorityId}")
+    public String getIssuePrioritiesHandbookDeletePage(Model model,
+                                                       @PathVariable int issuePriorityId) {
 
-        return "issuePriorities";
+        Map<String, Object> attrs = new HashMap<>();
+
+        boolean isExists = issuePrioritiesService.isExistsById(issuePriorityId);
+        attrs.put("isExists", isExists);
+        if (!isExists) {
+            attrs.put("error", "Приоритет с таким ID не существует.");
+        } else {
+            try {
+                issuePrioritiesService.deleteById(issuePriorityId);
+                attrs.put("info", "Приоритет с ID " + issuePriorityId + " удален.");
+            } catch (TransactionSystemException e) {
+                Throwable e2 = SQLExceptionParser.getUnwrappedPSQLException(e);
+                String message = "???";
+                if (e2 != null) {
+                    e2.printStackTrace();
+                    message = e2.getMessage();
+                }
+                attrs.put("error", message);
+            }
+        }
+
+        model.addAllAttributes(attrs);
+
+        return "deleteIssuePriorities";
     }
 }

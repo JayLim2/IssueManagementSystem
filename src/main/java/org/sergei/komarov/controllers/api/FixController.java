@@ -3,6 +3,8 @@ package org.sergei.komarov.controllers.api;
 import lombok.AllArgsConstructor;
 import org.sergei.komarov.models.*;
 import org.sergei.komarov.services.IssuePrioritiesService;
+import org.sergei.komarov.services.IssueTypesService;
+import org.sergei.komarov.services.IssueWorkflowStatusesService;
 import org.sergei.komarov.services.UsersService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ import java.util.stream.Stream;
 public class FixController {
 
     private final IssuePrioritiesService issuePrioritiesService;
+    private final IssueTypesService issueTypesService;
+    private final IssueWorkflowStatusesService issueWorkflowStatusesService;
     private final UsersService usersService;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -41,7 +45,7 @@ public class FixController {
                 "Minor", "Normal", "Major", "Critical", "Blocker"
         ).map(priority -> {
             IssuePriority issuePriority = new IssuePriority();
-            issuePriority.setPriorityTitle(priority);
+            issuePriority.setName(priority);
             return issuePriority;
         }).collect(Collectors.toList());
         issuePrioritiesService.saveAll(issuePriorities);
@@ -51,10 +55,10 @@ public class FixController {
                 "Question", "Information", "Test Run", "Test Case"
         ).map(type -> {
             IssueType issueType = new IssueType();
-            issueType.setTitle(type);
+            issueType.setName(type);
             return issueType;
         }).collect(Collectors.toList());
-        //saving
+        issueTypesService.saveAll(issueTypes);
 
         List<IssueWorkflowStatus> workflowStatuses = Stream.of(
                 "Open", "In assessment", "Assessed", "In progress",
@@ -62,10 +66,10 @@ public class FixController {
                 "Implemented", "Closed"
         ).map(workflow -> {
             IssueWorkflowStatus issueWorkflowStatus = new IssueWorkflowStatus();
-            issueWorkflowStatus.setStatusTitle(workflow);
+            issueWorkflowStatus.setName(workflow);
             return issueWorkflowStatus;
         }).collect(Collectors.toList());
-        //saving
+        issueWorkflowStatusesService.saveAll(workflowStatuses);
 
         createDefaultUser();
     }

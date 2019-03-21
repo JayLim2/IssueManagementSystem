@@ -15,8 +15,9 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "project_id_seq")
     @Column(name = "project_id")
-    private int id;
+    private Integer id;
 
+    @Column(unique = true)
     private String title;
 
     @ManyToOne
@@ -26,7 +27,10 @@ public class Project {
     private List<Issue> issues;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
-    private List<Component> components;
+    private List<ProjectComponent> components;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    private List<ProjectVersion> versions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private List<ProjectTeam> projectTeams;

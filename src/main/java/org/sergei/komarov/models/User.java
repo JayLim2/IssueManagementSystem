@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -22,4 +23,7 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_name")
     private UserRole role;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Filter> savedFilters;
 }

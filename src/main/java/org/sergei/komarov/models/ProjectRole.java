@@ -12,6 +12,11 @@ import java.util.List;
 @Data
 public class ProjectRole {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "project_role_id")
+    private Integer id;
+
+    @Column(unique = true)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectRole")

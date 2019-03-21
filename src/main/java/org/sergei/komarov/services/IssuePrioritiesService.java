@@ -36,4 +36,8 @@ public class IssuePrioritiesService {
     public boolean isExistsById(int id) {
         return issuePrioritiesRepository.existsById(id);
     }
+
+    public void deleteById(int id) {
+        issuePrioritiesRepository.deleteById(id);
+    }
 }

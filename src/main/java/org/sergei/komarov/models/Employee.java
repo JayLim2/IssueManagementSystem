@@ -23,6 +23,9 @@ public class Employee {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "middle_name")
+    private String middleName;
+
     @ManyToOne
     private EmployeePosition position;
 

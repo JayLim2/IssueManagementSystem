@@ -9,6 +9,16 @@
 <div class="container" style="padding-top:20px;">
     <h1>Добавить приоритет</h1>
 
+    <div th:if="${error != null}">
+        <div class="err-msg" th:text="${error}">
+        </div>
+    </div>
+
+    <div th:if="${info != null}"
+         th:text="${info}"
+         class="info-msg">
+    </div>
+
     <form action="" method="post">
         <div class="table-block">
             <div class="table-row">
