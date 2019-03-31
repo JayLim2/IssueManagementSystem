@@ -14,16 +14,16 @@ import javax.persistence.*;
 public class TimeSheet {
     @Id
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "issue_id")
+    @JoinColumn(name = "issue_id", nullable = false)
     private Issue issue;
 
     @Id
-    @Column(name = "week")
+    @Column(name = "week", nullable = false)
     private String startDate;
 
     private String comment;

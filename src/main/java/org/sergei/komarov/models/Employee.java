@@ -17,29 +17,28 @@ public class Employee {
     @Column(name = "employee_id")
     private int id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "middle_name")
+    @Column(name = "middle_name", nullable = false)
     private String middleName;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private EmployeePosition position;
 
     @OneToOne
-    @JoinColumn(name = "associated_user")
+    @JoinColumn(name = "associated_user", nullable = false)
     private User associatedUser;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "assigned_employees",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "issue_id")
-    )
-    private List<Issue> issues;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignee")
+    private List<Issue> assignedIssues;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
+    private List<Issue> createdIssues;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
     private List<IssueAction> issueActions;

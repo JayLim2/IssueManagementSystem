@@ -14,14 +14,15 @@ public class User {
     @Id
     private String login;
 
+    @Column(nullable = false)
     private String password;
 
     @OneToOne(mappedBy = "associatedUser")
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "role_name")
+    @JoinColumn(name = "role_name", nullable = false)
     private UserRole role;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")

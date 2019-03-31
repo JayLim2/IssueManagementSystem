@@ -11,13 +11,15 @@ import javax.persistence.*;
 @Data
 public class ProjectVersion {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_version_id_seq")
+    @SequenceGenerator(name = "project_version_id_seq")
     @Column(name = "version_id")
     private Integer id;
 
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 }

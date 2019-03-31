@@ -15,17 +15,17 @@ import java.time.LocalDateTime;
 public class IssueAction {
     @Id
     @ManyToOne
-    @JoinColumn(name = "issue_id")
+    @JoinColumn(name = "issue_id", nullable = false)
     private Issue issue;
 
     @Id
     @ManyToOne
-    private IssueActionType type;
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
 
     @Id
+    @JoinColumn(nullable = false)
     private LocalDateTime date;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+    private String comment;
 }

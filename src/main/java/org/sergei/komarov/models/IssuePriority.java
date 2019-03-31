@@ -12,11 +12,11 @@ import java.util.List;
 @Data
 public class IssuePriority {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "issue_priorities_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_priority_id_seq")
+    @SequenceGenerator(name = "issue_priority_id_seq")
     private Integer id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "priority")

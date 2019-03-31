@@ -44,94 +44,42 @@ public class IssuePrioritiesHandbookController {
     }
 
     @PostMapping("/issuePriorities/add")
-    public String getIssuePrioritiesHandbookAddPage(Model model,
-                                                    @RequestParam String name) {
+    public String getIssuePrioritiesHandbookAddPage(Model model, @RequestParam String name) {
         Map<String, Object> attrs = new HashMap<>();
 
-        if (name == null) {
-            attrs.put("error", "NULL parameter");
-        } else {
-            IssuePriority issuePriority = new IssuePriority();
-            issuePriority.setName(name);
-            try {
-                issuePrioritiesService.save(issuePriority);
-                attrs.put("info", "Новый приоритет добавлен.");
-            } catch (TransactionSystemException e) {
-                Throwable e2 = SQLExceptionParser.getUnwrappedPSQLException(e);
-                String message = "???";
-                if (e2 != null) {
-                    e2.printStackTrace();
-                    message = e2.getMessage();
-                }
-                attrs.put("error", message);
-            } finally {
-                attrs.put("entity", issuePriority);
-            }
-        }
-
+        issuePrioritiesService.validateAndSave(attrs, name);
         model.addAllAttributes(attrs);
 
         return "addIssuePriorities";
     }
 
     @GetMapping("/issuePriorities/edit/{issuePriorityId}")
-    public String getIssuePrioritiesHandbookEditPage(Model model,
-                                                     @PathVariable int issuePriorityId) {
+    public String getIssuePrioritiesHandbookEditPage(Model model, @PathVariable int issuePriorityId) {
         Map<String, Object> attrs = new HashMap<>();
 
-        boolean isExists = issuePrioritiesService.isExistsById(issuePriorityId);
-        attrs.put("isExists", isExists);
-        if (!isExists) {
+        if (!issuePrioritiesService.isExistsById(issuePriorityId)) {
             attrs.put("error", "Приоритет с таким ID не существует.");
         } else {
             IssuePriority issuePriority = issuePrioritiesService.getById(issuePriorityId);
             attrs.put("entity", issuePriority);
         }
-
         model.addAllAttributes(attrs);
 
         return "editIssuePriorities";
     }
 
     @PostMapping("/issuePriorities/edit/{issuePriorityId}")
-    public String getIssuePrioritiesHandbookEditPage(Model model,
-                                                     @PathVariable int issuePriorityId,
-                                                     @RequestParam String name) {
+    public String getIssuePrioritiesHandbookEditPage(Model model, @PathVariable int issuePriorityId, @RequestParam String name) {
         Map<String, Object> attrs = new HashMap<>();
 
-        boolean isExists = issuePrioritiesService.isExistsById(issuePriorityId);
-        attrs.put("isExists", isExists);
-        if (!isExists) {
-            attrs.put("error", "Приоритет с таким ID не существует.");
-        } else if (name == null) {
-            attrs.put("error", "NULL parameter");
-        } else {
-            IssuePriority issuePriority = issuePrioritiesService.getById(issuePriorityId);
-            issuePriority.setName(name);
-            try {
-                issuePrioritiesService.save(issuePriority);
-                attrs.put("info", "Изменения сохранены.");
-            } catch (TransactionSystemException e) {
-                Throwable e2 = SQLExceptionParser.getUnwrappedPSQLException(e);
-                String message = "???";
-                if (e2 != null) {
-                    e2.printStackTrace();
-                    message = e2.getMessage();
-                }
-                attrs.put("error", message);
-            } finally {
-                attrs.put("entity", issuePriority);
-            }
-        }
-
+        issuePrioritiesService.validateAndUpdate(attrs, issuePriorityId, name);
         model.addAllAttributes(attrs);
 
         return "editIssuePriorities";
     }
 
     @GetMapping("/issuePriorities/delete/{issuePriorityId}")
-    public String getIssuePrioritiesHandbookDeletePage(Model model,
-                                                       @PathVariable int issuePriorityId) {
+    public String getIssuePrioritiesHandbookDeletePage(Model model, @PathVariable int issuePriorityId) {
 
         Map<String, Object> attrs = new HashMap<>();
 

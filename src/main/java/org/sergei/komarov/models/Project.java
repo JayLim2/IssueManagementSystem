@@ -12,22 +12,24 @@ import java.util.List;
 @Data
 public class Project {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_id_seq")
     @SequenceGenerator(name = "project_id_seq")
     @Column(name = "project_id")
     private Integer id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String title;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private ProjectType type;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private WorkflowStatus status;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private List<Issue> issues;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
-    private List<ProjectComponent> components;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private List<ProjectVersion> versions;

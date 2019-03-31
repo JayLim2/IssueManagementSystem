@@ -12,11 +12,12 @@ import java.util.List;
 @Data
 public class ProjectRole {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_role_id_seq")
+    @SequenceGenerator(name = "project_role_id_seq")
     @Column(name = "project_role_id")
     private Integer id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectRole")

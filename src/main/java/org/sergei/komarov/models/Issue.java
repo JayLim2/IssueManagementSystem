@@ -15,14 +15,17 @@ import java.util.List;
 @Data
 public class Issue implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_id_seq")
+    @SequenceGenerator(name = "issue_id_seq")
     private Integer id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String description;
 
-    @Column(name = "created")
+    @Column(name = "created", nullable = false)
     private LocalDateTime createdDateTime;
 
     @Column(name = "closed")
@@ -35,42 +38,38 @@ public class Issue implements Serializable {
     private LocalDate dueDate;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
-
-    @ManyToOne
-    @JoinColumn(name = "component_id")
-    private ProjectComponent component;
 
     @ManyToOne
     @JoinColumn(name = "version_id")
     private ProjectVersion version;
 
     @ManyToOne
-    @JoinColumn(name = "priority_id")
+    @JoinColumn(name = "priority_id", nullable = false)
     private IssuePriority priority;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "type_id", nullable = false)
     private IssueType type;
 
     @ManyToOne
-    @JoinColumn(name = "status_id")
-    private IssueWorkflowStatus status;
+    @JoinColumn(name = "status_id", nullable = false)
+    private WorkflowStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "assignee_id")
+    private Employee assignee;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id", nullable = false)
+    private Employee creator;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")
     private List<IssueAction> issueActions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")
     private List<Comment> comments;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "assigned_employees",
-            joinColumns = @JoinColumn(name = "issue_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id")
-    )
-    private List<Employee> employees;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")
     private List<TimeSheet> associatedTimeSheets;

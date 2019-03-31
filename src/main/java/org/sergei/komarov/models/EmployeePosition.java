@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 public class EmployeePosition {
     @Id
+    @Column(nullable = false)
     private String title;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "position")

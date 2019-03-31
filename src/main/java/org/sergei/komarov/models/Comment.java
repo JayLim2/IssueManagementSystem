@@ -24,7 +24,9 @@ public class Comment {
     private Employee employee;
 
     @Id
+    @JoinColumn(nullable = false)
     private LocalDateTime published;
 
+    @Column(nullable = false)
     private String text;
 }

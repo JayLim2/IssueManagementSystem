@@ -10,17 +10,20 @@ import java.util.List;
 @Table(name = "issue_workflow_statuses")
 @NoArgsConstructor
 @Data
-public class IssueWorkflowStatus {
+public class WorkflowStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workflow_status_id")
     private Integer id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "status")
     private List<Issue> issues;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "status")
+    private List<Project> projects;
 
     @ManyToMany
     @JoinTable(

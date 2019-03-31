@@ -12,11 +12,12 @@ import java.util.List;
 @Data
 public class IssueType {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_type_id_seq")
+    @SequenceGenerator(name = "issue_type_id_seq")
     @Column(name = "issue_type_id")
     private Integer id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "type")
@@ -27,7 +28,6 @@ public class IssueType {
             name = "workflow_statuses_by_issue_types",
             joinColumns = @JoinColumn(name = "issue_type_id"),
             inverseJoinColumns = @JoinColumn(name = "workflow_status_id")
-
     )
-    private List<IssueWorkflowStatus> workflowStatuses;
+    private List<WorkflowStatus> workflowStatuses;
 }

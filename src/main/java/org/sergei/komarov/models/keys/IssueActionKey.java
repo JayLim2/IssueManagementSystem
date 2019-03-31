@@ -14,8 +14,8 @@ public class IssueActionKey implements Serializable {
     @Column(name = "issue_id")
     private int issue;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "employee_id")
+    private int employee;
 
     @Basic
     private LocalDateTime date;

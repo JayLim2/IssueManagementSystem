@@ -14,15 +14,15 @@ import javax.persistence.*;
 public class ProjectTeam {
     @Id
     @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "project_id", referencedColumnName = "project_id")
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "project_role_id")
+    @JoinColumn(name = "project_role_id", nullable = false)
     private ProjectRole projectRole;
 }

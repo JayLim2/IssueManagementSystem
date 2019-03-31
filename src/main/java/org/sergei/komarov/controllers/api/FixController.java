@@ -7,12 +7,9 @@ import org.sergei.komarov.services.IssueTypesService;
 import org.sergei.komarov.services.IssueWorkflowStatusesService;
 import org.sergei.komarov.services.UsersService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -60,14 +57,14 @@ public class FixController {
         }).collect(Collectors.toList());
         issueTypesService.saveAll(issueTypes);
 
-        List<IssueWorkflowStatus> workflowStatuses = Stream.of(
+        List<WorkflowStatus> workflowStatuses = Stream.of(
                 "Open", "In assessment", "Assessed", "In progress",
                 "In build", "Ready For Testing", "Tested", "Resolved",
                 "Implemented", "Closed"
         ).map(workflow -> {
-            IssueWorkflowStatus issueWorkflowStatus = new IssueWorkflowStatus();
-            issueWorkflowStatus.setName(workflow);
-            return issueWorkflowStatus;
+            WorkflowStatus workflowStatus = new WorkflowStatus();
+            workflowStatus.setName(workflow);
+            return workflowStatus;
         }).collect(Collectors.toList());
         issueWorkflowStatusesService.saveAll(workflowStatuses);
 

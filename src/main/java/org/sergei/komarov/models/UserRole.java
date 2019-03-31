@@ -12,6 +12,11 @@ import java.util.List;
 @Data
 public class UserRole {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_role_id_seq")
+    @SequenceGenerator(name = "user_role_id_seq")
+    private Integer id;
+
+    @Column(unique = true, nullable = false)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
