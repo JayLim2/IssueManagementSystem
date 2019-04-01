@@ -12,7 +12,8 @@ import java.util.List;
 @Data
 public class WorkflowStatus {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workflow_status_id_seq")
+    @SequenceGenerator(name = "workflow_status_id_seq")
     @Column(name = "workflow_status_id")
     private Integer id;
 

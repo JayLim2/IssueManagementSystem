@@ -13,7 +13,7 @@ import java.util.List;
 public class EmployeePosition {
     @Id
     @Column(nullable = false)
-    private String title;
+    private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "position")
     private List<Employee> employees;

@@ -1,21 +1,15 @@
 package org.sergei.komarov.services;
 
-import org.postgresql.util.PSQLException;
 import org.sergei.komarov.models.IssuePriority;
 import org.sergei.komarov.repositories.IssuePrioritiesRepository;
-import org.sergei.komarov.utils.SQLExceptionParser;
+import org.sergei.komarov.utils.Validators;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionSystemException;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 @Service
-public class IssuePrioritiesService {
+public class IssuePrioritiesService implements JpaService<IssuePriority, Integer> {
 
     private final IssuePrioritiesRepository issuePrioritiesRepository;
 
@@ -23,36 +17,47 @@ public class IssuePrioritiesService {
         this.issuePrioritiesRepository = issuePrioritiesRepository;
     }
 
+    @Override
     public List<IssuePriority> getAll() {
         return issuePrioritiesRepository.findAll();
     }
 
+    @Override
     public void save(IssuePriority priority) {
         issuePrioritiesRepository.save(priority);
     }
 
+    @Override
     public void saveAll(Iterable<IssuePriority> priorities) {
         issuePrioritiesRepository.saveAll(priorities);
     }
 
-    public IssuePriority getById(int id) {
+    @Override
+    public IssuePriority getById(Integer id) {
         return issuePrioritiesRepository.findById(id).orElse(null);
     }
 
-    public boolean isExistsById(int id) {
+    @Override
+    public boolean isExistsById(Integer id) {
         return issuePrioritiesRepository.existsById(id);
     }
 
-    public void deleteById(int id) {
+    @Override
+    public void delete(IssuePriority entity) {
+        issuePrioritiesRepository.delete(entity);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
         issuePrioritiesRepository.deleteById(id);
     }
 
     public void validateAndSave(Map<String, Object> attrs, String name) {
-        if (name == null) {
+        if (name == null || attrs == null) {
             throw new NullPointerException();
         }
 
-        String message = validate(name);
+        String message = Validators.validateIssuePriorityData(name);
         if (message == null) {
             IssuePriority priority = new IssuePriority();
             priority.setName(name);
@@ -69,7 +74,7 @@ public class IssuePrioritiesService {
 
         String message;
         if (isExistsById(id)) {
-            message = validate(name);
+            message = Validators.validateIssuePriorityData(name);
 
             IssuePriority priority = getById(id);
             if (message == null) {
@@ -84,58 +89,5 @@ public class IssuePrioritiesService {
         }
 
         addMessageToAttributes(attrs, message, "Успешно изменен.");
-    }
-
-    private void addMessageToAttributes(Map<String, Object> attrs, String error, String success) {
-        if (attrs == null) {
-            throw new NullPointerException();
-        }
-
-        if (error == null) {
-            attrs.put("info", success);
-        } else {
-            attrs.put("error", error);
-        }
-    }
-
-    //------------------ VALIDATIONS
-
-    private static final int NAME_MAX_LENGTH = 20;
-    private static final Pattern EXCLUDED_PATTERN = Pattern.compile("\\d");
-    private static final String UNIQUE_VIOLATION = "23505";
-
-    private String trySave(IssuePriority issuePriority) {
-        String message = null;
-
-        if (issuePriority == null) {
-            throw new NullPointerException();
-        }
-
-        try {
-            save(issuePriority);
-        } catch (TransactionSystemException e) {
-            PSQLException ex = (PSQLException) SQLExceptionParser.getUnwrappedPSQLException(e);
-            if (!Objects.equals(ex, null) && Objects.equals(ex.getSQLState(), UNIQUE_VIOLATION)) {
-                message = "Приоритет с таким названием уже существует.";
-            }
-        }
-
-        return message;
-    }
-
-    private String validate(String name) {
-        String message = null;
-
-        if (name.isEmpty()) {
-            message = "Название приоритета не должно быть пустым.";
-        } else if (name.length() > NAME_MAX_LENGTH) {
-            message = "Название приоритета не должно превышать "
-                    + NAME_MAX_LENGTH
-                    + " символов.";
-        } else if (EXCLUDED_PATTERN.matcher(name).find()) {
-            message = "Название приоритета не должно содержать цифры.";
-        }
-
-        return message;
     }
 }

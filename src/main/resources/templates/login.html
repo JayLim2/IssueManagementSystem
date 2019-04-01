@@ -4,23 +4,54 @@
     <title id="pageTitle">Войти в систему</title>
 </head>
 <body>
+<div class="login-header">
+    <div th:replace="logo :: logo">
+    </div>
+    Вход в систему
+</div>
+
 <!-- body -->
-<div class="container">
-    <h1>Вход в систему</h1>
+<div class="container" style="margin-top:50px;text-align:center;">
+    <div th:if="${error != null}"
+         class="err-msg"
+         style="margin-top:0;margin-bottom:25px;width:100%;"
+         th:text="${error}">
+    </div>
 
-    <div th:replace="logo :: logo"></div>
+    <div style="display:inline-block">
+        <form th:action="@{/login}" method="POST">
+            <div style="display:table">
+                <div style="display:table-row">
+                    <div style="display:table-cell;padding-left: 10px;padding-bottom: 10px">
+                        <b style="color:#010051">Логин:</b>
+                        <br/>
+                        <input type="text"
+                               id="login"
+                               name="login"
+                               th:placeholder="Login"
+                               class="input"/>
+                    </div>
+                </div>
+                <div style="display:table-row">
+                    <div style="display:table-cell;padding-left: 10px;padding-bottom: 10px">
+                        <b style="color:#010051">Пароль:</b>
+                        <br/>
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               th:placeholder="Password"
+                               class="input"/>
+                    </div>
+                </div>
+            </div>
 
-    <form th:action="@{/login}" method="POST" class="form-signin">
-        <br/>
-
-        <input type="text" id="login" name="login" th:placeholder="Login"
-               class="inputField"/> <br/>
-        <input type="password" id="password" name="password" th:placeholder="Password"
-               class="inputField"/> <br/>
-
-        <input class="submitBtn" name="Submit" value="Войти в систему" type="Submit">
-        <a href="/registration">Регистрация</a>
-    </form>
+            <input class="submit-btn"
+                   style="margin-right: 10px"
+                   name="Submit"
+                   value="Войти в систему"
+                   type="Submit">
+        </form>
+    </div>
 </div>
 </body>
 </html>

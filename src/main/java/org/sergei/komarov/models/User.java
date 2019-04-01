@@ -18,11 +18,10 @@ public class User {
     private String password;
 
     @OneToOne(mappedBy = "associatedUser")
-    @JoinColumn(name = "employee_id", nullable = false)
+    @JoinColumn(name = "employee_id", nullable = false, unique = true)
     private Employee employee;
 
-    @ManyToOne
-    @JoinColumn(name = "role_name", nullable = false)
+    @Column(name = "role_name", nullable = false)
     private UserRole role;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")

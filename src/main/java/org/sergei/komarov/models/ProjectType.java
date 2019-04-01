@@ -18,7 +18,7 @@ public class ProjectType {
     private Integer id;
 
     @Column(unique = true, nullable = false)
-    private String title;
+    private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "type")
     private List<Project> projects;

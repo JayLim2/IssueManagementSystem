@@ -9,15 +9,13 @@ import org.springframework.transaction.TransactionSystemException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.RollbackException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/handbook")
-public class IssuePrioritiesHandbookController {
+@RequestMapping("/handbook/issuePriorities")
+public class IssuePrioritiesHandbookController implements HandbookController {
 
     private final IssuePrioritiesService issuePrioritiesService;
 
@@ -26,8 +24,8 @@ public class IssuePrioritiesHandbookController {
         this.issuePrioritiesService = issuePrioritiesService;
     }
 
-    @RequestMapping("/issuePriorities")
-    public String getIssuePrioritiesHandbookViewPage(Model model) {
+    @RequestMapping("/view")
+    public String getViewPage(Model model) {
 
         List<IssuePriority> issuePriorities = issuePrioritiesService.getAll();
         Map<String, List<IssuePriority>> params = new HashMap<>();
@@ -37,24 +35,24 @@ public class IssuePrioritiesHandbookController {
         return "issuePriorities";
     }
 
-    @GetMapping("/issuePriorities/add")
-    public String getIssuePrioritiesHandbookAddPage() {
+    @GetMapping("/add")
+    public String getAddPage() {
 
-        return "addIssuePriorities";
+        return "addIssuePriority";
     }
 
-    @PostMapping("/issuePriorities/add")
-    public String getIssuePrioritiesHandbookAddPage(Model model, @RequestParam String name) {
+    @PostMapping("/add")
+    public String handleAddRequest(Model model, @RequestParam String name) {
         Map<String, Object> attrs = new HashMap<>();
 
         issuePrioritiesService.validateAndSave(attrs, name);
         model.addAllAttributes(attrs);
 
-        return "addIssuePriorities";
+        return "addIssuePriority";
     }
 
-    @GetMapping("/issuePriorities/edit/{issuePriorityId}")
-    public String getIssuePrioritiesHandbookEditPage(Model model, @PathVariable int issuePriorityId) {
+    @GetMapping("/edit/{issuePriorityId}")
+    public String getEditPage(Model model, @PathVariable int issuePriorityId) {
         Map<String, Object> attrs = new HashMap<>();
 
         if (!issuePrioritiesService.isExistsById(issuePriorityId)) {
@@ -65,45 +63,49 @@ public class IssuePrioritiesHandbookController {
         }
         model.addAllAttributes(attrs);
 
-        return "editIssuePriorities";
+        return "editIssuePriority";
     }
 
-    @PostMapping("/issuePriorities/edit/{issuePriorityId}")
-    public String getIssuePrioritiesHandbookEditPage(Model model, @PathVariable int issuePriorityId, @RequestParam String name) {
+    @PostMapping("/edit/{issuePriorityId}")
+    public String handleEditRequest(Model model, @PathVariable int issuePriorityId, @RequestParam String name) {
         Map<String, Object> attrs = new HashMap<>();
 
         issuePrioritiesService.validateAndUpdate(attrs, issuePriorityId, name);
         model.addAllAttributes(attrs);
 
-        return "editIssuePriorities";
+        return "editIssuePriority";
     }
 
-    @GetMapping("/issuePriorities/delete/{issuePriorityId}")
-    public String getIssuePrioritiesHandbookDeletePage(Model model, @PathVariable int issuePriorityId) {
+    @GetMapping("/delete/{issuePriorityId}")
+    public String handleDeleteRequest(Model model, @PathVariable int issuePriorityId) {
 
         Map<String, Object> attrs = new HashMap<>();
 
         boolean isExists = issuePrioritiesService.isExistsById(issuePriorityId);
         attrs.put("isExists", isExists);
+        String message = null;
         if (!isExists) {
-            attrs.put("error", "Приоритет с таким ID не существует.");
+            message = "Приоритет задач с таким ID не существует.";
         } else {
             try {
                 issuePrioritiesService.deleteById(issuePriorityId);
-                attrs.put("info", "Приоритет с ID " + issuePriorityId + " удален.");
             } catch (TransactionSystemException e) {
                 Throwable e2 = SQLExceptionParser.getUnwrappedPSQLException(e);
-                String message = "???";
                 if (e2 != null) {
                     e2.printStackTrace();
                     message = e2.getMessage();
                 }
-                attrs.put("error", message);
             }
+        }
+
+        if (message == null) {
+            attrs.put("info", "Приоритет задач с ID " + issuePriorityId + " удален.");
+        } else {
+            attrs.put("error", message);
         }
 
         model.addAllAttributes(attrs);
 
-        return "deleteIssuePriorities";
+        return "deleteIssuePriority";
     }
 }

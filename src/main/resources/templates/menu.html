@@ -16,13 +16,16 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/issues}">Задачи</a>
+                <a class="nav-link" th:href="@{/issues}">Управления задачами</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/projects}">Проекты</a>
+                <a class="nav-link" th:href="@{/projects}">Управление проектами</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/employees}">Сотрудники</a>
+                <a class="nav-link" th:href="@{/reports}">Работа с отчетами</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/filters}">Работа с запросами</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -31,20 +34,22 @@
                 </a>
                 <div class="dropdown-menu dropdown-fix" aria-labelledby="navbarDropdown">
                     <h6 class="dropdown-header">Задачи</h6>
-                    <a class="dropdown-item" th:href="@{/handbook/issueTypes}">Типы задач</a>
-                    <a class="dropdown-item" th:href="@{/handbook/issuePriorities}">Приоритеты задач</a>
-                    <a class="dropdown-item" th:href="@{/handbook/issueWorkflowStatuses}">Статусы рабочего процесса
-                        задач</a>
-                    <a class="dropdown-item" th:href="@{/handbook/issueActionTypes}">Типы действий над задачей</a>
-                    <div class="dropdown-divider"></div>
-
-                    <h6 class="dropdown-header">Пользователи</h6>
-                    <a class="dropdown-item" th:href="@{/handbook/userRoles}">Роли пользователей</a>
-                    <a class="dropdown-item" th:href="@{/handbook/projectRoles}">Проектные роли</a>
+                    <a class="dropdown-item" th:href="@{/handbook/issueTypes/view}">Типы задач</a>
+                    <a class="dropdown-item" th:href="@{/handbook/issuePriorities/view}">Приоритеты задач</a>
                     <div class="dropdown-divider"></div>
 
                     <h6 class="dropdown-header">Проекты</h6>
-                    <a class="dropdown-item" th:href="@{/handbook/projectTypes}">Типы проектов</a>
+                    <a class="dropdown-item" th:href="@{/handbook/projectTypes/view}">Типы проектов</a>
+
+                    <h6 class="dropdown-header">Статусы рабочего процесса</h6>
+                    <a class="dropdown-item" th:href="@{/handbook/workflowStatuses/view}">Статусы рабочего процесса</a>
+                    <div class="dropdown-divider"></div>
+
+                    <h6 class="dropdown-header">Сотрудники и пользователи</h6>
+                    <a class="dropdown-item" th:href="@{/handbook/employees/view}">Пользователи</a>
+                    <a class="dropdown-item" th:href="@{/handbook/employees/view}">Сотрудники</a>
+                    <a class="dropdown-item" th:href="@{/handbook/projectRoles/view}">Проектные роли</a>
+                    <div class="dropdown-divider"></div>
                 </div>
             </li>
         </ul>

@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.sergei.komarov.models.*;
 import org.sergei.komarov.services.IssuePrioritiesService;
 import org.sergei.komarov.services.IssueTypesService;
-import org.sergei.komarov.services.IssueWorkflowStatusesService;
 import org.sergei.komarov.services.UsersService;
+import org.sergei.komarov.services.WorkflowStatusesService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,16 +21,14 @@ public class FixController {
 
     private final IssuePrioritiesService issuePrioritiesService;
     private final IssueTypesService issueTypesService;
-    private final IssueWorkflowStatusesService issueWorkflowStatusesService;
+    private final WorkflowStatusesService workflowStatusesService;
     private final UsersService usersService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @RequestMapping("/createDefaultUser")
     public void createDefaultUser() {
         User user = new User();
-        UserRole userRole = new UserRole();
-        userRole.setName("ADMIN");
-        user.setRole(userRole);
+        user.setRole(UserRole.ADMIN);
         user.setLogin("admin");
         user.setPassword(passwordEncoder.encode("admin"));
         usersService.save(user);
@@ -66,7 +64,7 @@ public class FixController {
             workflowStatus.setName(workflow);
             return workflowStatus;
         }).collect(Collectors.toList());
-        issueWorkflowStatusesService.saveAll(workflowStatuses);
+        workflowStatusesService.saveAll(workflowStatuses);
 
         createDefaultUser();
     }
