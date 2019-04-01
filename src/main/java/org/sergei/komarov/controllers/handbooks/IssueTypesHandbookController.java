@@ -53,8 +53,7 @@ public class IssueTypesHandbookController {
 
         Map<String, Object> attrs = new HashMap<>();
         attrs.put("statuses", workflowStatusesService.getAll());
-        List<WorkflowStatus> selectedStatuses = workflowStatusesService.getByIds(statuses);
-        issueTypesService.validateAndSave(attrs, name, selectedStatuses);
+        issueTypesService.validateAndSave(attrs, name, workflowStatusesService.getByIds(statuses));
         model.addAllAttributes(attrs);
 
         return "addIssueType";
@@ -71,7 +70,7 @@ public class IssueTypesHandbookController {
             attrs.put("error", "Приоритет с таким ID не существует.");
         } else {
             IssueType issueType = issueTypesService.getById(issueTypeId);
-            attrs.put("statuses", issueType.getWorkflowStatuses());
+            attrs.put("statuses", workflowStatusesService.getAll());
             attrs.put("entity", issueType);
         }
         model.addAllAttributes(attrs);
@@ -80,11 +79,11 @@ public class IssueTypesHandbookController {
     }
 
     @PostMapping("/edit/{issueTypeId}")
-    public String handleEditRequest(Model model, @PathVariable int issueTypeId, @RequestParam String name) {
+    public String handleEditRequest(Model model, @PathVariable int issueTypeId, @RequestParam String name, @RequestParam List<Integer> statuses) {
         Map<String, Object> attrs = new HashMap<>();
-
-        /*issueTypesService.validateAndUpdate(attrs, issueTypeId, name);
-        model.addAllAttributes(attrs);*/
+        attrs.put("statuses", workflowStatusesService.getAll());
+        issueTypesService.validateAndUpdate(attrs, issueTypeId, name, workflowStatusesService.getByIds(statuses));
+        model.addAllAttributes(attrs);
 
         return "editIssueType";
     }
