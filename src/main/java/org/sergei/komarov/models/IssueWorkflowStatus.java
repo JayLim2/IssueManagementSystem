@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "issue_workflow_statuses")
 @NoArgsConstructor
 @Data
-public class WorkflowStatus {
+public class IssueWorkflowStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workflow_status_id_seq")
     @SequenceGenerator(name = "workflow_status_id_seq")

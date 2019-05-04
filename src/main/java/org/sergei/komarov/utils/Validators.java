@@ -1,6 +1,6 @@
 package org.sergei.komarov.utils;
 
-import org.sergei.komarov.models.WorkflowStatus;
+import org.sergei.komarov.models.IssueWorkflowStatus;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -36,7 +36,7 @@ public class Validators {
         return message;
     }
 
-    public static String validateIssueTypeData(String name, List<WorkflowStatus> statuses) {
+    public static String validateIssueTypeData(String name, List<IssueWorkflowStatus> statuses) {
         String message = null;
 
         if (name.isEmpty()) {

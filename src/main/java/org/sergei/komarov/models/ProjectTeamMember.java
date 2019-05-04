@@ -2,16 +2,16 @@ package org.sergei.komarov.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.sergei.komarov.models.keys.ProjectTeamKey;
+import org.sergei.komarov.models.keys.ProjectTeamMemberKey;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "project_team_members")
-@IdClass(ProjectTeamKey.class)
+@IdClass(ProjectTeamMemberKey.class)
 @NoArgsConstructor
 @Data
-public class ProjectTeam {
+public class ProjectTeamMember {
     @Id
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)

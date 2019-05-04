@@ -12,6 +12,10 @@ import java.util.List;
 @Data
 public class EmployeePosition {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_position_id_seq")
+    @SequenceGenerator(name = "employee_position_id_seq")
+    private Integer id;
+
     @Column(nullable = false)
     private String name;
 

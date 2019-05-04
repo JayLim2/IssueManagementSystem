@@ -29,5 +29,5 @@ public class IssueType {
             joinColumns = @JoinColumn(name = "issue_type_id"),
             inverseJoinColumns = @JoinColumn(name = "workflow_status_id")
     )
-    private List<WorkflowStatus> workflowStatuses;
+    private List<IssueWorkflowStatus> workflowStatuses;
 }

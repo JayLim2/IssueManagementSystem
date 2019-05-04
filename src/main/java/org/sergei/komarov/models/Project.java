@@ -26,7 +26,7 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private WorkflowStatus status;
+    private IssueWorkflowStatus status;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private List<Issue> issues;
@@ -35,5 +35,5 @@ public class Project {
     private List<ProjectVersion> versions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
-    private List<ProjectTeam> projectTeams;
+    private List<ProjectTeamMember> projectTeams;
 }

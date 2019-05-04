@@ -1,7 +1,7 @@
 package org.sergei.komarov.services;
 
 import org.sergei.komarov.models.IssueType;
-import org.sergei.komarov.models.WorkflowStatus;
+import org.sergei.komarov.models.IssueWorkflowStatus;
 import org.sergei.komarov.repositories.IssueTypesRepository;
 import org.sergei.komarov.utils.Validators;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class IssueTypesService implements JpaService<IssueType, Integer> {
         issueTypesRepository.deleteById(id);
     }
 
-    public void validateAndSave(Map<String, Object> attrs, String name, List<WorkflowStatus> statuses) {
+    public void validateAndSave(Map<String, Object> attrs, String name, List<IssueWorkflowStatus> statuses) {
         if (name == null || statuses == null || attrs == null) {
             throw new NullPointerException();
         }
@@ -70,7 +70,7 @@ public class IssueTypesService implements JpaService<IssueType, Integer> {
         addMessageToAttributes(attrs, message, "Успешно создан.");
     }
 
-    public void validateAndUpdate(Map<String, Object> attrs, int id, String name, List<WorkflowStatus> statuses) {
+    public void validateAndUpdate(Map<String, Object> attrs, int id, String name, List<IssueWorkflowStatus> statuses) {
         if (name == null || attrs == null) {
             throw new NullPointerException();
         }

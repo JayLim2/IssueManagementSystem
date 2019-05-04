@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.sergei.komarov.models.*;
 import org.sergei.komarov.services.IssuePrioritiesService;
 import org.sergei.komarov.services.IssueTypesService;
+import org.sergei.komarov.services.IssueWorkflowStatusesService;
 import org.sergei.komarov.services.UsersService;
-import org.sergei.komarov.services.WorkflowStatusesService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +21,7 @@ public class FixController {
 
     private final IssuePrioritiesService issuePrioritiesService;
     private final IssueTypesService issueTypesService;
-    private final WorkflowStatusesService workflowStatusesService;
+    private final IssueWorkflowStatusesService workflowStatusesService;
     private final UsersService usersService;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -55,12 +55,12 @@ public class FixController {
         }).collect(Collectors.toList());
         issueTypesService.saveAll(issueTypes);
 
-        List<WorkflowStatus> workflowStatuses = Stream.of(
+        List<IssueWorkflowStatus> workflowStatuses = Stream.of(
                 "Open", "In assessment", "Assessed", "In progress",
                 "In build", "Ready For Testing", "Tested", "Resolved",
                 "Implemented", "Closed"
         ).map(workflow -> {
-            WorkflowStatus workflowStatus = new WorkflowStatus();
+            IssueWorkflowStatus workflowStatus = new IssueWorkflowStatus();
             workflowStatus.setName(workflow);
             return workflowStatus;
         }).collect(Collectors.toList());

@@ -1,59 +1,57 @@
 package org.sergei.komarov.services;
 
-import org.sergei.komarov.models.WorkflowStatus;
-import org.sergei.komarov.repositories.WorkflowStatusesRepository;
+import lombok.AllArgsConstructor;
+import org.sergei.komarov.models.IssueWorkflowStatus;
+import org.sergei.komarov.repositories.IssueWorkflowStatusesRepository;
 import org.sergei.komarov.utils.Validators;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@AllArgsConstructor
 @Service
-public class WorkflowStatusesService implements JpaService<WorkflowStatus, Integer> {
-    private final WorkflowStatusesRepository workflowStatusesRepository;
+public class IssueWorkflowStatusesService implements JpaService<IssueWorkflowStatus, Integer> {
+    private final IssueWorkflowStatusesRepository issueWorkflowStatusesRepository;
 
-    public WorkflowStatusesService(WorkflowStatusesRepository workflowStatusesRepository) {
-        this.workflowStatusesRepository = workflowStatusesRepository;
+    @Override
+    public List<IssueWorkflowStatus> getAll() {
+        return issueWorkflowStatusesRepository.findAll();
     }
 
     @Override
-    public List<WorkflowStatus> getAll() {
-        return workflowStatusesRepository.findAll();
+    public IssueWorkflowStatus getById(Integer id) {
+        return issueWorkflowStatusesRepository.getOne(id);
     }
 
-    @Override
-    public WorkflowStatus getById(Integer id) {
-        return workflowStatusesRepository.getOne(id);
-    }
-
-    public List<WorkflowStatus> getByIds(List<Integer> ids) {
+    public List<IssueWorkflowStatus> getByIds(List<Integer> ids) {
         return ids != null ?
-                workflowStatusesRepository.findByIdIn(ids) :
+                issueWorkflowStatusesRepository.findByIdIn(ids) :
                 new ArrayList<>();
     }
 
     @Override
     public boolean isExistsById(Integer id) {
-        return workflowStatusesRepository.existsById(id);
+        return issueWorkflowStatusesRepository.existsById(id);
     }
 
     @Override
-    public void save(WorkflowStatus entity) {
-        workflowStatusesRepository.save(entity);
+    public void save(IssueWorkflowStatus entity) {
+        issueWorkflowStatusesRepository.save(entity);
     }
 
     @Override
-    public void saveAll(Iterable<WorkflowStatus> iterable) {
-        workflowStatusesRepository.saveAll(iterable);
+    public void saveAll(Iterable<IssueWorkflowStatus> iterable) {
+        issueWorkflowStatusesRepository.saveAll(iterable);
     }
 
     @Override
-    public void delete(WorkflowStatus entity) {
-        workflowStatusesRepository.delete(entity);
+    public void delete(IssueWorkflowStatus entity) {
+        issueWorkflowStatusesRepository.delete(entity);
     }
 
     @Override
     public void deleteById(Integer id) {
-        workflowStatusesRepository.deleteById(id);
+        issueWorkflowStatusesRepository.deleteById(id);
     }
 
     public void validateAndSave(Map<String, Object> attrs, String name) {
@@ -63,7 +61,7 @@ public class WorkflowStatusesService implements JpaService<WorkflowStatus, Integ
 
         String message = Validators.validateWorkflowStatusData(name);
         if (message == null) {
-            WorkflowStatus status = new WorkflowStatus();
+            IssueWorkflowStatus status = new IssueWorkflowStatus();
             status.setName(name);
             message = trySave(status);
         }
@@ -80,7 +78,7 @@ public class WorkflowStatusesService implements JpaService<WorkflowStatus, Integ
         if (isExistsById(id)) {
             message = Validators.validateWorkflowStatusData(name);
 
-            WorkflowStatus status = getById(id);
+            IssueWorkflowStatus status = getById(id);
             if (message == null) {
                 status.setName(name);
                 message = trySave(status);

@@ -21,5 +21,5 @@ public class ProjectRole {
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectRole")
-    private List<ProjectTeam> projectTeams;
+    private List<ProjectTeamMember> projectTeams;
 }

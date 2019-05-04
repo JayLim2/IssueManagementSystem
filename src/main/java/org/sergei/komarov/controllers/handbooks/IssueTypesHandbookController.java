@@ -1,11 +1,10 @@
 package org.sergei.komarov.controllers.handbooks;
 
+import lombok.AllArgsConstructor;
 import org.sergei.komarov.models.IssueType;
-import org.sergei.komarov.models.WorkflowStatus;
 import org.sergei.komarov.services.IssueTypesService;
-import org.sergei.komarov.services.WorkflowStatusesService;
+import org.sergei.komarov.services.IssueWorkflowStatusesService;
 import org.sergei.komarov.utils.SQLExceptionParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.ui.Model;
@@ -17,15 +16,11 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/handbook/issueTypes")
+@AllArgsConstructor
 public class IssueTypesHandbookController {
 
     private IssueTypesService issueTypesService;
-    private WorkflowStatusesService workflowStatusesService;
-
-    public IssueTypesHandbookController(IssueTypesService issueTypesService, WorkflowStatusesService workflowStatusesService) {
-        this.issueTypesService = issueTypesService;
-        this.workflowStatusesService = workflowStatusesService;
-    }
+    private IssueWorkflowStatusesService issueWorkflowStatusesService;
 
     @RequestMapping("/view")
     public String getViewPage(Model model) {
@@ -42,7 +37,7 @@ public class IssueTypesHandbookController {
 
     @GetMapping("/add")
     public String getAddPage(Model model) {
-        model.addAttribute("statuses", workflowStatusesService.getAll());
+        model.addAttribute("statuses", issueWorkflowStatusesService.getAll());
 
         return "addIssueType";
     }
@@ -52,8 +47,8 @@ public class IssueTypesHandbookController {
                                    @RequestParam(required = false) List<Integer> statuses) {
 
         Map<String, Object> attrs = new HashMap<>();
-        attrs.put("statuses", workflowStatusesService.getAll());
-        issueTypesService.validateAndSave(attrs, name, workflowStatusesService.getByIds(statuses));
+        attrs.put("statuses", issueWorkflowStatusesService.getAll());
+        issueTypesService.validateAndSave(attrs, name, issueWorkflowStatusesService.getByIds(statuses));
         model.addAllAttributes(attrs);
 
         return "addIssueType";
@@ -70,7 +65,7 @@ public class IssueTypesHandbookController {
             attrs.put("error", "Приоритет с таким ID не существует.");
         } else {
             IssueType issueType = issueTypesService.getById(issueTypeId);
-            attrs.put("statuses", workflowStatusesService.getAll());
+            attrs.put("statuses", issueWorkflowStatusesService.getAll());
             attrs.put("entity", issueType);
         }
         model.addAllAttributes(attrs);
@@ -81,8 +76,8 @@ public class IssueTypesHandbookController {
     @PostMapping("/edit/{issueTypeId}")
     public String handleEditRequest(Model model, @PathVariable int issueTypeId, @RequestParam String name, @RequestParam List<Integer> statuses) {
         Map<String, Object> attrs = new HashMap<>();
-        attrs.put("statuses", workflowStatusesService.getAll());
-        issueTypesService.validateAndUpdate(attrs, issueTypeId, name, workflowStatusesService.getByIds(statuses));
+        attrs.put("statuses", issueWorkflowStatusesService.getAll());
+        issueTypesService.validateAndUpdate(attrs, issueTypeId, name, issueWorkflowStatusesService.getByIds(statuses));
         model.addAllAttributes(attrs);
 
         return "editIssueType";

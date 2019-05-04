@@ -24,7 +24,4 @@ public class Filter {
     @ManyToOne
     @JoinColumn(nullable = false)
     private User user;
-
-    @OneToOne
-    private Metric metric;
 }

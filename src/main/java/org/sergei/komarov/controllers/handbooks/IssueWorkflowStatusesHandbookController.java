@@ -5,8 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/handbook/workflowStatuses")
-public class WorkflowStatusesHandbookController implements HandbookController {
+@RequestMapping("/handbook/issueWorkflowStatuses")
+public class IssueWorkflowStatusesHandbookController implements HandbookController {
 
     @Override
     @RequestMapping("/view")

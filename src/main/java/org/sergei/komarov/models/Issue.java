@@ -55,7 +55,7 @@ public class Issue implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
-    private WorkflowStatus status;
+    private IssueWorkflowStatus status;
 
     @ManyToOne
     @JoinColumn(name = "assignee_id")
@@ -67,9 +67,6 @@ public class Issue implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")
     private List<IssueAction> issueActions;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")
-    private List<Comment> comments;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")
     private List<TimeSheet> associatedTimeSheets;

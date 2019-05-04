@@ -44,11 +44,8 @@ public class Employee {
     private List<IssueAction> issueActions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
-    private List<ProjectTeam> projectTeams;
+    private List<ProjectTeamMember> projectTeams;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
     private List<TimeSheet> timeSheets;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
-    private List<Comment> comments;
 }

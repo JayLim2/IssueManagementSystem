@@ -1,22 +1,19 @@
 package org.sergei.komarov.models.keys;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
-public class CommentKey implements Serializable {
-    @Column(name = "issue_id")
-    private int issue;
-
+public class ProjectTeamMemberKey implements Serializable {
     @Column(name = "employee_id")
     private int employee;
 
-    @Basic
-    private LocalDateTime published;
+    @Column(name = "project_id")
+    private int project;
 }
