@@ -10,7 +10,7 @@ public interface HandbookController {
     String getViewPage(Model model);
 
     //add
-    String getAddPage();
+    String getAddPage(Model model);
 
     String handleAddRequest(Model model, @RequestParam String name);
 

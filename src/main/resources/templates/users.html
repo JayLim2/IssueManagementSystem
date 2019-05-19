@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="libs :: headerFragment">
+    <title id="pageTitle">Справочник пользователей</title>
+</head>
+<body>
+<div th:replace="menu :: menu"></div>
+
+<div class="container" style="padding-top:20px;">
+    <h1>Пользователи</h1>
+
+    <div>
+        <div style="margin-bottom: 20px">
+            <a type="button"
+               class="btn btn-dark"
+               target="_blank"
+               th:href="@{/handbook/users/add}"
+            >
+                Регистрация нового пользователя
+            </a>
+        </div>
+
+        <div th:if="${entities == null || entities.size == 0}"
+             class="err-msg">
+            Справочник пуст.
+        </div>
+        <table th:unless="${entities == null || entities.size == 0}" class="table" style="border:1px solid gray;">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Логин</th>
+                <th scope="col">Хеш пароля</th>
+                <th scope="col">Сотрудник</th>
+                <th scope="col">Роль</th>
+                <th scope="col" style="width:250px"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${entities}">
+                <td scope="row" th:text="${user.getLogin()}">
+                </td>
+                <td scope="row" th:text="${user.getPassword()}">
+                </td>
+                <td scope="row" th:text="${user.getLogin()}">
+                </td>
+                <td scope="row" th:text="${user.getRole()}">
+                </td>
+
+                <td style="width:250px">
+                    <a class="btn btn-primary" target="_blank"
+                       th:href="@{'/handbook/users/edit/' + ${user.getId()}}">
+                        Изменить
+                    </a>
+                    <a class="btn btn-danger" target="_blank"
+                       th:href="@{'/handbook/users/delete/' + ${user.getId()}}">
+                        Удалить
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

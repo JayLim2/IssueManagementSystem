@@ -36,7 +36,7 @@ public class IssuePrioritiesHandbookController implements HandbookController {
     }
 
     @GetMapping("/add")
-    public String getAddPage() {
+    public String getAddPage(Model model) {
 
         return "addIssuePriority";
     }

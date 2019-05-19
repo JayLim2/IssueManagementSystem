@@ -57,7 +57,7 @@ public class ProjectTypesService implements JpaService<ProjectType, Integer> {
             throw new NullPointerException();
         }
 
-        String message = Validators.validateEmployeePositionData(name);
+        String message = Validators.validateProjectTypeData(name);
         if (message == null) {
             ProjectType type = new ProjectType();
             type.setName(name);
@@ -74,7 +74,7 @@ public class ProjectTypesService implements JpaService<ProjectType, Integer> {
 
         String message;
         if (isExistsById(id)) {
-            message = Validators.validateEmployeePositionData(name);
+            message = Validators.validateProjectTypeData(name);
 
             ProjectType type = getById(id);
             if (message == null) {

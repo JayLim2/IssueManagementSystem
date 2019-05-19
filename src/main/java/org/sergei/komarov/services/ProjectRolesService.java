@@ -57,7 +57,7 @@ public class ProjectRolesService implements JpaService<ProjectRole, Integer> {
             throw new NullPointerException();
         }
 
-        String message = Validators.validateEmployeePositionData(name);
+        String message = Validators.validateProjectRoleData(name);
         if (message == null) {
             ProjectRole role = new ProjectRole();
             role.setName(name);
@@ -74,7 +74,7 @@ public class ProjectRolesService implements JpaService<ProjectRole, Integer> {
 
         String message;
         if (isExistsById(id)) {
-            message = Validators.validateEmployeePositionData(name);
+            message = Validators.validateProjectRoleData(name);
 
             ProjectRole role = getById(id);
             if (message == null) {

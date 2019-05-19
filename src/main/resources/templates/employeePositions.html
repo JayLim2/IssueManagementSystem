@@ -1,46 +1,43 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="libs :: headerFragment">
-    <title id="pageTitle">Справочник типов задач</title>
+    <title id="pageTitle">Справочник должностей</title>
 </head>
 <body>
 <div th:replace="menu :: menu"></div>
 
 <div class="container" style="padding-top:20px;">
-    <h1>Типы задач</h1>
+    <h1>Должности сотрудников</h1>
 
     <div>
         <div style="margin-bottom: 20px">
             <a type="button"
                class="btn btn-dark"
                target="_blank"
-               th:href="@{/handbook/issueTypes/add}"
+               th:href="@{/handbook/employeePositions/add}"
             >
-                Добавить новый тип
+                Добавить новую должность
             </a>
         </div>
 
         <table class="table" style="border:1px solid gray;">
             <thead class="thead-dark">
             <tr>
-                <th scope="col">Название типа</th>
-                <th scope="col">Допустимые статусы рабочего процесса</th>
+                <th scope="col">Название должности</th>
                 <th scope="col" style="width:250px"></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="entity : ${entities}">
-                <td scope="row" th:text="${entity.getName()}">
-                </td>
-                <td scope="row" th:text="${entity.getName()}">
+            <tr th:each="position : ${entities}">
+                <td scope="row" th:text="${position.getName()}">
                 </td>
                 <td style="width:250px">
                     <a class="btn btn-primary" target="_blank"
-                       th:href="@{'/handbook/issueTypes/edit/' + ${entity.getId()}}">
+                       th:href="@{'/handbook/employeePositions/edit/' + ${position.getId()}}">
                         Изменить
                     </a>
                     <a class="btn btn-danger" target="_blank"
-                       th:href="@{'/handbook/issueTypes/delete/' + ${entity.getId()}}">
+                       th:href="@{'/handbook/employeePositions/delete/' + ${position.getId()}}">
                         Удалить
                     </a>
                 </td>

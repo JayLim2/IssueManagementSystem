@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
 
 public class Validators {
 
+    public static final int MIN_PASSWORD_LENGTH = 8;
+    public static final int MAX_PASSWORD_LENGTH = 20;
+
     public static boolean isArrayWithNulls(Object... data) {
         if (data == null) {
             return true;

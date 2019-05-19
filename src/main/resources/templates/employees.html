@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="libs :: headerFragment">
+    <title id="pageTitle">Справочник сотрудников</title>
+</head>
+<body>
+<div th:replace="menu :: menu"></div>
+
+<div class="container" style="padding-top:20px;">
+    <h1>Сотрудники</h1>
+
+    <div>
+        <div style="margin-bottom: 20px">
+            <a type="button"
+               class="btn btn-dark"
+               target="_blank"
+               th:href="@{/handbook/employees/add}"
+            >
+                Добавить нового сотрудника
+            </a>
+        </div>
+
+        <table class="table" style="border:1px solid gray;">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Фамилия</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Отчество</th>
+                <th scope="col">Должность</th>
+                <th scope="col">ID пользователя</th>
+                <th scope="col" style="width:250px"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="employee : ${entities}">
+                <td scope="row" th:text="${employee.getLastName()}">
+                </td>
+                <td scope="row" th:text="${employee.getFirstName()}">
+                </td>
+                <td scope="row" th:text="${employee.getMiddleName()}">
+                </td>
+                <td scope="row" th:text="${employee.getPosition()}">
+                </td>
+                <td scope="row" th:text="${employee.getAssociatedUser()}">
+                </td>
+
+                <td style="width:250px">
+                    <a class="btn btn-primary" target="_blank"
+                       th:href="@{'/handbook/employees/edit/' + ${employee.getId()}}">
+                        Изменить
+                    </a>
+                    <a class="btn btn-danger" target="_blank"
+                       th:href="@{'/handbook/employees/delete/' + ${employee.getId()}}">
+                        Удалить
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

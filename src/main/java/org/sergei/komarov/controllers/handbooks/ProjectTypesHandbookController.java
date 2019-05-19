@@ -35,7 +35,7 @@ public class ProjectTypesHandbookController implements HandbookController {
 
     @Override
     @GetMapping("/add")
-    public String getAddPage() {
+    public String getAddPage(Model model) {
         return "addProjectType";
     }
 

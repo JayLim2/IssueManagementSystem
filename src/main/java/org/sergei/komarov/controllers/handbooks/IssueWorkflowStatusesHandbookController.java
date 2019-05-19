@@ -11,36 +11,36 @@ public class IssueWorkflowStatusesHandbookController implements HandbookControll
     @Override
     @RequestMapping("/view")
     public String getViewPage(Model model) {
-        return "workflowStatuses";
+        return "issueWorkflowStatuses";
     }
 
     @Override
     @GetMapping("/add")
-    public String getAddPage() {
-        return "addWorkflowStatus";
+    public String getAddPage(Model model) {
+        return "addIssueWorkflowStatus";
     }
 
     @Override
     @PostMapping("/add")
     public String handleAddRequest(Model model, @RequestParam String name) {
-        return "addWorkflowStatus";
+        return "addIssueWorkflowStatus";
     }
 
     @Override
     @GetMapping("/edit/{id}")
     public String getEditPage(Model model, @PathVariable int id) {
-        return "editWorkflowStatus";
+        return "editIssueWorkflowStatus";
     }
 
     @Override
     @PostMapping("/edit/{id}")
     public String handleEditRequest(Model model, @PathVariable int id, @RequestParam String name) {
-        return "editWorkflowStatus";
+        return "editIssueWorkflowStatus";
     }
 
     @Override
     @GetMapping("/delete/{id}")
     public String handleDeleteRequest(Model model, @PathVariable int id) {
-        return "deleteWorkflowStatus";
+        return "deleteIssueWorkflowStatus";
     }
 }

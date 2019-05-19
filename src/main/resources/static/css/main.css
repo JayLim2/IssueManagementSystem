@@ -49,15 +49,30 @@
 }
 
 .err-msg {
-    background: #570004;
-    color: white;
+    border: 1px solid #570004;
+    background: #fed6d6;
+    color: #570004;
     padding: 10px 25px;
     font-size: 12pt;
 }
 
 .info-msg {
-    background: #010051;
-    color: white;
+    background: #eaf0fe;
+    border: 1px solid #0056bb;
+    color: #0056bb;
     padding: 10px 25px;
     font-size: 12pt;
+}
+
+.warn-msg {
+    background: #fffbd2;
+    border: 1px solid #e99423;
+    color: #e99423;
+    padding: 8px 16px;
+}
+
+.required-field-marker:after {
+    color: red;
+    font-weight: bold;
+    content: " *";
 }
