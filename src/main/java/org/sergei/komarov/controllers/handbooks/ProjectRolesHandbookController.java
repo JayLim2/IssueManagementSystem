@@ -78,7 +78,7 @@ public class ProjectRolesHandbookController implements HandbookController {
     }
 
     @Override
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String handleDeleteRequest(Model model, @PathVariable int id) {
 
         Map<String, Object> attrs = new HashMap<>();
@@ -108,6 +108,6 @@ public class ProjectRolesHandbookController implements HandbookController {
 
         model.addAllAttributes(attrs);
 
-        return "editProjectRole";
+        return "delete";
     }
 }

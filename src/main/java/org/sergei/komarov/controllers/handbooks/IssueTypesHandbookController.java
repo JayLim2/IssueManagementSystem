@@ -83,7 +83,7 @@ public class IssueTypesHandbookController {
 
     //-------------------------------- DELETE
 
-    @GetMapping("/delete/{issueTypeId}")
+    @PostMapping("/delete/{issueTypeId}")
     public String handleDeleteRequest(Model model, @PathVariable int issueTypeId) {
 
         Map<String, Object> attrs = new HashMap<>();
@@ -113,7 +113,7 @@ public class IssueTypesHandbookController {
 
         model.addAllAttributes(attrs);
 
-        return "deleteIssueType";
+        return "delete";
     }
 
 }

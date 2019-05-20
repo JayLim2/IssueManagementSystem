@@ -20,6 +20,8 @@
             </a>
         </div>
 
+        <div id="response"></div>
+
         <div th:if="${entities == null || entities.size() == 0}"
              class="warn-msg">
             Справочник пуст.
@@ -33,7 +35,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="entity : ${entities}">
+            <tr th:each="entity : ${entities}" th:id="'row-'+${entity.getId()}">
                 <td scope="row" th:text="${entity.getName()}">
                 </td>
                 <td scope="row" th:text="${entity.getName()}">
@@ -43,8 +45,10 @@
                        th:href="@{'/handbook/issueWorkflowStatuses/edit/' + ${entity.getId()}}">
                         Изменить
                     </a>
-                    <a class="btn btn-danger" target="_blank"
-                       th:href="@{'/handbook/issueWorkflowStatuses/delete/' + ${entity.getId()}}">
+                    <a class="btn btn-danger"
+                       th:href="'#'"
+                       th:onclick="'deleteRequest('+${entity.getId()}+',\'issueWorkflowStatuses\')'"
+                    >
                         Удалить
                     </a>
                 </td>

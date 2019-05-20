@@ -38,7 +38,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="employee : ${entities}">
+            <tr th:each="employee : ${entities}" th:id="'row-'+${employee.getId()}">
                 <td scope="row" th:text="${employee.getLastName()}">
                 </td>
                 <td scope="row" th:text="${employee.getFirstName()}">
@@ -57,7 +57,7 @@
                     </a>
                     <a class="btn btn-danger" target="_blank"
                        th:href="'#'"
-                       th:onclick="'deleteEmployee('+${employee.getId()}+')'"
+                       th:onclick="'deleteRequest('+${employee.getId()}+',\'employees\')'"
                     >
                         Удалить
                     </a>

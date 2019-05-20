@@ -20,6 +20,8 @@
             </a>
         </div>
 
+        <div id="response"></div>
+
         <div th:if="${entities == null || entities.size() == 0}"
              class="warn-msg">
             Справочник пуст.
@@ -32,16 +34,18 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="type : ${entities}">
-                <td scope="row" th:text="${type.getName()}">
+            <tr th:each="entity : ${entities}" th:id="'row-'+${entity.getId()}">
+                <td scope="row" th:text="${entity.getName()}">
                 </td>
                 <td style="width:250px">
                     <a class="btn btn-primary" target="_blank"
-                       th:href="@{'/handbook/projectRoles/edit/' + ${type.getId()}}">
+                       th:href="@{'/handbook/projectRoles/edit/' + ${entity.getId()}}">
                         Изменить
                     </a>
-                    <a class="btn btn-danger" target="_blank"
-                       th:href="@{'/handbook/projectRoles/delete/' + ${type.getId()}}">
+                    <a class="btn btn-danger"
+                       th:href="'#'"
+                       th:onclick="'deleteRequest('+${entity.getId()}+',\'projectRoles\')'"
+                    >
                         Удалить
                     </a>
                 </td>

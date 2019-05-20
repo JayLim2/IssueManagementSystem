@@ -4,6 +4,7 @@ import org.sergei.komarov.models.EmployeePosition;
 import org.sergei.komarov.models.IssueWorkflowStatus;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +36,8 @@ public class Validators {
     public static String validateIssuePriorityData(String name) {
         String message = null;
 
+        name = name.trim();
+
         if (name.isEmpty()) {
             message = "Название приоритета задач не должно быть пустым.";
         } else if (name.length() > MAX_ISSUE_PRIORITY_NAME_LENGTH) {
@@ -50,6 +53,8 @@ public class Validators {
 
     public static String validateIssueTypeData(String name, List<IssueWorkflowStatus> statuses) {
         String message = null;
+
+        name = name.trim();
 
         if (name.isEmpty()) {
             message = "Название типа задач не должно быть пустым.";
@@ -69,6 +74,8 @@ public class Validators {
     public static String validateWorkflowStatusData(String name) {
         String message = null;
 
+        name = name.trim();
+
         if (name.isEmpty()) {
             message = "Название статуса рабочего процесса не должно быть пустым.";
         } else if (name.length() > MAX_ISSUE_WORKFLOW_STATUS_NAME_LENGTH) {
@@ -86,6 +93,8 @@ public class Validators {
     public static String validateUserRoleData(String name) {
         String message = null;
 
+        name = name.trim();
+
         if (name.isEmpty()) {
             message = "Название роли пользователя не должно быть пустым.";
         } else if (name.length() > 20) {
@@ -101,6 +110,8 @@ public class Validators {
 
     public static String validateProjectRoleData(String name) {
         String message = null;
+
+        name = name.trim();
 
         if (name.isEmpty()) {
             message = "Название проектной роли не должно быть пустым.";
@@ -118,6 +129,8 @@ public class Validators {
     public static String validateProjectTypeData(String name) {
         String message = null;
 
+        name = name.trim();
+
         if (name.isEmpty()) {
             message = "Название типа проекта не должно быть пустым.";
         } else if (name.length() > MAX_PROJECT_TYPE_NAME_LENGTH) {
@@ -133,6 +146,8 @@ public class Validators {
 
     public static String validateEmployeePositionData(String name) {
         String message = null;
+
+        name = name.trim();
 
         if (name.isEmpty()) {
             message = "Название должности не должно быть пустым.";
@@ -151,7 +166,11 @@ public class Validators {
                                               EmployeePosition employeePosition) {
         String message = null;
 
-        if (firstName.isEmpty()) {
+        firstName = firstName.trim();
+        lastName = lastName.trim();
+        middleName = Optional.ofNullable(middleName).orElse("").trim();
+
+        if (firstName.trim().isEmpty()) {
             message = "Имя сотрудника не должно быть пустым.";
         } else if (firstName.length() > MAX_EMPLOYEE_NAME_LENGTH) {
             message = "Имя сотрудника не должно превышать "
@@ -169,7 +188,7 @@ public class Validators {
             message = "Имя сотрудника не должно содержать цифры.";
         } else if (EXCLUDED_PATTERN.matcher(lastName).find()) {
             message = "Фамилия сотрудника не должна содержать цифры.";
-        } else if (middleName != null && EXCLUDED_PATTERN.matcher(firstName).find()) {
+        } else if (EXCLUDED_PATTERN.matcher(firstName).find()) {
             message = "Отчество сотрудника не должно содержать цифры.";
         }
 

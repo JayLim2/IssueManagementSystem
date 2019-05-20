@@ -20,6 +20,8 @@
             </a>
         </div>
 
+        <div id="response"></div>
+
         <div th:if="${entities == null || entities.size() == 0}"
              class="warn-msg">
             Справочник пуст.
@@ -32,7 +34,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="priority : ${entities}">
+            <tr th:each="priority : ${entities}" th:id="'row-'+${priority.getId()}">
                 <td scope="row" th:text="${priority.getName()}">
                 </td>
                 <td style="width:250px">
@@ -40,8 +42,10 @@
                        th:href="@{'/handbook/issuePriorities/edit/' + ${priority.getId()}}">
                         Изменить
                     </a>
-                    <a class="btn btn-danger" target="_blank"
-                       th:href="@{'/handbook/issuePriorities/delete/' + ${priority.getId()}}">
+                    <a class="btn btn-danger"
+                       th:href="'#'"
+                       th:onclick="'deleteRequest('+${priority.getId()}+',\'issuePriorities\')'"
+                    >
                         Удалить
                     </a>
                 </td>

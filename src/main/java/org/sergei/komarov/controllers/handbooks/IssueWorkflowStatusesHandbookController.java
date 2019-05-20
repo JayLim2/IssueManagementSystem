@@ -51,8 +51,8 @@ public class IssueWorkflowStatusesHandbookController implements HandbookControll
     }
 
     @Override
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String handleDeleteRequest(Model model, @PathVariable int id) {
-        return "deleteIssueWorkflowStatus";
+        return "delete";
     }
 }

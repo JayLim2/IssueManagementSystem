@@ -34,17 +34,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="position : ${entities}" th:id="'row-'+${position.getId()}">
-                <td scope="row" th:text="${position.getName()}">
+            <tr th:each="entity : ${entities}" th:id="'row-'+${entity.getId()}">
+                <td scope="row" th:text="${entity.getName()}">
                 </td>
                 <td style="width:250px">
                     <a class="btn btn-primary" target="_blank"
-                       th:href="@{'/handbook/employeePositions/edit/' + ${position.getId()}}">
+                       th:href="@{'/handbook/employeePositions/edit/' + ${entity.getId()}}">
                         Изменить
                     </a>
                     <a class="btn btn-danger"
                        th:href="'#'"
-                       th:onclick="'deleteEmployeePosition('+${position.getId()}+')'"
+                       th:onclick="'deleteRequest('+${entity.getId()}+',\'employeePositions\')'"
                     >
                         Удалить
                     </a>

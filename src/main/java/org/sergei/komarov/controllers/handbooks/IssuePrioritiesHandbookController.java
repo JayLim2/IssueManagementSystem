@@ -74,7 +74,7 @@ public class IssuePrioritiesHandbookController implements HandbookController {
         return "editIssuePriority";
     }
 
-    @GetMapping("/delete/{issuePriorityId}")
+    @PostMapping("/delete/{issuePriorityId}")
     public String handleDeleteRequest(Model model, @PathVariable int issuePriorityId) {
 
         Map<String, Object> attrs = new HashMap<>();
@@ -104,6 +104,6 @@ public class IssuePrioritiesHandbookController implements HandbookController {
 
         model.addAllAttributes(attrs);
 
-        return "deleteIssuePriority";
+        return "delete";
     }
 }
