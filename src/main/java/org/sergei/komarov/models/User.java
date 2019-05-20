@@ -17,8 +17,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(mappedBy = "associatedUser")
-    @JoinColumn(name = "employee_id", nullable = false, unique = true)
+    @OneToOne(mappedBy = "associatedUser", cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id", unique = true)
     private Employee employee;
 
     @Column(name = "role_name", nullable = false)

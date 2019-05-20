@@ -20,7 +20,13 @@
             </a>
         </div>
 
-        <table class="table" style="border:1px solid gray;">
+        <div id="response"></div>
+
+        <div th:if="${entities == null || entities.size() == 0}"
+             class="warn-msg">
+            Справочник пуст.
+        </div>
+        <table th:unless="${entities == null || entities.size() == 0}" class="table" style="border:1px solid gray;">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Название должности</th>
@@ -28,7 +34,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="position : ${entities}">
+            <tr th:each="position : ${entities}" th:id="'row-'+${position.getId()}">
                 <td scope="row" th:text="${position.getName()}">
                 </td>
                 <td style="width:250px">
@@ -36,8 +42,10 @@
                        th:href="@{'/handbook/employeePositions/edit/' + ${position.getId()}}">
                         Изменить
                     </a>
-                    <a class="btn btn-danger" target="_blank"
-                       th:href="@{'/handbook/employeePositions/delete/' + ${position.getId()}}">
+                    <a class="btn btn-danger"
+                       th:href="'#'"
+                       th:onclick="'deleteEmployeePosition('+${position.getId()}+')'"
+                    >
                         Удалить
                     </a>
                 </td>

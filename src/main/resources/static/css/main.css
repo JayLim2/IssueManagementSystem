@@ -54,6 +54,7 @@
     color: #570004;
     padding: 10px 25px;
     font-size: 12pt;
+    margin: 10px 0;
 }
 
 .info-msg {
@@ -62,6 +63,7 @@
     color: #0056bb;
     padding: 10px 25px;
     font-size: 12pt;
+    margin: 10px 0;
 }
 
 .warn-msg {
@@ -69,6 +71,7 @@
     border: 1px solid #e99423;
     color: #e99423;
     padding: 8px 16px;
+    margin: 10px 0;
 }
 
 .required-field-marker:after {

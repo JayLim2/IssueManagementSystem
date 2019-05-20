@@ -20,7 +20,11 @@
             </a>
         </div>
 
-        <table class="table" style="border:1px solid gray;">
+        <div th:if="${entities == null || entities.size() == 0}"
+             class="warn-msg">
+            Справочник пуст.
+        </div>
+        <table th:unless="${entities == null || entities.size() == 0}" class="table" style="border:1px solid gray;">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Название приоритета</th>

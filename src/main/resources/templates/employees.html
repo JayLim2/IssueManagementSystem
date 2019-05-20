@@ -20,7 +20,13 @@
             </a>
         </div>
 
-        <table class="table" style="border:1px solid gray;">
+        <div id="response"></div>
+
+        <div th:if="${entities == null || entities.size() == 0}"
+             class="warn-msg">
+            Справочник пуст.
+        </div>
+        <table th:unless="${entities == null || entities.size() == 0}" class="table" style="border:1px solid gray;">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Фамилия</th>
@@ -39,9 +45,9 @@
                 </td>
                 <td scope="row" th:text="${employee.getMiddleName()}">
                 </td>
-                <td scope="row" th:text="${employee.getPosition()}">
+                <td scope="row" th:text="${employee.getPosition().getName()}">
                 </td>
-                <td scope="row" th:text="${employee.getAssociatedUser()}">
+                <td scope="row" th:text="${employee.getAssociatedUser().getLogin()}">
                 </td>
 
                 <td style="width:250px">
@@ -50,7 +56,9 @@
                         Изменить
                     </a>
                     <a class="btn btn-danger" target="_blank"
-                       th:href="@{'/handbook/employees/delete/' + ${employee.getId()}}">
+                       th:href="'#'"
+                       th:onclick="'deleteEmployee('+${employee.getId()}+')'"
+                    >
                         Удалить
                     </a>
                 </td>

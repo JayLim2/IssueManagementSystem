@@ -14,9 +14,12 @@
         </div>
     </div>
 
-    <div th:if="${info != null}"
-         th:text="${info}"
-         class="info-msg">
+    <div th:if="${info != null}" class="info-msg">
+        <span th:text="${info}"></span>
+        <br><br>
+        Логин: <span th:text="${login}"></span>
+        <br>
+        Пароль: <span th:text="${password}"></span>
     </div>
 
     <form action="" method="post">
@@ -26,7 +29,7 @@
                     <b class="required-field-marker">Фамилия:</b>
                 </div>
                 <div class="table-cell">
-                    <input type="text" class="input" name="last_name" placeholder="Например, Иванов"/>
+                    <input type="text" class="input" name="lastName" placeholder="Например, Иванов"/>
                 </div>
             </div>
             <div class="table-row">
@@ -34,7 +37,7 @@
                     <b class="required-field-marker">Имя:</b>
                 </div>
                 <div class="table-cell">
-                    <input type="text" class="input" name="first_name" placeholder="Например, Иван"/>
+                    <input type="text" class="input" name="firstName" placeholder="Например, Иван"/>
                 </div>
             </div>
             <div class="table-row">
@@ -42,7 +45,7 @@
                     <b>Отчество (если есть):</b>
                 </div>
                 <div class="table-cell">
-                    <input type="text" class="input" name="middle_name" placeholder="Например, Иванович"/>
+                    <input type="text" class="input" name="middleName" placeholder="Например, Иванович"/>
                 </div>
             </div>
             <div class="table-row">
@@ -50,7 +53,7 @@
                     <b class="required-field-marker">Должность:</b>
                 </div>
                 <div class="table-cell" style="vertical-align:top;">
-                    <select name="employee_position" class="input">
+                    <select name="employeePositionId" class="input">
                         <option th:each="position : ${positions}"
                                 th:value="${position.getId()}"
                                 th:text="${position.getName()}">

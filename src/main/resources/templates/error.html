@@ -1,11 +1,23 @@
-<!doctype html>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Error</title>
+<head th:replace="libs :: headerFragment">
+    <title id="pageTitle">Ошибка</title>
 </head>
-<bod>
-    <div class="container">
-        Error.
+<body>
+<div class="login-header">
+    <div th:replace="logo :: logo">
     </div>
-</bod>
+    Произошла ошибка
+</div>
+
+<!-- body -->
+<div class="container" style="margin-top:50px;text-align:center;">
+    <p>
+        Мы уже работаем над её устранением.
+    </p>
+    <p>
+        <a href="/">Главная страница</a>
+    </p>
+</div>
+</body>
 </html>

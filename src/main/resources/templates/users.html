@@ -10,21 +10,13 @@
     <h1>Пользователи</h1>
 
     <div>
-        <div style="margin-bottom: 20px">
-            <a type="button"
-               class="btn btn-dark"
-               target="_blank"
-               th:href="@{/handbook/users/add}"
-            >
-                Регистрация нового пользователя
-            </a>
-        </div>
+        <div id="response"></div>
 
-        <div th:if="${entities == null || entities.size == 0}"
-             class="err-msg">
+        <div th:if="${entities == null || entities.size() == 0}"
+             class="warn-msg">
             Справочник пуст.
         </div>
-        <table th:unless="${entities == null || entities.size == 0}" class="table" style="border:1px solid gray;">
+        <table th:unless="${entities == null || entities.size() == 0}" class="table" style="border:1px solid gray;">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Логин</th>
@@ -47,12 +39,8 @@
 
                 <td style="width:250px">
                     <a class="btn btn-primary" target="_blank"
-                       th:href="@{'/handbook/users/edit/' + ${user.getId()}}">
+                       th:href="@{'/handbook/users/edit/' + ${user.getLogin()}}">
                         Изменить
-                    </a>
-                    <a class="btn btn-danger" target="_blank"
-                       th:href="@{'/handbook/users/delete/' + ${user.getId()}}">
-                        Удалить
                     </a>
                 </td>
             </tr>

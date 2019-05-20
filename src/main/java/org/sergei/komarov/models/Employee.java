@@ -23,14 +23,14 @@ public class Employee {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "middle_name", nullable = false)
+    @Column(name = "middle_name")
     private String middleName;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private EmployeePosition position;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "associated_user", nullable = false)
     private User associatedUser;
 

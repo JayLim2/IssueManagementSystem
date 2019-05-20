@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="libs :: headerFragment">
+    <title id="pageTitle">Удалить</title>
+</head>
+<body>
+<div th:if="${error != null}">
+    <div class="err-msg" th:text="${error}">
+    </div>
+</div>
+<div th:if="${info != null}"
+     th:text="${info}"
+     class="info-msg">
+</div>
+</body>
+</html>

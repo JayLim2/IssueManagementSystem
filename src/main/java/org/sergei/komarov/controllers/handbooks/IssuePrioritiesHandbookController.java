@@ -28,9 +28,7 @@ public class IssuePrioritiesHandbookController implements HandbookController {
     public String getViewPage(Model model) {
 
         List<IssuePriority> issuePriorities = issuePrioritiesService.getAll();
-        Map<String, List<IssuePriority>> params = new HashMap<>();
-        params.put("entities", issuePriorities);
-        model.addAllAttributes(params);
+        model.addAttribute("entities", issuePriorities);
 
         return "issuePriorities";
     }

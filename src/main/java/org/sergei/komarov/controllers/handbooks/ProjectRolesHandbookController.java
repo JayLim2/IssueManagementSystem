@@ -25,10 +25,9 @@ public class ProjectRolesHandbookController implements HandbookController {
     @Override
     @RequestMapping("/view")
     public String getViewPage(Model model) {
+
         List<ProjectRole> projectRoles = projectRolesService.getAll();
-        Map<String, List<ProjectRole>> params = new HashMap<>();
-        params.put("entities", projectRoles);
-        model.addAllAttributes(params);
+        model.addAttribute("entities", projectRoles);
 
         return "projectRoles";
     }

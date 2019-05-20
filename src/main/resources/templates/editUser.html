@@ -19,43 +19,34 @@
          class="info-msg">
     </div>
 
-    <form action="" method="post">
+    <form th:if="${entity != null}" action="" method="post">
         <div class="table-block">
             <div class="table-row">
                 <div class="table-cell" style="width:200px">
-                    <b class="required-field-marker">Логин:</b>
+                    <b>Логин:</b>
                 </div>
                 <div class="table-cell">
-                    <input type="text" class="input" name="last_name" placeholder="Например, Иванов"/>
+                    <input type="text"
+                           readonly
+                           class="input"
+                           name="id"
+                           th:value="${entity.getLogin()}"/>
                 </div>
             </div>
             <div class="table-row">
                 <div class="table-cell" style="width:200px">
-                    <b class="required-field-marker">Пароль:</b>
+                    <b>Новый пароль:</b>
                 </div>
                 <div class="table-cell">
-                    <input type="text" class="input" name="first_name" placeholder="Например, Иван"/>
+                    <input type="text" class="input" name="newPassword"/>
                 </div>
             </div>
             <div class="table-row">
                 <div class="table-cell" style="vertical-align:top;width:200px">
-                    <b class="required-field-marker">Сотрудник:</b>
+                    <b>Роль в системе:</b>
                 </div>
                 <div class="table-cell" style="vertical-align:top;">
-                    <select name="user_employee" class="input">
-                        <option th:each="employee : ${employees}"
-                                th:value="${employee.getId()}"
-                                th:text="${employee.getFirstName() + employee.getLastName()}">
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="table-row">
-                <div class="table-cell" style="vertical-align:top;width:200px">
-                    <b class="required-field-marker">Роль в системе:</b>
-                </div>
-                <div class="table-cell" style="vertical-align:top;">
-                    <select name="user_role" class="input">
+                    <select name="userRole" class="input">
                         <option th:each="role : ${roles}"
                                 th:value="${role}"
                                 th:text="${role}">
@@ -67,7 +58,7 @@
                 <div class="table-cell" style="width:200px">
                 </div>
                 <div class="table-cell">
-                    <input type="submit" class="submit-btn" value="Добавить"/>
+                    <input type="submit" class="submit-btn" value="Сохранить изменения"/>
                 </div>
             </div>
         </div>

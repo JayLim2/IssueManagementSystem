@@ -26,9 +26,7 @@ public class IssueTypesHandbookController {
     public String getViewPage(Model model) {
 
         List<IssueType> issueTypes = issueTypesService.getAll();
-        Map<String, List<IssueType>> params = new HashMap<>();
-        params.put("entities", issueTypes);
-        model.addAllAttributes(params);
+        model.addAttribute("entities", issueTypes);
 
         return "issueTypes";
     }
