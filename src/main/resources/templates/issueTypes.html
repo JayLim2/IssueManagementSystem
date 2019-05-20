@@ -38,7 +38,10 @@
             <tr th:each="entity : ${entities}" th:id="'row-'+${entity.getId()}">
                 <td scope="row" th:text="${entity.getName()}">
                 </td>
-                <td scope="row" th:text="${entity.getName()}">
+                <td scope="row">
+                    <div th:each="status : ${entity.getWorkflowStatuses()}">
+                        <span th:text="${status.getName()}"></span>
+                    </div>
                 </td>
                 <td style="width:250px">
                     <a class="btn btn-primary" target="_blank"

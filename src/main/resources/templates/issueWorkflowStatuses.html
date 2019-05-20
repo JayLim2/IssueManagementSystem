@@ -26,7 +26,7 @@
              class="warn-msg">
             Справочник пуст.
         </div>
-        <table th:if="${entities == null || entities.size() == 0}" class="table" style="border:1px solid gray;">
+        <table th:unless="${entities == null || entities.size() == 0}" class="table" style="border:1px solid gray;">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Название статуса</th>
@@ -38,7 +38,10 @@
             <tr th:each="entity : ${entities}" th:id="'row-'+${entity.getId()}">
                 <td scope="row" th:text="${entity.getName()}">
                 </td>
-                <td scope="row" th:text="${entity.getName()}">
+                <td scope="row">
+                    <div th:each="type : ${entity.getIssueTypes()}">
+                        <span th:text="${type.getName()}"></span>
+                    </div>
                 </td>
                 <td style="width:250px">
                     <a class="btn btn-primary" target="_blank"

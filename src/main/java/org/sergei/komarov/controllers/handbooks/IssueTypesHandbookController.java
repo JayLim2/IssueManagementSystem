@@ -60,7 +60,7 @@ public class IssueTypesHandbookController {
         Map<String, Object> attrs = new HashMap<>();
 
         if (!issueTypesService.isExistsById(issueTypeId)) {
-            attrs.put("error", "Приоритет с таким ID не существует.");
+            attrs.put("error", "Тип задач с таким ID не существует.");
         } else {
             IssueType issueType = issueTypesService.getById(issueTypeId);
             attrs.put("statuses", issueWorkflowStatusesService.getAll());
@@ -92,7 +92,7 @@ public class IssueTypesHandbookController {
         attrs.put("isExists", isExists);
         String message = null;
         if (!isExists) {
-            message = "Тип задачи с таким ID не существует.";
+            message = "Тип задач с таким ID не существует.";
         } else {
             try {
                 issueTypesService.deleteById(issueTypeId);
@@ -106,7 +106,7 @@ public class IssueTypesHandbookController {
         }
 
         if (message == null) {
-            attrs.put("info", "Тип задачи с ID " + issueTypeId + " удален.");
+            attrs.put("info", "Тип задач с ID " + issueTypeId + " удален.");
         } else {
             attrs.put("error", message);
         }
