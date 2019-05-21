@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="libs :: headerFragment">
+    <title id="pageTitle">Создать новую задачу</title>
+</head>
+<body>
+<div th:replace="menu :: menu"></div>
+
+<div class="container" style="padding-top:20px;">
+    <h1>Создать новую задачу</h1>
+
+    <div th:if="${error != null}">
+        <div class="err-msg" th:text="${error}">
+        </div>
+    </div>
+
+    <div th:if="${info != null}"
+         th:text="${info}"
+         class="info-msg">
+    </div>
+
+    <div class="warn-msg"
+         th:if="${issueTypes == null || issueTypes.size() == 0
+         || issuePriorities == null || issuePriorities.size() == 0
+         || employees == null || employees.size() == 0}"
+    >
+        Создание новых задач ограничено, т.к. нет ни одного
+        <a href="/handbook/issueTypes/add">типа</a>,
+        <a href="/handbook/issuePriorities/add">приоритета</a> задачи
+        или ни одного <a href="/handbook/employees/add">сотрудника</a>.
+    </div>
+    <form action="" method="post" style="vertical-align:top;margin-bottom:30px;"
+          th:unless="${issueTypes == null || issueTypes.size() == 0
+         || issuePriorities == null || issuePriorities.size() == 0
+         || employees == null || employees.size() == 0}"
+    >
+        <div class="table-block">
+            <div class="table-row">
+                <div class="table-cell" style="width:200px">
+                    <b class="required-field-marker">Название задачи:</b>
+                </div>
+                <div class="table-cell">
+                    <input type="text"
+                           class="input"
+                           name="name"
+                           placeholder="Например, Добавить кнопку на страницу"
+                    />
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell" style="vertical-align:top;width:200px">
+                    <b class="required-field-marker">Проект:</b>
+                </div>
+                <div class="table-cell" style="vertical-align:top;">
+                    <select name="typeId" class="input">
+                        <option th:each="project : ${projects}"
+                                th:value="${project.getId()}"
+                                th:text="${project.getTitle()}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell" style="vertical-align:top;width:200px">
+                    <b class="required-field-marker">Тип задачи:</b>
+                </div>
+                <div class="table-cell" style="vertical-align:top;">
+                    <select name="typeId" class="input">
+                        <option th:each="type : ${issueTypes}"
+                                th:value="${type.getId()}"
+                                th:text="${type.getName()}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell" style="vertical-align:top;width:200px">
+                    <b class="required-field-marker">Приоритет задачи:</b>
+                </div>
+                <div class="table-cell" style="vertical-align:top;">
+                    <select name="priorityId" class="input">
+                        <option th:each="priority : ${issuePriorities}"
+                                th:value="${priority.getId()}"
+                                th:text="${priority.getName()}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell" style="vertical-align:top;width:200px">
+                    <b class="required-field-marker">Описание:</b>
+                </div>
+                <div class="table-cell">
+                    <textarea class="input-textarea"
+                              name="description"
+                              placeholder="Опишите подробно, что нужно сделать в рамках задачи."
+                    ></textarea>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell" style="vertical-align:top;width:200px">
+                    <b>Дата окончания:</b>
+                </div>
+                <div class="table-cell" style="vertical-align:top;">
+                    <input type="text"
+                           name="dueDate"
+                           class="form-control"
+                           style="width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
+                           id="dueDate"
+                           placeholder="Например, 01.01.1970"
+                    />
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell" style="vertical-align:top;width:200px">
+                    <b>Сотрудник:</b>
+                </div>
+                <div class="table-cell" style="vertical-align:top;">
+                    <select name="assigneeId" class="input">
+                        <option th:each="employee : ${employees}"
+                                th:value="${employee.getId()}"
+                                th:text="${employee.getFirstName()} + ' ' + ${employee.getLastName()}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell" style="vertical-align:top;width:200px">
+                    <b>Родительская задача:</b>
+                </div>
+                <div class="table-cell" style="vertical-align:top;">
+                    <select name="assigneeId" class="input">
+                        <option th:each="issue : ${issues}"
+                                th:value="${issue.getId()}"
+                                th:text="${issue.getId()} + ': ' + ${issue.getTitle()}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell" style="width:200px">
+                </div>
+                <div class="table-cell">
+                    <input type="submit" class="submit-btn" value="Создать задачу"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#dueDate').datepicker({
+            format: 'dd.mm.yyyy'
+        });
+    });
+</script>
+</body>
+</html>

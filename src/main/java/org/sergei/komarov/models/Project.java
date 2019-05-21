@@ -20,13 +20,11 @@ public class Project {
     @Column(unique = true, nullable = false)
     private String title;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private ProjectType type;
+    private String description;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private IssueWorkflowStatus status;
+    private ProjectType type;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private List<Issue> issues;

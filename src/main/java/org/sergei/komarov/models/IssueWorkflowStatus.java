@@ -23,9 +23,6 @@ public class IssueWorkflowStatus {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "status")
     private List<Issue> issues;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "status")
-    private List<Project> projects;
-
     @ManyToMany
     @JoinTable(
             name = "workflow_statuses_by_issue_types",

@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="libs :: headerFragment">
+    <title id="pageTitle">Главная страница</title>
+</head>
+<body>
+<div th:replace="menu :: menu"></div>
+
+<!-- body -->
+<div style="padding-top:35px">
+
+    <div class="issues-frame">
+        <div style="display:table-row">
+            <div th:if="${issues != null && issues.size() > 0}" class="issue-body-frame">
+                <h4>Заголовок задачи</h4>
+
+                <p>
+                    Описание задачи.
+                </p>
+            </div>
+            <div th:unless="${issues != null && issues.size() > 0}" class="issue-body-frame no-content">
+                Задачи не найдены
+                <p style="font-size:12pt;">
+                    <a target="_blank" href="/issues/add">Создайте</a> первую задачу или повторите попытку позже.
+                </p>
+            </div>
+
+            <div class="issue-list-frame">
+                <div style="padding: 15px;text-align:center;font-weight:bold;color:#919191;border-bottom:1px solid #919191;">
+                    Все задачи
+                </div>
+                <div>
+                    <div th:if="${issues != null && issues.size() > 0}" th:each="issue : ${issues}"
+                         class="issue-list-item">
+                        <div class="issue-list-item-header" th:text="${issue.getTitle()}"></div>
+                        <div class="issue-list-item-body" th:text="${issue.getDescription()}"></div>
+                    </div>
+                    <div th:unless="${issues != null && issues.size() > 0}"
+                         style="padding-top:10px;text-align: center;">
+                        Ничего не найдено.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

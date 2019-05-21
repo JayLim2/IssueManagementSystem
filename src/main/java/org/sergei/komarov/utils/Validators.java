@@ -22,6 +22,8 @@ public class Validators {
     private static final int MAX_PROJECT_TYPE_NAME_LENGTH = 100;
     private static final int MAX_EMPLOYEE_POSITION_NAME_LENGTH = 100;
     private static final int MAX_EMPLOYEE_NAME_LENGTH = 150;
+    private static final int MAX_PROJECT_TITLE_LENGTH = 300;
+    private static final int MAX_ISSUE_TITLE_LENGTH = 300;
 
     public static boolean isArrayWithNulls(Object... data) {
         if (data == null) {
@@ -211,6 +213,24 @@ public class Validators {
             message = "Пароль должен начинаться с буквы, состоять из букв, цифр, символа _ или точки.";
         } else if (!isEmpty && newPassword.toLowerCase().equals(newPassword)) {
             message = "Хотя бы 1 буква должна быть в верхнем регистре.";
+        }
+
+        return message;
+    }
+
+    public static String validateProjectData(String title) {
+        String message = null;
+
+        title = title.trim();
+
+        if (title.isEmpty()) {
+            message = "Название проекта не должно быть пустым.";
+        } else if (title.length() > MAX_PROJECT_TITLE_LENGTH) {
+            message = "Название проекта не должно превышать "
+                    + MAX_PROJECT_TITLE_LENGTH
+                    + " символов.";
+        } else if (EXCLUDED_PATTERN.matcher(title).find()) {
+            message = "Название проекта не должно содержать цифры.";
         }
 
         return message;
