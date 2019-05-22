@@ -40,6 +40,10 @@ public class EmployeesService implements JpaService<Employee, Integer> {
         employeesRepository.save(entity);
     }
 
+    public Employee saveAndGet(Employee entity) {
+        return employeesRepository.save(entity);
+    }
+
     @Override
     public void saveAll(Iterable<Employee> iterable) {
         employeesRepository.saveAll(iterable);

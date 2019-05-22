@@ -37,6 +37,10 @@ public class EmployeePositionsService implements JpaService<EmployeePosition, In
         employeePositionsRepository.save(entity);
     }
 
+    public EmployeePosition saveAndGet(EmployeePosition entity) {
+        return employeePositionsRepository.save(entity);
+    }
+
     @Override
     public void saveAll(Iterable<EmployeePosition> iterable) {
         employeePositionsRepository.saveAll(iterable);

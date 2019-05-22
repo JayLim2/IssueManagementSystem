@@ -2,7 +2,9 @@ package org.sergei.komarov.utils;
 
 import org.sergei.komarov.models.EmployeePosition;
 import org.sergei.komarov.models.IssueWorkflowStatus;
+import org.sergei.komarov.models.Project;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -24,6 +26,7 @@ public class Validators {
     private static final int MAX_EMPLOYEE_NAME_LENGTH = 150;
     private static final int MAX_PROJECT_TITLE_LENGTH = 300;
     private static final int MAX_ISSUE_TITLE_LENGTH = 300;
+    private static final int MAX_ISSUE_DESCRIPTION_LENGTH = 2500;
 
     public static boolean isArrayWithNulls(Object... data) {
         if (data == null) {
@@ -231,6 +234,30 @@ public class Validators {
                     + " символов.";
         } else if (EXCLUDED_PATTERN.matcher(title).find()) {
             message = "Название проекта не должно содержать цифры.";
+        }
+
+        return message;
+    }
+
+    public static String validateIssueData(String title, String description,
+                                           LocalDate dueDate) {
+        String message = null;
+
+        title = title.trim();
+        description = description.trim();
+
+        if (title.isEmpty()) {
+            message = "Название задачи не должно быть пустым.";
+        } else if (title.length() > MAX_ISSUE_TITLE_LENGTH) {
+            message = "Название задачи не должно превышать "
+                    + MAX_ISSUE_TITLE_LENGTH
+                    + " символов.";
+        } else if (EXCLUDED_PATTERN.matcher(title).find()) {
+            message = "Название проекта не должно содержать цифры.";
+        } else if (description.isEmpty()) {
+            message = "Задача обязательно должна иметь описание.";
+        } else if (dueDate != null && dueDate.isBefore(LocalDate.now())) {
+            message = "Дата окончания выполнения задачи должна быть не раньше текущего дня.";
         }
 
         return message;

@@ -98,13 +98,14 @@ public class UsersService implements JpaService<User, String> {
         return builder.toString();
     }
 
+    // FIXME: 22.05.2019 NULLABLE
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String username = authentication.getName();
         User user = new User();
         if (!username.equals("anonymousUser")) {
-            user.setLogin(authentication.getName());
+            user = usersRepository.findByLogin(username);
         } else {
             user.setLogin("Гость");
         }

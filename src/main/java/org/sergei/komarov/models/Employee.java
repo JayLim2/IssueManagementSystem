@@ -1,7 +1,6 @@
 package org.sergei.komarov.models;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,7 +8,8 @@ import java.util.List;
 @Entity
 @Table(name = "employees")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -21,18 +21,25 @@
 
     <div class="warn-msg"
          th:if="${issueTypes == null || issueTypes.size() == 0
-         || issuePriorities == null || issuePriorities.size() == 0
-         || employees == null || employees.size() == 0}"
+          || issuePriorities == null || issuePriorities.size() == 0
+          || employees == null || employees.size() == 0
+          || projects == null || projects.size() == 0
+          || issueWorkflowStatuses == null || issueWorkflowStatuses.size() == 0}"
     >
         Создание новых задач ограничено, т.к. нет ни одного
         <a href="/handbook/issueTypes/add">типа</a>,
-        <a href="/handbook/issuePriorities/add">приоритета</a> задачи
+        <a href="/handbook/issuePriorities/add">приоритета</a> задачи,
+        <a href="/handbook/issueWorkflowStatuses/add">статуса рабочего процесса</a> задачи,
+        <a href="/projects/add">проекта</a>
         или ни одного <a href="/handbook/employees/add">сотрудника</a>.
     </div>
     <form action="" method="post" style="vertical-align:top;margin-bottom:30px;"
           th:unless="${issueTypes == null || issueTypes.size() == 0
-         || issuePriorities == null || issuePriorities.size() == 0
-         || employees == null || employees.size() == 0}"
+          || issuePriorities == null || issuePriorities.size() == 0
+          || employees == null || employees.size() == 0
+          || projects == null || projects.size() == 0
+          || issueWorkflowStatuses == null || issueWorkflowStatuses.size() == 0}"
+          id="addForm" th:object="${descriptionWrapper}"
     >
         <div class="table-block">
             <div class="table-row">
@@ -42,7 +49,7 @@
                 <div class="table-cell">
                     <input type="text"
                            class="input"
-                           name="name"
+                           name="title"
                            placeholder="Например, Добавить кнопку на страницу"
                     />
                 </div>
@@ -52,10 +59,23 @@
                     <b class="required-field-marker">Проект:</b>
                 </div>
                 <div class="table-cell" style="vertical-align:top;">
-                    <select name="typeId" class="input">
+                    <select name="projectId" class="input">
                         <option th:each="project : ${projects}"
                                 th:value="${project.getId()}"
                                 th:text="${project.getTitle()}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell" style="vertical-align:top;width:200px">
+                    <b class="required-field-marker">Статус задачи:</b>
+                </div>
+                <div class="table-cell" style="vertical-align:top;">
+                    <select name="statusId" class="input">
+                        <option th:each="status : ${issueWorkflowStatuses}"
+                                th:value="${status.getId()}"
+                                th:text="${status.getName()}">
                         </option>
                     </select>
                 </div>
@@ -92,7 +112,8 @@
                 </div>
                 <div class="table-cell">
                     <textarea class="input-textarea"
-                              name="description"
+                              th:field="*{description}"
+                              form="addForm"
                               placeholder="Опишите подробно, что нужно сделать в рамках задачи."
                     ></textarea>
                 </div>
@@ -129,7 +150,7 @@
                     <b>Родительская задача:</b>
                 </div>
                 <div class="table-cell" style="vertical-align:top;">
-                    <select name="assigneeId" class="input">
+                    <select name="rootTaskId" class="input">
                         <option th:each="issue : ${issues}"
                                 th:value="${issue.getId()}"
                                 th:text="${issue.getId()} + ': ' + ${issue.getTitle()}">

@@ -13,7 +13,6 @@
         <div style="margin-bottom: 20px">
             <a type="button"
                class="btn btn-dark"
-               target="_blank"
                th:href="@{/handbook/projectRoles/add}"
             >
                 Добавить новую роль
@@ -38,7 +37,8 @@
                 <td scope="row" th:text="${entity.getName()}">
                 </td>
                 <td style="width:250px">
-                    <a class="btn btn-primary" target="_blank"
+                    <a class="btn btn-primary"
+                       target="_blank"
                        th:href="@{'/handbook/projectRoles/edit/' + ${entity.getId()}}">
                         Изменить
                     </a>

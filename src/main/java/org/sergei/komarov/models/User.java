@@ -1,7 +1,6 @@
 package org.sergei.komarov.models;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,7 +8,8 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class User {
     @Id
     private String login;

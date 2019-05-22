@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity
@@ -25,13 +26,13 @@ public class Issue implements Serializable {
     @Column(nullable = false)
     private String description;
 
-    @Column(name = "created", nullable = false)
+    @Column(name = "created", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime createdDateTime;
 
-    @Column(name = "closed")
+    @Column(name = "closed", columnDefinition = "TIMESTAMP")
     private LocalDateTime closedDateTime;
 
-    @Column(name = "updated")
+    @Column(name = "updated", columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedDateTime;
 
     @Column(name = "due_date")

@@ -9,6 +9,15 @@
 <!-- body -->
 <div style="padding-top:35px">
 
+    <div style="margin-left: 35px; margin-bottom: 10px;">
+        <a type="button"
+           class="btn btn-dark"
+           th:href="@{/issues/add}"
+        >
+            Создать новую задачу
+        </a>
+    </div>
+
     <div class="issues-frame">
         <div style="display:table-row">
             <div th:if="${issues != null && issues.size() > 0}" class="issue-body-frame">
@@ -21,7 +30,7 @@
             <div th:unless="${issues != null && issues.size() > 0}" class="issue-body-frame no-content">
                 Задачи не найдены
                 <p style="font-size:12pt;">
-                    <a target="_blank" href="/issues/add">Создайте</a> первую задачу или повторите попытку позже.
+                    <a href="/issues/add">Создайте</a> первую задачу или повторите попытку позже.
                 </p>
             </div>
 
@@ -31,7 +40,9 @@
                 </div>
                 <div>
                     <div th:if="${issues != null && issues.size() > 0}" th:each="issue : ${issues}"
-                         class="issue-list-item">
+                         class="issue-list-item"
+                         th:onclick="'window.location.href = \'/issues/view/'+${issue.getId()}+'\''"
+                    >
                         <div class="issue-list-item-header" th:text="${issue.getTitle()}"></div>
                         <div class="issue-list-item-body" th:text="${issue.getDescription()}"></div>
                     </div>
