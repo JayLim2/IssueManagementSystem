@@ -136,18 +136,20 @@
     border-bottom: 1px solid gray;
 }
 
-.issue-list-item:hover {
+.issue-list-item:hover, .issue-list-item.selected {
     background: #323232;
     color: white;
     cursor: pointer;
 }
 
-.issue-list-item:hover > .issue-list-item-header {
+.issue-list-item:hover > .issue-list-item-header,
+.issue-list-item.selected > .issue-list-item-header {
     color: white;
     cursor: pointer;
 }
 
-.issue-list-item:hover > .issue-list-item-body {
+.issue-list-item:hover > .issue-list-item-body,
+.issue-list-item.selected > .issue-list-item-body {
     color: #d7d7d7;
     cursor: pointer;
 }

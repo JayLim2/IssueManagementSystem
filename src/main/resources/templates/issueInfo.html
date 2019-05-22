@@ -7,7 +7,7 @@
 <div th:replace="menu :: menu"></div>
 
 <!-- body -->
-<div style="padding-top:35px">
+<div style="padding-top:35px;padding-bottom:35px;">
 
     <div style="margin-left: 35px; margin-bottom: 10px;">
         <a type="button"
@@ -21,11 +21,114 @@
     <div class="issues-frame">
         <div style="display:table-row">
             <div th:if="${issue != null}" class="issue-body-frame">
-                <h4>Заголовок задачи</h4>
+                <h4 th:text="${issue.getTitle()}"></h4>
 
-                <p>
-                    Описание задачи.
-                </p>
+                <div style="margin-top:10px;margin-bottom:10px;">
+                    <div style="display:table;">
+                        <div style="display:table-row">
+                            <div style="display:table-cell;padding:5px 5px 5px 0;">
+                                Тип:
+                            </div>
+                            <div style="display:table-cell;padding:5px 10px;background:#2b2b2b;color:white;border-radius:4px;">
+                                Bug
+                            </div>
+
+                            <div style="display:table-cell;padding:5px;">
+                                Приоритет:
+                            </div>
+                            <div style="display:table-cell;padding:5px 10px;background:#2b2b2b;color:white;border-radius:4px;">
+                                Major
+                            </div>
+
+                            <div style="display:table-cell;padding:5px;">
+                                Статус:
+                            </div>
+                            <div style="display:table-cell;padding:5px 10px;background:#2b2b2b;color:white;border-radius:4px;">
+                                Open
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:table;width:100%;">
+                    <div style="display:table-row">
+                        <div style="display:table-cell;padding:15px 15px 15px 0;">
+                            <b>Описание задачи</b>
+                            <p th:text="${issue.getDescription()}"></p>
+                        </div>
+
+                        <div style="display:table-cell;width:200px;padding:15px 0 15px 15px;border-left:1px solid #aaaaaa">
+                            <div style="display:table;">
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;color:#575757;font-weight:bold;">
+                                        Создана:
+                                    </div>
+                                </div>
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;padding-bottom: 8px;">
+                                        Sergei Komarov
+                                    </div>
+                                </div>
+
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;color:#575757;font-weight:bold;">
+                                        Ответственный:
+                                    </div>
+                                </div>
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;padding-bottom: 8px;">
+                                        Ivan Dmitriev
+                                    </div>
+                                </div>
+
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;color:#575757;font-weight:bold;">
+                                        Дата создания:
+                                    </div>
+                                </div>
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;padding-bottom: 8px;">
+                                        10.03.2019
+                                    </div>
+                                </div>
+
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;color:#575757;font-weight:bold;">
+                                        Дата последнего обновления:
+                                    </div>
+                                </div>
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;padding-bottom: 8px;">
+                                        10.03.2019
+                                    </div>
+                                </div>
+
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;color:#575757;font-weight:bold;">
+                                        Дата закрытия:
+                                    </div>
+                                </div>
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;padding-bottom: 8px;">
+                                        10.03.2019
+                                    </div>
+                                </div>
+
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;color:#575757;font-weight:bold;">
+                                        Срок выполнения:
+                                    </div>
+                                </div>
+                                <div style="display:table-row">
+                                    <div style="display:table-cell;padding-bottom: 8px;">
+                                        10.03.2019
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div th:unless="${issue != null}" class="issue-body-frame no-content">
                 Задача не найдена
@@ -39,10 +142,10 @@
                     Все задачи
                 </div>
                 <div>
-                    <div th:if="${issues != null && issues.size() > 0}" th:each="issue : ${issues}"
-                         class="issue-list-item">
-                        <div class="issue-list-item-header" th:text="${issue.getTitle()}"></div>
-                        <div class="issue-list-item-body" th:text="${issue.getDescription()}"></div>
+                    <div th:if="${issues != null && issues.size() > 0}" th:each="currentIssue : ${issues}"
+                         th:class="${issue.getId() == currentIssue.getId() ? 'issue-list-item selected' : 'issue-list-item'}">
+                        <div class="issue-list-item-header" th:text="${currentIssue.getTitle()}"></div>
+                        <div class="issue-list-item-body" th:text="${currentIssue.getDescription()}"></div>
                     </div>
                     <div th:unless="${issues != null && issues.size() > 0}"
                          style="padding-top:10px;text-align: center;">

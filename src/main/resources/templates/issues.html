@@ -20,11 +20,11 @@
 
     <div class="issues-frame">
         <div style="display:table-row">
-            <div th:if="${issues != null && issues.size() > 0}" class="issue-body-frame">
-                <h4>Заголовок задачи</h4>
+            <div th:if="${issues != null && issues.size() > 0}" class="issue-body-frame no-content">
+                Выберите задачу
 
-                <p>
-                    Описание задачи.
+                <p style="font-size:12pt;">
+                    Выберите задачу из списка справа и нажмите на нее, чтобы посмотреть подробную информацию.
                 </p>
             </div>
             <div th:unless="${issues != null && issues.size() > 0}" class="issue-body-frame no-content">

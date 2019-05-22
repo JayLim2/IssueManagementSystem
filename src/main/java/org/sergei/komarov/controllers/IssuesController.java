@@ -44,7 +44,7 @@ public class IssuesController {
         List<Issue> issues = issuesService.getAll();
         model.addAttribute("issues", issues);
 
-        return "issue";
+        return "issueInfo";
     }
 
     @GetMapping("/add")
