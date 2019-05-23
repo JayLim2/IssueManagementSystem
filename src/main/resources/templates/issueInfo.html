@@ -21,7 +21,28 @@
     <div class="issues-frame">
         <div style="display:table-row">
             <div th:if="${issue != null}" class="issue-body-frame">
-                <h4 th:text="${issue.getTitle()}"></h4>
+                <div style="display:table;width:100%;">
+                    <div style="display:table-row">
+                        <div style="display:table-cell;">
+                            <h4 th:text="${issue.getTitle()}"></h4>
+                        </div>
+                        <div style="display:table-cell;width:80px;padding-right:5px;">
+                            <a th:href="'/issues/edit/' + ${issue.getId()}"
+                               target="_blank"
+                               class="btn btn-primary"
+                            >
+                                Изменить
+                            </a>
+                        </div>
+                        <div style="display:table-cell;width:80px;padding-left:5px;">
+                            <a th:href="'/issues/delete/' + ${issue.getId()}"
+                               class="btn btn-danger"
+                            >
+                                Удалить
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
                 <div style="margin-top:10px;margin-bottom:10px;">
                     <div style="display:table;">
@@ -29,22 +50,25 @@
                             <div style="display:table-cell;padding:5px 5px 5px 0;">
                                 Тип:
                             </div>
-                            <div style="display:table-cell;padding:5px 10px;background:#2b2b2b;color:white;border-radius:4px;">
-                                Bug
+                            <div style="display:table-cell;padding:5px 10px;background:#2b2b2b;color:white;border-radius:4px;"
+                                 th:text="${issue.getType().getName()}"
+                            >
                             </div>
 
                             <div style="display:table-cell;padding:5px;">
                                 Приоритет:
                             </div>
-                            <div style="display:table-cell;padding:5px 10px;background:#2b2b2b;color:white;border-radius:4px;">
-                                Major
+                            <div style="display:table-cell;padding:5px 10px;background:#2b2b2b;color:white;border-radius:4px;"
+                                 th:text="${issue.getPriority().getName()}"
+                            >
                             </div>
 
                             <div style="display:table-cell;padding:5px;">
                                 Статус:
                             </div>
-                            <div style="display:table-cell;padding:5px 10px;background:#2b2b2b;color:white;border-radius:4px;">
-                                Open
+                            <div style="display:table-cell;padding:5px 10px;background:#2b2b2b;color:white;border-radius:4px;"
+                                 th:text="${issue.getStatus().getName()}"
+                            >
                             </div>
                         </div>
                     </div>
@@ -53,7 +77,7 @@
                 <div style="display:table;width:100%;">
                     <div style="display:table-row">
                         <div style="display:table-cell;padding:15px 15px 15px 0;">
-                            <b>Описание задачи</b>
+                            <b style="color:#575757;">Описание задачи</b>
                             <p th:text="${issue.getDescription()}"></p>
                         </div>
 
@@ -65,8 +89,9 @@
                                     </div>
                                 </div>
                                 <div style="display:table-row">
-                                    <div style="display:table-cell;padding-bottom: 8px;">
-                                        Sergei Komarov
+                                    <div style="display:table-cell;padding-bottom: 8px;"
+                                         th:text="${issue.getCreator().getFirstName()} + ' ' + ${issue.getCreator().getLastName()}"
+                                    >
                                     </div>
                                 </div>
 
@@ -76,8 +101,9 @@
                                     </div>
                                 </div>
                                 <div style="display:table-row">
-                                    <div style="display:table-cell;padding-bottom: 8px;">
-                                        Ivan Dmitriev
+                                    <div style="display:table-cell;padding-bottom: 8px;"
+                                         th:text="${issue.getAssignee() != null ? issue.getAssignee().getFirstName() + ' ' + issue.getAssignee().getLastName() : 'не назначен'}"
+                                    >
                                     </div>
                                 </div>
 
@@ -87,8 +113,9 @@
                                     </div>
                                 </div>
                                 <div style="display:table-row">
-                                    <div style="display:table-cell;padding-bottom: 8px;">
-                                        10.03.2019
+                                    <div style="display:table-cell;padding-bottom: 8px;"
+                                         th:text="${issue.getCreatedDateTime()}"
+                                    >
                                     </div>
                                 </div>
 
@@ -98,8 +125,9 @@
                                     </div>
                                 </div>
                                 <div style="display:table-row">
-                                    <div style="display:table-cell;padding-bottom: 8px;">
-                                        10.03.2019
+                                    <div style="display:table-cell;padding-bottom: 8px;"
+                                         th:text="${issue.getUpdatedDateTime()}"
+                                    >
                                     </div>
                                 </div>
 
@@ -109,8 +137,9 @@
                                     </div>
                                 </div>
                                 <div style="display:table-row">
-                                    <div style="display:table-cell;padding-bottom: 8px;">
-                                        10.03.2019
+                                    <div style="display:table-cell;padding-bottom: 8px;"
+                                         th:text="${issue.getClosedDateTime() != null ? issue.getClosedDateTime() : 'не закрыта'}"
+                                    >
                                     </div>
                                 </div>
 
@@ -120,8 +149,9 @@
                                     </div>
                                 </div>
                                 <div style="display:table-row">
-                                    <div style="display:table-cell;padding-bottom: 8px;">
-                                        10.03.2019
+                                    <div style="display:table-cell;padding-bottom: 8px;"
+                                         th:text="${issue.getDueDate() != null ? issue.getDueDate() : 'не назначен'}"
+                                    >
                                     </div>
                                 </div>
                             </div>

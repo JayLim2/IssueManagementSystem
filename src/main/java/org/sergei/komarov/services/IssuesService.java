@@ -116,16 +116,8 @@ public class IssuesService implements JpaService<Issue, Integer> {
                 issue.setUpdatedDateTime(now);
 
                 message = trySave(issue);
-            } else {
-                issue.setTitle(null);
-                issue.setDescription(null);
-                issue.setDueDate(null);
-                issue.setProject(null);
-                issue.setPriority(null);
-                issue.setType(null);
-                issue.setAssignee(null);
             }
-            attrs.put("entity", project);
+            attrs.put("entity", issue);
         } else {
             message = "Задача с таким ID не существует.";
         }
