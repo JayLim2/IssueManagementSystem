@@ -18,9 +18,11 @@
         </a>
     </div>
 
+    <div id="response"></div>
+
     <div class="issues-frame">
         <div style="display:table-row">
-            <div th:if="${projects != null && projects.size() > 0}" class="issue-body-frame">
+            <div th:if="${projects != null && projects.size() > 0}" class="issue-body-frame" id="info-block">
                 <div style="display:table;width:100%;">
                     <div style="display:table-row">
                         <div style="display:table-cell;">
@@ -35,8 +37,9 @@
                             </a>
                         </div>
                         <div style="display:table-cell;width:80px;padding-left:5px;">
-                            <a th:href="'/projects/delete/' + ${project.getId()}"
-                               class="btn btn-danger"
+                            <a class="btn btn-danger"
+                               href="#"
+                               th:onclick="'deleteOperativeDataRequest(' + ${project.getId()} + ', \'projects\')'"
                             >
                                 Удалить
                             </a>
@@ -62,6 +65,7 @@
                     <div th:if="${projects != null && projects.size() > 0}" th:each="currentProject : ${projects}"
                          th:class="${project.getId() == currentProject.getId() ? 'issue-list-item selected' : 'issue-list-item'}"
                          th:onclick="'window.location.href = \'/projects/view/'+${currentProject.getId()}+'\''"
+                         th:id="'row-'+${project.getId()}"
                     >
                         <div class="issue-list-item-header" th:text="${currentProject.getTitle()}"></div>
                         <div class="issue-list-item-body" th:text="${currentProject.getType().getName()}"></div>

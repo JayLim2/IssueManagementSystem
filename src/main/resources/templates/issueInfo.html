@@ -18,9 +18,11 @@
         </a>
     </div>
 
+    <div id="response"></div>
+
     <div class="issues-frame">
         <div style="display:table-row">
-            <div th:if="${issue != null}" class="issue-body-frame">
+            <div th:if="${issue != null}" class="issue-body-frame" id="info-block">
                 <div style="display:table;width:100%;">
                     <div style="display:table-row">
                         <div style="display:table-cell;">
@@ -35,8 +37,9 @@
                             </a>
                         </div>
                         <div style="display:table-cell;width:80px;padding-left:5px;">
-                            <a th:href="'/issues/delete/' + ${issue.getId()}"
-                               class="btn btn-danger"
+                            <a class="btn btn-danger"
+                               href="#"
+                               th:onclick="'deleteOperativeDataRequest(' + ${issue.getId()} + ', \'issues\')'"
                             >
                                 Удалить
                             </a>
@@ -173,7 +176,9 @@
                 </div>
                 <div>
                     <div th:if="${issues != null && issues.size() > 0}" th:each="currentIssue : ${issues}"
-                         th:class="${issue.getId() == currentIssue.getId() ? 'issue-list-item selected' : 'issue-list-item'}">
+                         th:class="${issue.getId() == currentIssue.getId() ? 'issue-list-item selected' : 'issue-list-item'}"
+                         th:id="'row-'+${issue.getId()}"
+                    >
                         <div class="issue-list-item-header" th:text="${currentIssue.getTitle()}"></div>
                         <div class="issue-list-item-body" th:text="${currentIssue.getDescription()}"></div>
                     </div>
