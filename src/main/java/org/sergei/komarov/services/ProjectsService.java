@@ -81,8 +81,6 @@ public class ProjectsService implements JpaService<Project, Integer> {
                 project.setTitle(title);
                 project.setType(projectType);
                 message = trySave(project);
-            } else {
-                project.setTitle(null);
             }
             attrs.put("entity", project);
         } else {

@@ -37,11 +37,14 @@ public class ProjectsController {
 
     @RequestMapping("/view/{projectId}")
     public String getProject(Model model, @PathVariable int projectId) {
-        Project project = projectsService.getById(projectId);
 
+        List<Project> projects = projectsService.getAll();
+        model.addAttribute("projects", projects);
+
+        Project project = projectsService.getById(projectId);
         model.addAttribute("project", project);
 
-        return "project";
+        return "projectInfo";
     }
 
     @GetMapping("/add")

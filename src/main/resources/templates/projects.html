@@ -20,13 +20,14 @@
 
     <div class="issues-frame">
         <div style="display:table-row">
-            <div th:if="${projects != null && projects.size() > 0}" class="issue-body-frame">
-                <h4>Название проекта</h4>
+            <div th:if="${projects != null && projects.size() > 0}" class="issue-body-frame no-content">
+                Выберите проект
 
-                <p>
-                    Описание проекта.
+                <p style="font-size:12pt;">
+                    Выберите проект из списка справа и нажмите на нее, чтобы посмотреть подробную информацию.
                 </p>
             </div>
+
             <div th:unless="${projects != null && projects.size() > 0}" class="issue-body-frame no-content">
                 Проекты не найдены
                 <p style="font-size:12pt;">
@@ -40,7 +41,9 @@
                 </div>
                 <div>
                     <div th:if="${projects != null && projects.size() > 0}" th:each="project : ${projects}"
-                         class="issue-list-item">
+                         class="issue-list-item"
+                         th:onclick="'window.location.href = \'/projects/view/'+${project.getId()}+'\''"
+                    >
                         <div class="issue-list-item-header" th:text="${project.getTitle()}"></div>
                         <div class="issue-list-item-body" th:text="${project.getType().getName()}"></div>
                     </div>

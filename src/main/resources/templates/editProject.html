@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="libs :: headerFragment">
+    <title id="pageTitle">Редактировать проект</title>
+</head>
+<body>
+<div th:replace="menu :: menu"></div>
+
+<div class="container" style="padding-top:20px;">
+    <h1>Редактировать проект</h1>
+
+    <div th:if="${error != null}">
+        <div class="err-msg" th:text="${error}">
+        </div>
+    </div>
+
+    <div th:if="${info != null}"
+         th:text="${info}"
+         class="info-msg">
+    </div>
+
+    <form action="" method="post">
+        <div class="table-block">
+            <div class="table-row">
+                <div class="table-cell" style="width:200px">
+                    <b class="required-field-marker">Название проекта:</b>
+                </div>
+                <div class="table-cell">
+                    <input type="text" class="input" name="title"
+                           placeholder="Например, MegaFon Billing System"
+                           th:value="${entity.getTitle()}"
+                    />
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell" style="vertical-align:top;width:200px">
+                    <b class="required-field-marker">Тип проекта:</b>
+                </div>
+                <div class="table-cell" style="vertical-align:top;">
+                    <select name="projectTypeId" class="input">
+                        <option th:each="projectType : ${projectTypes}"
+                                th:value="${projectType.getId()}"
+                                th:text="${projectType.getName()}"
+                                th:selected="${entity.getType().getId() == projectType.getId() ? true : false}"
+                        >
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell" style="width:200px">
+                </div>
+                <div class="table-cell">
+                    <input type="submit" class="submit-btn" value="Сохранить"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="libs :: headerFragment">
+    <title id="pageTitle">Главная страница</title>
+</head>
+<body>
+<div th:replace="menu :: menu"></div>
+
+<!-- body -->
+<div style="padding-top:35px">
+
+    <div style="margin-left: 35px; margin-bottom: 10px;">
+        <a type="button"
+           class="btn btn-dark"
+           th:href="@{/projects/add}"
+        >
+            Создать новый проект
+        </a>
+    </div>
+
+    <div class="issues-frame">
+        <div style="display:table-row">
+            <div th:if="${projects != null && projects.size() > 0}" class="issue-body-frame">
+                <div style="display:table;width:100%;">
+                    <div style="display:table-row">
+                        <div style="display:table-cell;">
+                            <h4 th:text="${project.getTitle()}"></h4>
+                        </div>
+                        <div style="display:table-cell;width:80px;padding-right:5px;">
+                            <a th:href="'/projects/edit/' + ${project.getId()}"
+                               target="_blank"
+                               class="btn btn-primary"
+                            >
+                                Изменить
+                            </a>
+                        </div>
+                        <div style="display:table-cell;width:80px;padding-left:5px;">
+                            <a th:href="'/projects/delete/' + ${project.getId()}"
+                               class="btn btn-danger"
+                            >
+                                Удалить
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <b style="color:#575757">Тип проекта: </b><span th:text="${project.getType().getName()}"></span>
+            </div>
+
+            <div th:unless="${projects != null && projects.size() > 0}" class="issue-body-frame no-content">
+                Проекты не найдены
+                <p style="font-size:12pt;">
+                    <a href="/projects/add">Создайте</a> первый проект или повторите попытку позже.
+                </p>
+            </div>
+
+            <div class="issue-list-frame">
+                <div style="padding: 15px;text-align:center;font-weight:bold;color:#919191;border-bottom:1px solid #919191;">
+                    Все проекты
+                </div>
+                <div>
+                    <div th:if="${projects != null && projects.size() > 0}" th:each="currentProject : ${projects}"
+                         th:class="${project.getId() == currentProject.getId() ? 'issue-list-item selected' : 'issue-list-item'}"
+                         th:onclick="'window.location.href = \'/projects/view/'+${currentProject.getId()}+'\''"
+                    >
+                        <div class="issue-list-item-header" th:text="${currentProject.getTitle()}"></div>
+                        <div class="issue-list-item-body" th:text="${currentProject.getType().getName()}"></div>
+                    </div>
+                    <div th:unless="${projects != null && projects.size() > 0}"
+                         style="padding-top:10px;text-align: center;">
+                        Ничего не найдено.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
