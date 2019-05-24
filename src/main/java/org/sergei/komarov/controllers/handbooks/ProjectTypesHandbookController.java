@@ -51,7 +51,7 @@ public class ProjectTypesHandbookController {
                 Throwable ex = SQLExceptionParser.getUnwrappedPSQLException(e);
                 if (ex != null) {
                     ex.printStackTrace();
-                    message = "Невозможно удалить, т.к. в системе еще есть хотя бы 1 проект данного типа.";
+                    message = "Невозможно удалить, т.к. существуют проекты данного типа.";
                 }
             }
         }

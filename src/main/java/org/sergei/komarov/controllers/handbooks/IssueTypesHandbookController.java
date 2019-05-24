@@ -1,20 +1,21 @@
 package org.sergei.komarov.controllers.handbooks;
 
 import lombok.AllArgsConstructor;
-import org.sergei.komarov.models.IssueType;
 import org.sergei.komarov.services.IssueTypesService;
 import org.sergei.komarov.services.IssueWorkflowStatusesService;
 import org.sergei.komarov.utils.SQLExceptionParser;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/handbook/issueTypes")
 @AllArgsConstructor
 public class IssueTypesHandbookController {
@@ -22,69 +23,29 @@ public class IssueTypesHandbookController {
     private IssueTypesService issueTypesService;
     private IssueWorkflowStatusesService issueWorkflowStatusesService;
 
-    @RequestMapping("/view")
-    public String getViewPage(Model model) {
-
-        List<IssueType> issueTypes = issueTypesService.getAll();
-        model.addAttribute("entities", issueTypes);
-
-        return "issueTypes";
-    }
-
-    //-------------------------------- ADD
-
-    @GetMapping("/add")
-    public String getAddPage(Model model) {
-        model.addAttribute("statuses", issueWorkflowStatusesService.getAll());
-
-        return "addIssueType";
-    }
-
     @PostMapping("/add")
-    public String handleAddRequest(Model model, @RequestParam String name,
-                                   @RequestParam(required = false) List<Integer> statuses) {
+    public Map<String, Object> handleAddRequest(String name, @RequestParam(required = false) List<Integer> statuses) {
 
         Map<String, Object> attrs = new HashMap<>();
         attrs.put("statuses", issueWorkflowStatusesService.getAll());
         issueTypesService.validateAndSave(attrs, name, issueWorkflowStatusesService.getByIds(statuses));
-        model.addAllAttributes(attrs);
 
-        return "addIssueType";
+        return attrs;
     }
 
-    //--------------------------------- EDIT
-
-    @GetMapping("/edit/{issueTypeId}")
-    public String getEditPage(Model model, @PathVariable int issueTypeId) {
-
-        Map<String, Object> attrs = new HashMap<>();
-
-        if (!issueTypesService.isExistsById(issueTypeId)) {
-            attrs.put("error", "Тип задач с таким ID не существует.");
-        } else {
-            IssueType issueType = issueTypesService.getById(issueTypeId);
-            attrs.put("statuses", issueWorkflowStatusesService.getAll());
-            attrs.put("entity", issueType);
-        }
-        model.addAllAttributes(attrs);
-
-        return "editIssueType";
-    }
-
-    @PostMapping("/edit/{issueTypeId}")
-    public String handleEditRequest(Model model, @PathVariable int issueTypeId, @RequestParam String name, @RequestParam List<Integer> statuses) {
+    @PostMapping("/edit")
+    public Map<String, Object> handleEditRequest(Model model, int issueTypeId,
+                                                 String name, List<Integer> statuses) {
         Map<String, Object> attrs = new HashMap<>();
         attrs.put("statuses", issueWorkflowStatusesService.getAll());
         issueTypesService.validateAndUpdate(attrs, issueTypeId, name, issueWorkflowStatusesService.getByIds(statuses));
         model.addAllAttributes(attrs);
 
-        return "editIssueType";
+        return attrs;
     }
 
-    //-------------------------------- DELETE
-
-    @PostMapping("/delete/{issueTypeId}")
-    public String handleDeleteRequest(Model model, @PathVariable int issueTypeId) {
+    @PostMapping("/delete")
+    public Map<String, Object> handleDeleteRequest(int issueTypeId) {
 
         Map<String, Object> attrs = new HashMap<>();
 
@@ -100,7 +61,7 @@ public class IssueTypesHandbookController {
                 Throwable ex = SQLExceptionParser.getUnwrappedPSQLException(e);
                 if (ex != null) {
                     ex.printStackTrace();
-                    message = ex.getMessage();
+                    message = "Невозможно удалить тип задач, т.к. существуют задачи данного типа.";
                 }
             }
         }
@@ -111,9 +72,7 @@ public class IssueTypesHandbookController {
             attrs.put("error", message);
         }
 
-        model.addAllAttributes(attrs);
-
-        return "delete";
+        return attrs;
     }
 
 }

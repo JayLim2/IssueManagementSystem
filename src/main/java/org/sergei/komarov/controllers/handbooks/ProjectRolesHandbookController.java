@@ -1,17 +1,16 @@
 package org.sergei.komarov.controllers.handbooks;
 
-import org.sergei.komarov.models.ProjectRole;
 import org.sergei.komarov.services.ProjectRolesService;
 import org.sergei.komarov.utils.SQLExceptionParser;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionSystemException;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/handbook/projectRoles")
 public class ProjectRolesHandbookController implements HandbookController {
 
@@ -21,54 +20,26 @@ public class ProjectRolesHandbookController implements HandbookController {
         this.projectRolesService = projectRolesService;
     }
 
-    @Override
-    @GetMapping("/add")
-    public String getAddPage(Model model) {
-
-        return "addProjectRole";
-    }
-
-    @Override
     @PostMapping("/add")
-    public String handleAddRequest(Model model, @RequestParam String name) {
+    public Map<String, Object> handleAddRequest(String name) {
         Map<String, Object> attrs = new HashMap<>();
 
         projectRolesService.validateAndSave(attrs, name);
-        model.addAllAttributes(attrs);
 
-        return "addProjectRole";
+        return attrs;
     }
 
-    @Override
-    @GetMapping("/edit/{id}")
-    public String getEditPage(Model model, @PathVariable int id) {
-        Map<String, Object> attrs = new HashMap<>();
-
-        if (!projectRolesService.isExistsById(id)) {
-            attrs.put("error", "Проектная роль сотрудников с таким ID не существует.");
-        } else {
-            ProjectRole projectRole = projectRolesService.getById(id);
-            attrs.put("entity", projectRole);
-        }
-        model.addAllAttributes(attrs);
-
-        return "editProjectRole";
-    }
-
-    @Override
-    @PostMapping("/edit/{id}")
-    public String handleEditRequest(Model model, @PathVariable int id, @RequestParam String name) {
+    @PostMapping("/edit")
+    public Map<String, Object> handleEditRequest(int id, String name) {
         Map<String, Object> attrs = new HashMap<>();
 
         projectRolesService.validateAndUpdate(attrs, id, name);
-        model.addAllAttributes(attrs);
 
-        return "editProjectRole";
+        return attrs;
     }
 
-    @Override
-    @PostMapping("/delete/{id}")
-    public String handleDeleteRequest(Model model, @PathVariable int id) {
+    @PostMapping("/delete")
+    public Map<String, Object> handleDeleteRequest(int id) {
 
         Map<String, Object> attrs = new HashMap<>();
 
@@ -84,7 +55,7 @@ public class ProjectRolesHandbookController implements HandbookController {
                 Throwable ex = SQLExceptionParser.getUnwrappedPSQLException(e);
                 if (ex != null) {
                     ex.printStackTrace();
-                    message = ex.getMessage();
+                    message = "Невозможно удалить проектную роль, т.к. существуют сотрудники, занимающие ее.";
                 }
             }
         }
@@ -95,8 +66,6 @@ public class ProjectRolesHandbookController implements HandbookController {
             attrs.put("error", message);
         }
 
-        model.addAllAttributes(attrs);
-
-        return "delete";
+        return attrs;
     }
 }

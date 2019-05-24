@@ -1,24 +1,19 @@
 package org.sergei.komarov.controllers.handbooks;
 
 import lombok.AllArgsConstructor;
-import org.sergei.komarov.controllers.handbooks.HandbookController;
-import org.sergei.komarov.models.Employee;
 import org.sergei.komarov.models.EmployeePosition;
-import org.sergei.komarov.models.UserRole;
 import org.sergei.komarov.services.EmployeePositionsService;
 import org.sergei.komarov.services.EmployeesService;
 import org.sergei.komarov.utils.SQLExceptionParser;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionSystemException;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/handbook/employees")
 @AllArgsConstructor
 public class EmployeesHandbookController {
@@ -26,52 +21,28 @@ public class EmployeesHandbookController {
     private final EmployeesService employeesService;
     private final EmployeePositionsService employeePositionsService;
 
-    @RequestMapping("/view")
-    public String getViewPage(Model model) {
-
-        List<Employee> employees = employeesService.getAll();
-        model.addAttribute("entities", employees);
-
-        return "employees";
-    }
-
-    @GetMapping("/add")
-    public String getAddPage(Model model) {
-        fillAttributes(model);
-
-        return "addEmployee";
-    }
-
     @PostMapping("/add")
-    public String handleAddRequest(Model model,
-                                   String firstName, String middleName, String lastName,
-                                   int employeePositionId) {
-        fillAttributes(model);
+    public Map<String, Object> handleAddRequest(String firstName, String middleName, String lastName,
+                                                int employeePositionId) {
 
         Map<String, Object> attrs = new HashMap<>();
+        fillAttributes(attrs);
         EmployeePosition employeePosition = employeePositionsService.getById(employeePositionId);
         employeesService.validateAndSave(attrs, firstName, middleName, lastName, employeePosition);
-        model.addAllAttributes(attrs);
 
-        return "addEmployee";
+        return attrs;
     }
 
-    @GetMapping("/edit/{id}")
-    public String getEditPage(Model model, @PathVariable int id) {
-        fillAttributes(model);
+    @PostMapping("/edit")
+    public Map<String, Object> handleEditRequest(int id, String name) {
+        Map<String, Object> attrs = new HashMap<>();
+        fillAttributes(attrs);
 
-        return "editEmployee";
+        return attrs;
     }
 
-    @PostMapping("/edit/{id}")
-    public String handleEditRequest(Model model, @PathVariable int id, String name) {
-        fillAttributes(model);
-
-        return "editEmployee";
-    }
-
-    @RequestMapping("/delete/{id}")
-    public String handleDeleteRequest(Model model, @PathVariable int id) {
+    @PostMapping("/delete")
+    public Map<String, Object> handleDeleteRequest(int id) {
 
         Map<String, Object> attrs = new HashMap<>();
 
@@ -98,13 +69,11 @@ public class EmployeesHandbookController {
             attrs.put("error", message);
         }
 
-        model.addAllAttributes(attrs);
-
-        return "delete";
+        return attrs;
     }
 
     //support methods
-    private void fillAttributes(Model model) {
-        model.addAttribute("positions", employeePositionsService.getAll());
+    private void fillAttributes(Map<String, Object> attrs) {
+        attrs.put("positions", employeePositionsService.getAll());
     }
 }

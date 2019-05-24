@@ -1,72 +1,43 @@
 package org.sergei.komarov.controllers.handbooks;
 
 import lombok.AllArgsConstructor;
-import org.sergei.komarov.models.IssueWorkflowStatus;
 import org.sergei.komarov.services.IssueWorkflowStatusesService;
 import org.sergei.komarov.utils.SQLExceptionParser;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionSystemException;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/handbook/issueWorkflowStatuses")
 @AllArgsConstructor
 public class IssueWorkflowStatusesHandbookController implements HandbookController {
 
     private final IssueWorkflowStatusesService issueWorkflowStatusesService;
 
-    @Override
-    @GetMapping("/add")
-    public String getAddPage(Model model) {
-        return "addIssueWorkflowStatus";
-    }
-
-    @Override
     @PostMapping("/add")
-    public String handleAddRequest(Model model, @RequestParam String name) {
+    public Map<String, Object> handleAddRequest(String name) {
         Map<String, Object> attrs = new HashMap<>();
 
         issueWorkflowStatusesService.validateAndSave(attrs, name);
-        model.addAllAttributes(attrs);
 
-        return "addIssueWorkflowStatus";
+        return attrs;
     }
 
-    @Override
-    @GetMapping("/edit/{id}")
-    public String getEditPage(Model model, @PathVariable int id) {
-
-        Map<String, Object> attrs = new HashMap<>();
-
-        if (!issueWorkflowStatusesService.isExistsById(id)) {
-            attrs.put("error", "Статус рабочего процесса с таким ID не существует.");
-        } else {
-            IssueWorkflowStatus issueWorkflowStatus = issueWorkflowStatusesService.getById(id);
-            attrs.put("entity", issueWorkflowStatus);
-        }
-        model.addAllAttributes(attrs);
-
-        return "editIssueWorkflowStatus";
-    }
-
-    @Override
-    @PostMapping("/edit/{id}")
-    public String handleEditRequest(Model model, @PathVariable int id, @RequestParam String name) {
+    @PostMapping("/edit")
+    public Map<String, Object> handleEditRequest(int id, String name) {
         Map<String, Object> attrs = new HashMap<>();
 
         issueWorkflowStatusesService.validateAndUpdate(attrs, id, name);
-        model.addAllAttributes(attrs);
 
-        return "editIssueWorkflowStatus";
+        return attrs;
     }
 
-    @Override
-    @PostMapping("/delete/{id}")
-    public String handleDeleteRequest(Model model, @PathVariable int id) {
+    @PostMapping("/delete")
+    public Map<String, Object> handleDeleteRequest(int id) {
         Map<String, Object> attrs = new HashMap<>();
 
         boolean isExists = issueWorkflowStatusesService.isExistsById(id);
@@ -81,7 +52,7 @@ public class IssueWorkflowStatusesHandbookController implements HandbookControll
                 Throwable e2 = SQLExceptionParser.getUnwrappedPSQLException(e);
                 if (e2 != null) {
                     e2.printStackTrace();
-                    message = e2.getMessage();
+                    message = "Невозможно удалить статус, т.к. существуют зависимые задачи.";
                 }
             }
         }
@@ -92,8 +63,6 @@ public class IssueWorkflowStatusesHandbookController implements HandbookControll
             attrs.put("error", message);
         }
 
-        model.addAllAttributes(attrs);
-
-        return "delete";
+        return attrs;
     }
 }

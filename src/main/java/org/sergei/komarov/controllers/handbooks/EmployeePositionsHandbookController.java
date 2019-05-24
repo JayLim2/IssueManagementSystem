@@ -1,72 +1,44 @@
 package org.sergei.komarov.controllers.handbooks;
 
 import lombok.AllArgsConstructor;
-import org.sergei.komarov.models.EmployeePosition;
 import org.sergei.komarov.services.EmployeePositionsService;
 import org.sergei.komarov.utils.SQLExceptionParser;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionSystemException;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/handbook/employeePositions")
 @AllArgsConstructor
 public class EmployeePositionsHandbookController implements HandbookController {
 
     private final EmployeePositionsService employeePositionsService;
 
-    @Override
-    @GetMapping("/add")
-    public String getAddPage(Model model) {
-        return "addEmployeePosition";
-    }
-
-    @Override
     @PostMapping("/add")
-    public String handleAddRequest(Model model, @RequestParam String name) {
+    public Map<String, Object> handleAddRequest(String name) {
 
         Map<String, Object> attrs = new HashMap<>();
 
         employeePositionsService.validateAndSave(attrs, name);
-        model.addAllAttributes(attrs);
 
-        return "addEmployeePosition";
+        return attrs;
     }
 
-    @Override
-    @GetMapping("/edit/{id}")
-    public String getEditPage(Model model, @PathVariable int id) {
-        Map<String, Object> attrs = new HashMap<>();
-
-        if (!employeePositionsService.isExistsById(id)) {
-            attrs.put("error", "Должность с таким ID не существует.");
-        } else {
-            EmployeePosition employeePosition = employeePositionsService.getById(id);
-            attrs.put("entity", employeePosition);
-        }
-        model.addAllAttributes(attrs);
-
-        return "editEmployeePosition";
-    }
-
-    @Override
-    @PostMapping("/edit/{id}")
-    public String handleEditRequest(Model model, @PathVariable int id, @RequestParam String name) {
+    @PostMapping("/edit")
+    public Map<String, Object> handleEditRequest(int id, String name) {
         Map<String, Object> attrs = new HashMap<>();
 
         employeePositionsService.validateAndUpdate(attrs, id, name);
-        model.addAllAttributes(attrs);
 
-        return "editEmployeePosition";
+        return attrs;
     }
 
-    @Override
-    @PostMapping("/delete/{id}")
-    public String handleDeleteRequest(Model model, @PathVariable int id) {
+    @PostMapping("/delete")
+    public Map<String, Object> handleDeleteRequest(int id) {
 
         Map<String, Object> attrs = new HashMap<>();
 
@@ -82,7 +54,7 @@ public class EmployeePositionsHandbookController implements HandbookController {
                 Throwable ex = SQLExceptionParser.getUnwrappedPSQLException(e);
                 if (ex != null) {
                     ex.printStackTrace();
-                    message = ex.getMessage();
+                    message = "Невозможно удалить должность, т.к. существуют сотрудники, занимающие ее.";
                 }
             }
         }
@@ -93,8 +65,6 @@ public class EmployeePositionsHandbookController implements HandbookController {
             attrs.put("error", message);
         }
 
-        model.addAllAttributes(attrs);
-
-        return "delete";
+        return attrs;
     }
 }
