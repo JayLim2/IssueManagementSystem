@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -20,16 +19,6 @@ public class ProjectRolesHandbookController implements HandbookController {
 
     public ProjectRolesHandbookController(ProjectRolesService projectRolesService) {
         this.projectRolesService = projectRolesService;
-    }
-
-    @Override
-    @RequestMapping("/view")
-    public String getViewPage(Model model) {
-
-        List<ProjectRole> projectRoles = projectRolesService.getAll();
-        model.addAttribute("entities", projectRoles);
-
-        return "projectRoles";
     }
 
     @Override

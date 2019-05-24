@@ -6,9 +6,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface HandbookController {
 
-    //view
-    String getViewPage(Model model);
-
     //add
     String getAddPage(Model model);
 

@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -19,16 +18,6 @@ import java.util.Map;
 public class EmployeePositionsHandbookController implements HandbookController {
 
     private final EmployeePositionsService employeePositionsService;
-
-    @Override
-    @RequestMapping("/view")
-    public String getViewPage(Model model) {
-
-        List<EmployeePosition> employeePositions = employeePositionsService.getAll();
-        model.addAttribute("entities", employeePositions);
-
-        return "employeePositions";
-    }
 
     @Override
     @GetMapping("/add")

@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -19,16 +18,6 @@ import java.util.Map;
 public class IssueWorkflowStatusesHandbookController implements HandbookController {
 
     private final IssueWorkflowStatusesService issueWorkflowStatusesService;
-
-    @Override
-    @RequestMapping("/view")
-    public String getViewPage(Model model) {
-
-        List<IssueWorkflowStatus> statuses = issueWorkflowStatusesService.getAll();
-        model.addAttribute("entities", statuses);
-
-        return "issueWorkflowStatuses";
-    }
 
     @Override
     @GetMapping("/add")

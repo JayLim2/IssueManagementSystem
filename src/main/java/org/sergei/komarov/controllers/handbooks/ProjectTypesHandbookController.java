@@ -1,84 +1,42 @@
 package org.sergei.komarov.controllers.handbooks;
 
-import org.sergei.komarov.models.ProjectType;
+import lombok.AllArgsConstructor;
 import org.sergei.komarov.services.ProjectTypesService;
 import org.sergei.komarov.utils.SQLExceptionParser;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionSystemException;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/handbook/projectTypes")
-public class ProjectTypesHandbookController implements HandbookController {
-
+@AllArgsConstructor
+public class ProjectTypesHandbookController {
     private final ProjectTypesService projectTypesService;
 
-    public ProjectTypesHandbookController(ProjectTypesService projectTypesService) {
-        this.projectTypesService = projectTypesService;
-    }
-
-    @Override
-    @RequestMapping("/view")
-    public String getViewPage(Model model) {
-
-        List<ProjectType> projectTypes = projectTypesService.getAll();
-        model.addAttribute("entities", projectTypes);
-
-        return "projectTypes";
-    }
-
-    @Override
-    @GetMapping("/add")
-    public String getAddPage(Model model) {
-        return "addProjectType";
-    }
-
-    @Override
     @PostMapping("/add")
-    public String handleAddRequest(Model model, @RequestParam String name) {
+    public Map<String, Object> handleAddRequest(String name) {
         Map<String, Object> attrs = new HashMap<>();
 
         projectTypesService.validateAndSave(attrs, name);
-        model.addAllAttributes(attrs);
 
-        return "addProjectType";
+        return attrs;
     }
 
-    @Override
-    @GetMapping("/edit/{id}")
-    public String getEditPage(Model model, @PathVariable int id) {
-        Map<String, Object> attrs = new HashMap<>();
-
-        if (!projectTypesService.isExistsById(id)) {
-            attrs.put("error", "Тип проектов с таким ID не существует.");
-        } else {
-            ProjectType projectType = projectTypesService.getById(id);
-            attrs.put("entity", projectType);
-        }
-        model.addAllAttributes(attrs);
-
-        return "editProjectType";
-    }
-
-    @Override
-    @PostMapping("/edit/{id}")
-    public String handleEditRequest(Model model, @PathVariable int id, @RequestParam String name) {
+    @PostMapping("/edit")
+    public Map<String, Object> handleEditRequest(int id, String name) {
         Map<String, Object> attrs = new HashMap<>();
 
         projectTypesService.validateAndUpdate(attrs, id, name);
-        model.addAllAttributes(attrs);
 
-        return "editProjectType";
+        return attrs;
     }
 
-    @Override
-    @PostMapping("/delete/{id}")
-    public String handleDeleteRequest(Model model, @PathVariable int id) {
+    @PostMapping("/delete")
+    public Map<String, Object> handleDeleteRequest(int id) {
         Map<String, Object> attrs = new HashMap<>();
 
         boolean isExists = projectTypesService.isExistsById(id);
@@ -104,8 +62,6 @@ public class ProjectTypesHandbookController implements HandbookController {
             attrs.put("error", message);
         }
 
-        model.addAllAttributes(attrs);
-
-        return "delete";
+        return attrs;
     }
 }
