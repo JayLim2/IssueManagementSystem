@@ -6,7 +6,6 @@
 
 .table-block {
     display: table;
-    margin-top: 15px;
 }
 
 .table-row {
@@ -16,8 +15,7 @@
 .table-cell {
     display: table-cell;
     font-size: 12pt;
-    padding-right: 10px;
-    padding-top: 10px;
+    padding: 10px;
 }
 
 .login-header {

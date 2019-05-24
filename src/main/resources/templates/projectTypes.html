@@ -10,16 +10,102 @@
     <h1>Типы проектов</h1>
 
     <div>
-        <div style="margin-bottom: 20px">
-            <a type="button"
-               class="btn btn-dark"
-               th:href="@{/handbook/projectTypes/add}"
-            >
-                Добавить новый тип
-            </a>
+        <div id="response"></div>
+
+        <!-- ADD BUTTON -->
+        <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addEntity"
+                style="margin-bottom:20px;"
+        >
+            Добавить новый тип
+        </button>
+
+        <!-- ADD MODAL FORM -->
+        <div class="modal fade" id="addEntity" tabindex="-1" role="dialog"
+             aria-labelledby="dialogTitle" aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addDialogTitle">Добавить тип проекта</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div id="add-response"></div>
+
+                        <form id="addForm" action="javascript:void(0)" method="post" onsubmit="addProjectType()">
+                            <div class="table-block" style="width:100%;">
+                                <div class="table-row">
+                                    <div class="table-cell" style="width:200px;vertical-align: top;">
+                                        <b class="required-field-marker">Название типа проектов:</b>
+                                    </div>
+                                    <div class="table-cell">
+                                        <input type="text" class="input" name="name"
+                                               placeholder="Например, Разработка внутренней системы"/>
+                                    </div>
+                                </div>
+                                <div class="table-row">
+                                    <div class="table-cell"></div>
+                                    <div class="table-cell" style="margin:15px 0;">
+                                        <input type="submit" class="submit-btn" value="Добавить"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div id="response"></div>
+        <!--/ ADD MODAL FORM -->
+
+        <!-- EDIT MODAL FORM -->
+        <div class="modal fade" id="editEntity" tabindex="-1" role="dialog"
+             aria-labelledby="dialogTitle" aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editDialogTitle">Редактировать тип проекта</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div id="edit-response"></div>
+
+                        <form id="editForm" action="javascript:void(0)" method="post" onsubmit="editProjectType()">
+                            <input type="hidden" id="projectTypeId" name="id"/>
+                            <div class="table-block" style="width:100%;">
+                                <div class="table-row">
+                                    <div class="table-cell" style="width:200px;vertical-align: top;">
+                                        <b class="required-field-marker">Название типа проектов:</b>
+                                    </div>
+                                    <div class="table-cell">
+                                        <input type="text" class="input" name="name" id="projectTypeName"
+                                               placeholder="Например, Разработка внутренней системы"/>
+                                    </div>
+                                </div>
+                                <div class="table-row">
+                                    <div class="table-cell"></div>
+                                    <div class="table-cell" style="margin:15px 0;">
+                                        <input type="submit" class="submit-btn" value="Сохранить изменения"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--/ EDIT MODAL FORM -->
+
 
         <div th:if="${entities == null || entities.size() == 0}"
              class="warn-msg">
@@ -37,13 +123,19 @@
                 <td scope="row" th:text="${type.getName()}">
                 </td>
                 <td style="width:250px">
-                    <a class="btn btn-primary" target="_blank"
-                       th:href="@{'/handbook/projectTypes/edit/' + ${type.getId()}}">
+                    <button type="button"
+                            class="btn btn-primary"
+                            data-toggle="modal"
+                            data-target="#editEntity"
+                            th:data-name="${type.getName()}"
+                            th:data-id="${type.getId()}"
+                    >
                         Изменить
-                    </a>
+                    </button>
+
                     <a class="btn btn-danger"
                        th:href="'#'"
-                       th:onclick="'deleteRequest('+${type.getId()}+',\'projectTypes\')'"
+                       th:onclick="'deleteRestRequest('+${type.getId()}+',\'projectTypes\')'"
                     >
                         Удалить
                     </a>
@@ -53,5 +145,19 @@
         </table>
     </div>
 </div>
+
+<script type="text/javascript">
+    $('#editEntity').on(
+        'show.bs.modal',
+        function (event) {
+            let button = $(event.relatedTarget);
+            let name = button.data('name');
+            let id = Number.parseInt(button.data('id'));
+            let modal = $(this);
+            modal.find("#projectTypeName").val(name);
+            modal.find("#projectTypeId").val(id)
+        }
+    );
+</script>
 </body>
 </html>

@@ -7,8 +7,33 @@ function deleteRequest(id, entity) {
             }
         }
     }).done(function (data) {
-        document.getElementById("response").innerHTML += data;
-        document.getElementById("row-" + id).innerHTML = null;
+        $("#response").html(data);
+        $("#row-" + id).html(null);
+    });
+}
+
+/*
+REST-реквест
+ */
+function deleteRestRequest(id, entity) {
+    $.post({
+        url: '/rest/handbook/' + entity + '/delete/',
+        data: {
+            id: id
+        },
+        statusCode: {
+            200: function () {
+                console.log("Row # " + id + " has been removed (" + entity + ").");
+            }
+        }
+    }).done(function (data) {
+        let result = data.info ? data.info : data.error;
+        let msgClass = (data.info ? "info" : "err") + '-msg';
+        $("#response").html("<div class='" + msgClass + "'>" + result + "</div>");
+
+        if (data.info) {
+            $("#row-" + id).html(null);
+        }
     });
 }
 
@@ -21,8 +46,8 @@ function deleteOperativeDataRequest(id, entity) {
             }
         }
     }).done(function (data) {
-        document.getElementById("response").innerHTML += data;
-        document.getElementById("row-" + id).innerHTML = null;
-        document.getElementById("info-block" + id).innerHTML = "<div class=\"issue-body-frame no-content\">Запись удалена<p style=\"font-size:12pt;\">Восстановление невозможно.</p></div>";
+        $("#response").html(data);
+        $("#row-" + id).html(null);
+        $("#info-block" + id).html("<div class=\"issue-body-frame no-content\">Запись удалена<p style=\"font-size:12pt;\">Восстановление невозможно.</p></div>");
     });
 }

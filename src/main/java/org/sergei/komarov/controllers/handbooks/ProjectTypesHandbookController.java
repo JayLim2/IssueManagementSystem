@@ -93,7 +93,7 @@ public class ProjectTypesHandbookController implements HandbookController {
                 Throwable ex = SQLExceptionParser.getUnwrappedPSQLException(e);
                 if (ex != null) {
                     ex.printStackTrace();
-                    message = ex.getMessage();
+                    message = "Невозможно удалить, т.к. в системе еще есть хотя бы 1 проект данного типа.";
                 }
             }
         }
