@@ -125,7 +125,7 @@
                                             типа:</b>
                                     </div>
                                     <div class="table-cell" style="vertical-align:top;">
-                                        <select multiple name="statuses" class="input">
+                                        <select multiple id="statuses" name="statuses" class="input">
                                             <option th:each="status : ${statuses}"
                                                     th:value="${status.getId()}"
                                                     th:text="${status.getName()}">
@@ -178,6 +178,7 @@
                             data-target="#editEntity"
                             th:data-name="${entity.getName()}"
                             th:data-id="${entity.getId()}"
+                            th:data-statuses="${entity.getWorkflowStatuses()}"
                     >
                         Изменить
                     </button>
@@ -200,7 +201,17 @@
             let button = $(event.relatedTarget);
             let name = button.data('name');
             let id = Number.parseInt(button.data('id'));
+            let statuses = button.data('statuses');
+
+            $('#statuses option').each(function () {
+                let value = this.value;
+                if (statuses.indexOf('id=' + value + ',') !== -1) {
+                    this.selected = "selected";
+                }
+            });
+
             let modal = $(this);
+
             modal.find("#entityName").val(name);
             modal.find("#entityId").val(id)
         }

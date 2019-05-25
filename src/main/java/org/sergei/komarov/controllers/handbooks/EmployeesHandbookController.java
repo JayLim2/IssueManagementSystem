@@ -26,7 +26,6 @@ public class EmployeesHandbookController {
                                                 int employeePositionId) {
 
         Map<String, Object> attrs = new HashMap<>();
-        fillAttributes(attrs);
         EmployeePosition employeePosition = employeePositionsService.getById(employeePositionId);
         employeesService.validateAndSave(attrs, firstName, middleName, lastName, employeePosition);
 
@@ -36,7 +35,6 @@ public class EmployeesHandbookController {
     @PostMapping("/edit")
     public Map<String, Object> handleEditRequest(int id, String name) {
         Map<String, Object> attrs = new HashMap<>();
-        fillAttributes(attrs);
 
         return attrs;
     }
@@ -55,10 +53,10 @@ public class EmployeesHandbookController {
             try {
                 employeesService.deleteById(id);
             } catch (TransactionSystemException e) {
-                Throwable e2 = SQLExceptionParser.getUnwrappedPSQLException(e);
-                if (e2 != null) {
-                    e2.printStackTrace();
-                    message = e2.getMessage();
+                Throwable ex = SQLExceptionParser.getUnwrappedPSQLException(e);
+                if (ex != null) {
+                    ex.printStackTrace();
+                    message = "Невозможно удалить сотрудника, т.к. есть данные в зависимых сущностях.";
                 }
             }
         }

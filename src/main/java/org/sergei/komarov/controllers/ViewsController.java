@@ -55,7 +55,10 @@ public class ViewsController {
     public String getEmployeesViewPage(Model model) {
 
         List<Employee> employees = employeesService.getAll();
+        List<EmployeePosition> employeePositions = employeePositionsService.getAll();
+
         model.addAttribute("entities", employees);
+        model.addAttribute("positions", employeePositions);
 
         return "employees";
     }

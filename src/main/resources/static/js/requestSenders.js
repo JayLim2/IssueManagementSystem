@@ -11,11 +11,19 @@ function addRequest(entity) {
             }
         }
     }).done(function (data) {
+        let isEmployeeHandbook = data.login && data.password;
+
         let result = data.info ? data.info : data.error;
+
+        if (isEmployeeHandbook) {
+            result += '<div><b>Логин: </b>' + data.login + '<br/><b>Пароль: </b>' + data.password + '</div>';
+            result += '<div style="font-weight:bold;">Запомните пароль! В целях безопасности в справочнике хранится хеш-функция пароля!</div>';
+        }
+
         let msgClass = (data.info ? "info" : "err") + '-msg';
         $("#add-response").html("<div class='" + msgClass + "'>" + result + "</div>");
 
-        if (data.info) {
+        if (data.info && !isEmployeeHandbook) {
             setTimeout(
                 function () {
                     location.reload();

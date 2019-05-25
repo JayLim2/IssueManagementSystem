@@ -22,7 +22,6 @@ public class IssueTypesHandbookController {
     private IssueTypesService issueTypesService;
     private IssueWorkflowStatusesService issueWorkflowStatusesService;
 
-    // FIXME: 24.05.2019 cycle references!!!
     @PostMapping("/add")
     public Map<String, Object> handleAddRequest(String name, @RequestParam(required = false) List<Integer> statuses) {
 
