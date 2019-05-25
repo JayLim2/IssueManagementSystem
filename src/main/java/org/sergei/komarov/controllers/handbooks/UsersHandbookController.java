@@ -23,9 +23,6 @@ public class UsersHandbookController {
     public Map<String, Object> handleEditRequest(String id, String newPassword, UserRole userRole) {
         Map<String, Object> attrs = new HashMap<>();
 
-        attrs.put("roles", UserRole.values());
-        attrs.put("employees", employeesService.getAll());
-
         usersService.validateAndUpdate(attrs, id, newPassword, userRole);
 
         return attrs;

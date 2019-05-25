@@ -105,10 +105,7 @@ public class EmployeesService implements JpaService<Employee, Integer> {
                 employee.setLastName(middleName);
                 employee.setPosition(employeePosition);
                 message = trySave(employee);
-            } else {
-                employee = new Employee();
             }
-            attrs.put("entity", employee);
         } else {
             message = "Сотрудник с таким ID не существует.";
         }

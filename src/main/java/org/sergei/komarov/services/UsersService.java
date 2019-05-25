@@ -130,10 +130,7 @@ public class UsersService implements JpaService<User, String> {
                 }
                 user.setRole(userRole);
                 message = trySave(user);
-            } else {
-                user.setPassword(null);
             }
-            attrs.put("entity", user);
         } else {
             message = "Пользователь с таким ID не существует.";
         }

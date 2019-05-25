@@ -33,8 +33,12 @@ public class EmployeesHandbookController {
     }
 
     @PostMapping("/edit")
-    public Map<String, Object> handleEditRequest(int id, String name) {
+    public Map<String, Object> handleEditRequest(int id,
+                                                 String firstName, String middleName, String lastName,
+                                                 int employeePositionId) {
         Map<String, Object> attrs = new HashMap<>();
+        EmployeePosition employeePosition = employeePositionsService.getById(employeePositionId);
+        employeesService.validateAndUpdate(attrs, id, firstName, middleName, lastName, employeePosition);
 
         return attrs;
     }

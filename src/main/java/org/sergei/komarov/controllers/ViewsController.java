@@ -69,6 +69,8 @@ public class ViewsController {
         List<User> users = usersService.getAll();
         model.addAttribute("entities", users);
 
+        model.addAttribute("roles", UserRole.values());
+
         return "users";
     }
 
