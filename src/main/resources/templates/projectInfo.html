@@ -11,14 +11,14 @@
 
     <div id="response"></div>
 
-    <!-- ADD BUTTON -->
+    <!-- ADD PROJECT BUTTON -->
     <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addEntity"
             style="margin-bottom:20px;margin-left:35px;"
     >
         Создать новый проект
     </button>
 
-    <!-- ADD MODAL FORM -->
+    <!-- ADD PROJECT MODAL FORM -->
     <div class="modal fade" id="addEntity" tabindex="-1" role="dialog"
          aria-labelledby="addDialogTitle" aria-hidden="true"
     >
@@ -39,7 +39,7 @@
                         проекта</a>.
                     </div>
                     <form id="addForm" action="javascript:void(0)" method="post"
-                          onsubmit="addOperativeDataRequest('projects')"
+                          onsubmit="addOperativeDataRequest('projects', '#addForm', '#add-response')"
                           th:unless="${projectTypes == null || projectTypes.size() == 0}"
                     >
                         <div class="table-block">
@@ -80,9 +80,9 @@
         </div>
     </div>
 
-    <!--/ ADD MODAL FORM -->
+    <!--/ ADD PROJECT MODAL FORM -->
 
-    <!-- EDIT MODAL FORM -->
+    <!-- EDIT PROJECT MODAL FORM -->
     <div class="modal fade" id="editEntity" tabindex="-1" role="dialog"
          aria-labelledby="editDialogTitle" aria-hidden="true"
     >
@@ -99,10 +99,10 @@
                     <div id="edit-response"></div>
 
                     <form id="editForm" action="javascript:void(0)" method="post"
-                          onsubmit="editOperativeDataRequest('projects')"
+                          onsubmit="editOperativeDataRequest('projects', '#editForm', '#edit-response')"
                           th:unless="${projectTypes == null || projectTypes.size() == 0}"
                     >
-                        <input type="hidden" id="entityId" name="id"/>
+                        <input type="hidden" id="projectId" name="id"/>
 
                         <div class="table-block">
                             <div class="table-row">
@@ -110,7 +110,7 @@
                                     <b class="required-field-marker">Название проекта:</b>
                                 </div>
                                 <div class="table-cell">
-                                    <input type="text" id="entityTitle" class="input" name="title"
+                                    <input type="text" id="projectTitle" class="input" name="title"
                                            placeholder="Например, MegaFon Billing System"/>
                                 </div>
                             </div>
@@ -142,7 +142,360 @@
         </div>
     </div>
 
-    <!--/ EDIT MODAL FORM -->
+    <!--/ EDIT PROJECT MODAL FORM -->
+
+
+    <!-- ADD ISSUE MODAL FORM -->
+    <div class="modal fade" id="addIssue" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Создать новую задачу</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div id="add-issue-response"></div>
+
+                    <div class="warn-msg"
+                         th:if="${issueTypes == null || issueTypes.size() == 0
+                         || issuePriorities == null || issuePriorities.size() == 0
+                         || employees == null || employees.size() == 0
+                         || projects == null || projects.size() == 0
+                         || issueWorkflowStatuses == null || issueWorkflowStatuses.size() == 0}"
+                    >
+                        Создание новых задач ограничено, т.к. нет ни одного
+                        <a href="/handbook/issueTypes/add">типа</a>,
+                        <a href="/handbook/issuePriorities/add">приоритета</a> задачи,
+                        <a href="/handbook/issueWorkflowStatuses/add">статуса рабочего процесса</a> задачи,
+                        <a href="/projects/add">проекта</a>
+                        или ни одного <a href="/handbook/employees/add">сотрудника</a>.
+                    </div>
+                    <form style="vertical-align:top;margin-bottom:30px;"
+                          id="addIssueForm" action="javascript:void(0)" method="post"
+                          onsubmit="addOperativeDataRequest('issues', '#addIssueForm', '#add-issue-response')"
+
+                          th:unless="${issueTypes == null || issueTypes.size() == 0
+                          || issuePriorities == null || issuePriorities.size() == 0
+                          || employees == null || employees.size() == 0
+                          || projects == null || projects.size() == 0
+                          || issueWorkflowStatuses == null || issueWorkflowStatuses.size() == 0}"
+
+                          th:object="${descriptionWrapper}"
+                    >
+                        <div class="table-block">
+                            <div class="table-row">
+                                <div class="table-cell" style="width:200px">
+                                    <b class="required-field-marker">Название задачи:</b>
+                                </div>
+                                <div class="table-cell">
+                                    <input type="text"
+                                           class="input"
+                                           name="title"
+                                           placeholder="Например, Добавить кнопку на страницу"
+                                    />
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Проект:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select id="addIssueProjectId" name="projectId" class="input">
+                                        <option th:each="project : ${projects}"
+                                                th:value="${project.getId()}"
+                                                th:text="${project.getTitle()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Статус задачи:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select name="statusId" class="input">
+                                        <option th:each="status : ${issueWorkflowStatuses}"
+                                                th:value="${status.getId()}"
+                                                th:text="${status.getName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Тип задачи:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select name="typeId" class="input">
+                                        <option th:each="type : ${issueTypes}"
+                                                th:value="${type.getId()}"
+                                                th:text="${type.getName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Приоритет задачи:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select name="priorityId" class="input">
+                                        <option th:each="priority : ${issuePriorities}"
+                                                th:value="${priority.getId()}"
+                                                th:text="${priority.getName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Описание:</b>
+                                </div>
+                                <div class="table-cell">
+                                    <textarea class="input-textarea"
+                                              th:field="*{description}"
+                                              form="addIssueForm"
+                                              placeholder="Опишите подробно, что нужно сделать в рамках задачи."
+                                    ></textarea>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b>Дата окончания:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <input type="text"
+                                           name="dueDate"
+                                           class="form-control"
+                                           style="width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
+                                           id="addDueDate"
+                                           placeholder="Например, 01.01.1970"
+                                    />
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b>Сотрудник:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select name="assigneeId" class="input">
+                                        <option value="0" selected>
+                                            - Не назначен -
+                                        </option>
+                                        <option th:each="employee : ${employees}"
+                                                th:value="${employee.getId()}"
+                                                th:text="${employee}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b>Родительская задача:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select name="rootTaskId" class="input">
+                                        <option value="0" selected>
+                                            - Нет родительской задачи -
+                                        </option>
+                                        <option th:each="issue : ${issues}"
+                                                th:value="${issue.getId()}"
+                                                th:text="${issue.getId()} + ': ' + ${issue.getTitle()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="width:200px">
+                                </div>
+                                <div class="table-cell">
+                                    <input type="submit" class="submit-btn" value="Создать задачу"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--/ ADD ISSUE MODAL FORM -->
+
+    <!-- EDIT ISSUE MODAL FORM -->
+    <div class="modal fade" id="editIssue" tabindex="-1" role="dialog"
+         aria-labelledby="editDialogTitle" aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Редактировать задачу</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div id="edit-issue-response"></div>
+
+                    <form style="vertical-align:top;margin-bottom:30px;"
+                          id="editIssueForm" action="javascript:void(0)" method="post"
+                          onsubmit="editOperativeDataRequest('issues', '#editIssueForm', '#edit-issue-response')"
+
+                          th:unless="${issueTypes == null || issueTypes.size() == 0
+                          || issuePriorities == null || issuePriorities.size() == 0
+                          || employees == null || employees.size() == 0
+                          || projects == null || projects.size() == 0
+                          || issueWorkflowStatuses == null || issueWorkflowStatuses.size() == 0}"
+
+                          th:object="${descriptionWrapper}"
+                    >
+                        <input type="hidden" id="issueId" name="issueId"/>
+
+                        <div class="table-block">
+                            <div class="table-row">
+                                <div class="table-cell" style="width:200px">
+                                    <b class="required-field-marker">Название задачи:</b>
+                                </div>
+                                <div class="table-cell">
+                                    <input type="text"
+                                           class="input"
+                                           id="issueTitle"
+                                           name="title"
+                                           placeholder="Например, Добавить кнопку на страницу"
+                                    />
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Проект:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select id="editIssueProjectId" name="projectId" class="input">
+                                        <option th:each="project : ${projects}"
+                                                th:value="${project.getId()}"
+                                                th:text="${project.getTitle()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Статус задачи:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select id="issueStatusId" name="statusId" class="input">
+                                        <option th:each="status : ${issueWorkflowStatuses}"
+                                                th:value="${status.getId()}"
+                                                th:text="${status.getName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Тип задачи:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select id="issueTypeId" name="typeId" class="input">
+                                        <option th:each="type : ${issueTypes}"
+                                                th:value="${type.getId()}"
+                                                th:text="${type.getName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Приоритет задачи:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select id="issuePriorityId" name="priorityId" class="input">
+                                        <option th:each="priority : ${issuePriorities}"
+                                                th:value="${priority.getId()}"
+                                                th:text="${priority.getName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Описание:</b>
+                                </div>
+                                <div class="table-cell">
+                                    <textarea class="input-textarea"
+                                              th:field="*{description}"
+                                              id="issueDescription"
+                                              form="editIssueForm"
+                                              placeholder="Опишите подробно, что нужно сделать в рамках задачи."
+                                    ></textarea>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b>Дата окончания:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <input type="text"
+                                           name="dueDate"
+                                           class="form-control"
+                                           style="width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
+                                           id="editDueDate"
+                                           placeholder="Например, 01.01.1970"
+                                    />
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b>Сотрудник:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select id="issueAssignee" name="assigneeId" class="input">
+                                        <option value="0" selected>
+                                            - Не назначен -
+                                        </option>
+                                        <option th:each="employee : ${employees}"
+                                                th:value="${employee.getId()}"
+                                                th:text="${employee}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b>Родительская задача:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select id="issueRoot" name="rootTaskId" class="input">
+                                        <option value="0" selected>
+                                            - Нет родительской задачи -
+                                        </option>
+                                        <option th:each="issue : ${issues}"
+                                                th:value="${issue.getId()}"
+                                                th:text="${issue.getId()} + ': ' + ${issue.getTitle()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="width:200px">
+                                </div>
+                                <div class="table-cell">
+                                    <input type="submit" class="submit-btn" value="Сохранить изменения"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--/ EDIT ISSUE MODAL FORM -->
 
     <div class="issues-frame">
         <div style="display:table-row">
@@ -157,8 +510,8 @@
                                     class="btn btn-primary"
                                     data-toggle="modal"
                                     data-target="#editEntity"
-                                    th:data-title="${project.getTitle()}"
                                     th:data-id="${project.getId()}"
+                                    th:data-title="${project.getTitle()}"
                                     th:data-project-type="${project.getType().getId()}"
                             >
                                 Изменить
@@ -182,6 +535,7 @@
                 <div>
                     <button type="button" class="btn btn-success"
                             data-toggle="modal" data-target="#addIssue"
+                            th:data-project="${project.getId()}"
                             style="margin-top:20px;"
                     >
                         Создать задачу
@@ -201,7 +555,7 @@
                     </thead>
                     <!-- if issues exists -->
                     <tbody th:if="${issues != null && issues.size() > 0}">
-                    <tr th:each="issue : ${issues}">
+                    <tr th:id="'issue-row-' + ${issue.getId()}" th:each="issue : ${issues}">
                         <td style="border:1px solid rgb(233, 236, 239);" th:text="${issue.getId()}"></td>
                         <td style="border:1px solid rgb(233, 236, 239);">
                             <a th:href="'/issues/'+${issue.getId()}"
@@ -219,15 +573,22 @@
                             <button type="button"
                                     class="btn btn-primary"
                                     data-toggle="modal"
-                                    data-target="#editEntity"
-                                    th:data-title="${project.getTitle()}"
-                                    th:data-id="${project.getId()}"
-                                    th:data-project-type="${project.getType().getId()}"
+                                    data-target="#editIssue"
+                                    th:data-id="${issue.getId()}"
+                                    th:data-title="${issue.getTitle()}"
+                                    th:data-description="${issue.getDescription()}"
+                                    th:data-issue-type="${issue.getType().getId()}"
+                                    th:data-issue-priority="${issue.getPriority().getId()}"
+                                    th:data-issue-status="${issue.getStatus().getId()}"
+                                    th:data-assignee="${issue.getAssignee() != null ? issue.getAssignee().getId() : null}"
+                                    th:data-due-date="${issue.getDueDate() != null ? issue.getDueDate() : null}"
+                                    th:data-root-task="0"
+                                    th:data-project="${issue.getProject().getId()}"
                             >
                                 &#128393;
                             </button>
                             <button class="btn btn-danger"
-                                    th:onclick="'deleteOperativeDataRequest('+${project.getId()}+',\'projects\')'"
+                                    th:onclick="'deleteOperativeDataRequest('+${issue.getId()}+',\'issues\')'"
                             >
                                 &#128940;
                             </button>
@@ -280,6 +641,7 @@
 </div>
 
 <script type="text/javascript">
+    //edit project form
     $('#editEntity').on(
         'show.bs.modal',
         function (event) {
@@ -290,12 +652,64 @@
 
             let modal = $(this);
 
-            modal.find("#entityTitle").val(title);
-            modal.find("#entityId").val(id);
+            modal.find("#projectTitle").val(title);
+            modal.find("#projectId").val(id);
 
             $("#projectTypeId [value='" + projectTypeId + "']").attr("selected", "selected");
         }
     );
+
+    //add issue form
+    $('#addIssue').on(
+        'show.bs.modal',
+        function (event) {
+            let button = $(event.relatedTarget);
+            let projectId = Number.parseInt(button.data('project'));
+            $("#addIssueProjectId [value='" + projectId + "']").attr("selected", "selected");
+        }
+    );
+
+    //edit issue form
+    $('#editIssue').on(
+        'show.bs.modal',
+        function (event) {
+            let button = $(event.relatedTarget);
+            let id = Number.parseInt(button.data('id'));
+            let title = button.data('title');
+            let description = button.data('description');
+            let issueTypeId = Number.parseInt(button.data('issue-type'));
+            let issuePriorityId = Number.parseInt(button.data('issue-priority'));
+            let issueStatusId = Number.parseInt(button.data('issue-status'));
+            let projectId = Number.parseInt(button.data('project'));
+            let assigneeId = Number.parseInt(button.data('assignee'));
+            let rootId = Number.parseInt(button.data('root-task'));
+            let dueDate = button.data('due-date');
+
+            let modal = $(this);
+
+            modal.find("#issueId").val(id);
+            modal.find("#issueTitle").val(title);
+            modal.find("#issueDescription").val(description);
+            modal.find("#editDueDate").val(dueDate);
+
+            $("#editIssueProjectId [value='" + projectId + "']").attr("selected", "selected");
+            $("#issueTypeId [value='" + issueTypeId + "']").attr("selected", "selected");
+            $("#issuePriorityId [value='" + issuePriorityId + "']").attr("selected", "selected");
+            $("#issueStatusId [value='" + issueStatusId + "']").attr("selected", "selected");
+            $("#issueAssignee [value='" + assigneeId + "']").attr("selected", "selected");
+            $("#issueRoot [value='" + rootId + "']").attr("selected", "selected");
+        }
+    );
+
+    //date-pickers
+    $(document).ready(function () {
+        $('#addDueDate').datepicker({
+            format: 'dd.mm.yyyy'
+        });
+        $('#editDueDate').datepicker({
+            format: 'dd.mm.yyyy'
+        });
+    });
 </script>
 </body>
 </html>

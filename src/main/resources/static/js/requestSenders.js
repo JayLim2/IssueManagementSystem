@@ -90,8 +90,8 @@ function deleteRequest(id, entity) {
 /* OPERATIVE DATA */
 
 //Add request
-function addOperativeDataRequest(entity) {
-    let serialized = $("#addForm").serialize();
+function addOperativeDataRequest(entity, formId, responseId) {
+    let serialized = $(formId).serialize();
 
     $.post({
         url: '/' + entity + '/add',
@@ -112,7 +112,7 @@ function addOperativeDataRequest(entity) {
         }
 
         let msgClass = (data.info ? "info" : "err") + '-msg';
-        $("#add-response").html("<div class='" + msgClass + "'>" + result + "</div>");
+        $(responseId).html("<div class='" + msgClass + "'>" + result + "</div>");
 
         if (data.info && !isEmployeeHandbook) {
             setTimeout(
@@ -128,8 +128,8 @@ function addOperativeDataRequest(entity) {
 }
 
 //Edit request
-function editOperativeDataRequest(entity) {
-    let serialized = $("#editForm").serialize();
+function editOperativeDataRequest(entity, formId, responseId) {
+    let serialized = $(formId).serialize();
 
     $.post({
         url: '/' + entity + '/edit',
@@ -142,7 +142,7 @@ function editOperativeDataRequest(entity) {
     }).done(function (data) {
         let result = data.info ? data.info : data.error;
         let msgClass = (data.info ? "info" : "err") + '-msg';
-        $("#edit-response").html("<div class='" + msgClass + "'>" + result + "</div>");
+        $(responseId).html("<div class='" + msgClass + "'>" + result + "</div>");
 
         if (data.info) {
             setTimeout(
@@ -170,10 +170,11 @@ function deleteOperativeDataRequest(id, entity) {
     }).done(function (data) {
         let result = data.info ? data.info : data.error;
         let msgClass = (data.info ? "info" : "err") + '-msg';
-        $("#response").html("<div class='" + msgClass + "' style='margin:0 35px'>" + result + "</div>");
+        $("#response").html("<div class='" + msgClass + "' style='margin:0 35px 10px 35px'>" + result + "</div>");
 
+        let rowId = entity === 'projects' ? "#row-" + id : "#issue-row-" + id;
         if (data.info) {
-            $("#row-" + id).html(null);
+            $(rowId).html(null);
         }
     });
 }

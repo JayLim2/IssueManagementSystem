@@ -131,11 +131,38 @@ public class ViewsController {
         List<Project> projects = projectsService.getAll();
         List<ProjectType> projectTypes = projectTypesService.getAll();
 
+        List<Employee> employees = employeesService.getAll();
+        List<IssueType> issueTypes = issueTypesService.getAll();
+        List<IssuePriority> issuePriorities = issuePrioritiesService.getAll();
+        List<IssueWorkflowStatus> issueWorkflowStatuses = issueWorkflowStatusesService.getAll();
+
+        //project attributes
         model.addAttribute("projectTypes", projectTypes);
-        model.addAttribute("projects", projects);
         model.addAttribute("project", project);
         model.addAttribute("issues", issues);
 
+        //issue attributes
+        model.addAttribute("employees", employees);
+        model.addAttribute("issueTypes", issueTypes);
+        model.addAttribute("issuePriorities", issuePriorities);
+        model.addAttribute("issueWorkflowStatuses", issueWorkflowStatuses);
+        model.addAttribute("descriptionWrapper", new IssueDescriptionWrapper());
+
+        //common
+        model.addAttribute("projects", projects);
+
         return "projectInfo";
+    }
+
+    @GetMapping("/issues/{issueId}")
+    public String getIssue(Model model, @PathVariable int issueId) {
+
+        Issue issue = issuesService.getById(issueId);
+        model.addAttribute("issue", issue);
+
+        List<Issue> issues = issuesService.getAll();
+        model.addAttribute("issues", issues);
+
+        return "issueInfo";
     }
 }

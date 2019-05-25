@@ -120,7 +120,6 @@ public class IssuesService implements JpaService<Issue, Integer> {
 
                 message = trySave(issue);
             }
-            attrs.put("entity", issue);
         } else {
             message = "Задача с таким ID не существует.";
         }
