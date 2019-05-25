@@ -29,7 +29,7 @@ public class IssuesService implements JpaService<Issue, Integer> {
 
     @Override
     public Issue getById(Integer id) {
-        return issuesRepository.getOne(id);
+        return isExistsById(id) ? issuesRepository.getOne(id) : null;
     }
 
     @Override
