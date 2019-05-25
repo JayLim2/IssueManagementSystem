@@ -84,10 +84,8 @@ public class EmployeePositionsService implements JpaService<EmployeePosition, In
             if (message == null) {
                 position.setName(name);
                 message = trySave(position);
-            } else {
-                position.setName(null);
             }
-            attrs.put("entity", position);
+            //attrs.put("entity", position);
         } else {
             message = "Должность с таким ID не существует.";
         }

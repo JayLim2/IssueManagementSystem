@@ -5,7 +5,6 @@ import org.sergei.komarov.services.IssueTypesService;
 import org.sergei.komarov.services.IssueWorkflowStatusesService;
 import org.sergei.komarov.utils.SQLExceptionParser;
 import org.springframework.transaction.TransactionSystemException;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,40 +22,38 @@ public class IssueTypesHandbookController {
     private IssueTypesService issueTypesService;
     private IssueWorkflowStatusesService issueWorkflowStatusesService;
 
+    // FIXME: 24.05.2019 cycle references!!!
     @PostMapping("/add")
     public Map<String, Object> handleAddRequest(String name, @RequestParam(required = false) List<Integer> statuses) {
 
         Map<String, Object> attrs = new HashMap<>();
-        attrs.put("statuses", issueWorkflowStatusesService.getAll());
         issueTypesService.validateAndSave(attrs, name, issueWorkflowStatusesService.getByIds(statuses));
 
         return attrs;
     }
 
     @PostMapping("/edit")
-    public Map<String, Object> handleEditRequest(Model model, int issueTypeId,
-                                                 String name, List<Integer> statuses) {
+    public Map<String, Object> handleEditRequest(int id,
+                                                 String name, @RequestParam(required = false) List<Integer> statuses) {
         Map<String, Object> attrs = new HashMap<>();
-        attrs.put("statuses", issueWorkflowStatusesService.getAll());
-        issueTypesService.validateAndUpdate(attrs, issueTypeId, name, issueWorkflowStatusesService.getByIds(statuses));
-        model.addAllAttributes(attrs);
+        issueTypesService.validateAndUpdate(attrs, id, name, issueWorkflowStatusesService.getByIds(statuses));
 
         return attrs;
     }
 
     @PostMapping("/delete")
-    public Map<String, Object> handleDeleteRequest(int issueTypeId) {
+    public Map<String, Object> handleDeleteRequest(int id) {
 
         Map<String, Object> attrs = new HashMap<>();
 
-        boolean isExists = issueTypesService.isExistsById(issueTypeId);
+        boolean isExists = issueTypesService.isExistsById(id);
         attrs.put("isExists", isExists);
         String message = null;
         if (!isExists) {
             message = "Тип задач с таким ID не существует.";
         } else {
             try {
-                issueTypesService.deleteById(issueTypeId);
+                issueTypesService.deleteById(id);
             } catch (TransactionSystemException e) {
                 Throwable ex = SQLExceptionParser.getUnwrappedPSQLException(e);
                 if (ex != null) {
@@ -67,7 +64,7 @@ public class IssueTypesHandbookController {
         }
 
         if (message == null) {
-            attrs.put("info", "Тип задач с ID " + issueTypeId + " удален.");
+            attrs.put("info", "Тип задач с ID " + id + " удален.");
         } else {
             attrs.put("error", message);
         }

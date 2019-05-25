@@ -82,7 +82,10 @@ public class ViewsController {
     public String getIssueTypesViewPage(Model model) {
 
         List<IssueType> issueTypes = issueTypesService.getAll();
+        List<IssueWorkflowStatus> statuses = issueWorkflowStatusesService.getAll();
+
         model.addAttribute("entities", issueTypes);
+        model.addAttribute("statuses", statuses);
 
         return "issueTypes";
     }

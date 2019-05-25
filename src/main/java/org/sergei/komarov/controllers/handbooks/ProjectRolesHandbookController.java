@@ -1,5 +1,6 @@
 package org.sergei.komarov.controllers.handbooks;
 
+import lombok.AllArgsConstructor;
 import org.sergei.komarov.services.ProjectRolesService;
 import org.sergei.komarov.utils.SQLExceptionParser;
 import org.springframework.transaction.TransactionSystemException;
@@ -12,13 +13,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/handbook/projectRoles")
+@AllArgsConstructor
 public class ProjectRolesHandbookController implements HandbookController {
 
     private final ProjectRolesService projectRolesService;
-
-    public ProjectRolesHandbookController(ProjectRolesService projectRolesService) {
-        this.projectRolesService = projectRolesService;
-    }
 
     @PostMapping("/add")
     public Map<String, Object> handleAddRequest(String name) {

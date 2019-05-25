@@ -1,6 +1,8 @@
 package org.sergei.komarov.models;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,7 +18,7 @@ public class EmployeePosition {
     @SequenceGenerator(name = "employee_position_id_seq")
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "position")

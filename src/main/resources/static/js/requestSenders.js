@@ -7,9 +7,9 @@ function addRequest(entity) {
         data: serialized,
         statusCode: {
             200: function () {
-                console.log('Entity \"' + title + '\" added.');
+                console.log('added')
             }
-        },
+        }
     }).done(function (data) {
         let result = data.info ? data.info : data.error;
         let msgClass = (data.info ? "info" : "err") + '-msg';
@@ -37,9 +37,9 @@ function editRequest(entity) {
         data: serialized,
         statusCode: {
             200: function () {
-                console.log('Entity \"' + title + '\" edited.');
+                console.log('edited');
             }
-        },
+        }
     }).done(function (data) {
         let result = data.info ? data.info : data.error;
         let msgClass = (data.info ? "info" : "err") + '-msg';

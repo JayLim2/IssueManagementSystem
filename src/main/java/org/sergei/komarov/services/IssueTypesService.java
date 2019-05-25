@@ -84,10 +84,8 @@ public class IssueTypesService implements JpaService<IssueType, Integer> {
                 type.setName(name);
                 type.setWorkflowStatuses(statuses);
                 message = trySave(type);
-            } else {
-                type.setName(null);
             }
-            attrs.put("entity", type);
+            //attrs.put("entity", type);
         } else {
             message = "Тип задач с таким ID не существует.";
         }
