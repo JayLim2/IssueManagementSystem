@@ -2,7 +2,6 @@ package org.sergei.komarov.utils;
 
 import org.sergei.komarov.models.EmployeePosition;
 import org.sergei.komarov.models.IssueWorkflowStatus;
-import org.sergei.komarov.models.Project;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -232,8 +231,6 @@ public class Validators {
             message = "Название проекта не должно превышать "
                     + MAX_PROJECT_TITLE_LENGTH
                     + " символов.";
-        } else if (EXCLUDED_PATTERN.matcher(title).find()) {
-            message = "Название проекта не должно содержать цифры.";
         }
 
         return message;

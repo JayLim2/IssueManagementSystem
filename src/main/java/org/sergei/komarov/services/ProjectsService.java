@@ -23,7 +23,7 @@ public class ProjectsService implements JpaService<Project, Integer> {
 
     @Override
     public Project getById(Integer id) {
-        return projectsRepository.getOne(id);
+        return isExistsById(id) ? projectsRepository.getOne(id) : null;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ProjectsService implements JpaService<Project, Integer> {
                 project.setType(projectType);
                 message = trySave(project);
             }
-            attrs.put("entity", project);
+            //attrs.put("entity", project);
         } else {
             message = "Проект с таким ID не существует.";
         }

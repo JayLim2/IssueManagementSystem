@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="libs :: headerFragment">
-    <title id="pageTitle">Главная страница</title>
+    <title id="pageTitle">Учет проектов</title>
 </head>
 <body>
 <div th:replace="menu :: menu"></div>
@@ -9,14 +9,76 @@
 <!-- body -->
 <div style="padding-top:35px">
 
-    <div style="margin-left: 35px; margin-bottom: 10px;">
-        <a type="button"
-           class="btn btn-dark"
-           th:href="@{/projects/add}"
-        >
-            Создать новый проект
-        </a>
+    <!-- ADD BUTTON -->
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addEntity"
+            style="margin-bottom:20px;margin-left:35px;"
+    >
+        Создать новый проект
+    </button>
+
+    <!-- ADD MODAL FORM -->
+    <div class="modal fade" id="addEntity" tabindex="-1" role="dialog"
+         aria-labelledby="addDialogTitle" aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDialogTitle">Создать новый проект</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div id="add-response"></div>
+
+                    <div class="warn-msg" th:if="${projectTypes == null || projectTypes.size() == 0}">
+                        Создание проектов ограничено, т.к. нет ни одного <a href="/handbook/projectTypes/add">типа
+                        проекта</a>.
+                    </div>
+                    <form id="addForm" action="javascript:void(0)" method="post"
+                          onsubmit="addOperativeDataRequest('projects')"
+                          th:unless="${projectTypes == null || projectTypes.size() == 0}"
+                    >
+                        <div class="table-block">
+                            <div class="table-row">
+                                <div class="table-cell" style="width:200px">
+                                    <b class="required-field-marker">Название проекта:</b>
+                                </div>
+                                <div class="table-cell">
+                                    <input type="text" class="input" name="title"
+                                           placeholder="Например, MegaFon Billing System"/>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Тип проекта:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select name="projectTypeId" class="input">
+                                        <option th:each="projectType : ${projectTypes}"
+                                                th:value="${projectType.getId()}"
+                                                th:text="${projectType.getName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="width:200px">
+                                </div>
+                                <div class="table-cell">
+                                    <input type="submit" class="submit-btn" value="Создать"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!--/ ADD MODAL FORM -->
 
     <div class="issues-frame">
         <div style="display:table-row">
@@ -42,7 +104,7 @@
                 <div>
                     <div th:if="${projects != null && projects.size() > 0}" th:each="project : ${projects}"
                          class="issue-list-item"
-                         th:onclick="'window.location.href = \'/projects/view/'+${project.getId()}+'\''"
+                         th:onclick="'window.location.href = \'/projects/'+${project.getId()}+'\''"
                     >
                         <div class="issue-list-item-header" th:text="${project.getTitle()}"></div>
                         <div class="issue-list-item-body" th:text="${project.getType().getName()}"></div>
