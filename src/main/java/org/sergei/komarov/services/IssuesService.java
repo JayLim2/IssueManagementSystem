@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +21,10 @@ public class IssuesService implements JpaService<Issue, Integer> {
     @Override
     public List<Issue> getAll() {
         return issuesRepository.findAll();
+    }
+
+    public List<Issue> getByProject(Project project) {
+        return issuesRepository.findByProject(project);
     }
 
     @Override

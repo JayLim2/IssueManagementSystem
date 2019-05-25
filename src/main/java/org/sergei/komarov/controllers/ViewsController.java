@@ -23,6 +23,7 @@ public class ViewsController {
     private final EmployeesService employeesService;
     private final UsersService usersService;
     private final ProjectsService projectsService;
+    private final IssuesService issuesService;
 
     @GetMapping("/handbook/projectTypes")
     public String getProjectTypesViewPage(Model model) {
@@ -126,12 +127,14 @@ public class ViewsController {
             return "redirect:/projects/all";
         }
 
+        List<Issue> issues = issuesService.getByProject(project);
         List<Project> projects = projectsService.getAll();
         List<ProjectType> projectTypes = projectTypesService.getAll();
 
         model.addAttribute("projectTypes", projectTypes);
         model.addAttribute("projects", projects);
         model.addAttribute("project", project);
+        model.addAttribute("issues", issues);
 
         return "projectInfo";
     }

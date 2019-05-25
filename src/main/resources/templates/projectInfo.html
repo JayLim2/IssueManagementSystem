@@ -175,6 +175,78 @@
                 </div>
 
                 <b style="color:#575757">Тип проекта: </b><span th:text="${project.getType().getName()}"></span>
+
+
+                <!-- Issues table -->
+
+                <div>
+                    <button type="button" class="btn btn-success"
+                            data-toggle="modal" data-target="#addIssue"
+                            style="margin-top:20px;"
+                    >
+                        Создать задачу
+                    </button>
+                </div>
+
+                <table class="table" style="border:1px solid rgb(233, 236, 239);margin:10px 0;">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Номер задачи</th>
+                        <th scope="col">Название задачи</th>
+                        <th scope="col">Приоритет</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col">Ответственный</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <!-- if issues exists -->
+                    <tbody th:if="${issues != null && issues.size() > 0}">
+                    <tr th:each="issue : ${issues}">
+                        <td style="border:1px solid rgb(233, 236, 239);" th:text="${issue.getId()}"></td>
+                        <td style="border:1px solid rgb(233, 236, 239);">
+                            <a th:href="'/issues/'+${issue.getId()}"
+                               th:text="${issue.getTitle()}"
+                               target="_blank"
+                            >
+                            </a>
+                        </td>
+                        <td style="border:1px solid rgb(233, 236, 239);"
+                            th:text="${issue.getPriority().getName()}"></td>
+                        <td style="border:1px solid rgb(233, 236, 239);" th:text="${issue.getStatus().getName()}"></td>
+                        <td style="border:1px solid rgb(233, 236, 239);"
+                            th:text="${issue.getAssignee() != null ? issue.getAssignee() : 'не назначен'}"></td>
+                        <td>
+                            <button type="button"
+                                    class="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#editEntity"
+                                    th:data-title="${project.getTitle()}"
+                                    th:data-id="${project.getId()}"
+                                    th:data-project-type="${project.getType().getId()}"
+                            >
+                                &#128393;
+                            </button>
+                            <button class="btn btn-danger"
+                                    th:onclick="'deleteOperativeDataRequest('+${project.getId()}+',\'projects\')'"
+                            >
+                                &#128940;
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <!-- else -->
+                    <tbody th:unless="${issues != null && issues.size() > 0}">
+                    <tr>
+                        <td colspan="6">
+                            Для данного проекта еще не создано ни одной задачи.
+                        </td>
+                    </tr>
+                    </tbody>
+                    <!-- endif -->
+                </table>
+
+                <!--/ Issues table -->
+
             </div>
 
             <div th:unless="${projects != null && projects.size() > 0}" class="issue-body-frame no-content">
@@ -191,7 +263,7 @@
                 <div>
                     <div th:if="${projects != null && projects.size() > 0}" th:each="currentProject : ${projects}"
                          th:class="${project.getId() == currentProject.getId() ? 'issue-list-item selected' : 'issue-list-item'}"
-                         th:onclick="'window.location.href = \'/projects/view/'+${currentProject.getId()}+'\''"
+                         th:onclick="'window.location.href = \'/projects/'+${currentProject.getId()}+'\''"
                          th:id="'row-'+${project.getId()}"
                     >
                         <div class="issue-list-item-header" th:text="${currentProject.getTitle()}"></div>

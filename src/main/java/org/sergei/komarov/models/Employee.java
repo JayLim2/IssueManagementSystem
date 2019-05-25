@@ -1,6 +1,8 @@
 package org.sergei.komarov.models;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -48,4 +50,9 @@ public class Employee {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
     private List<TimeSheet> timeSheets;
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }
