@@ -297,7 +297,7 @@
                                     <b>Родительская задача:</b>
                                 </div>
                                 <div class="table-cell" style="vertical-align:top;">
-                                    <select name="rootTaskId" class="input">
+                                    <select name="parentIssueId" class="input">
                                         <option value="0" selected>
                                             - Нет родительской задачи -
                                         </option>
@@ -469,7 +469,7 @@
                                     <b>Родительская задача:</b>
                                 </div>
                                 <div class="table-cell" style="vertical-align:top;">
-                                    <select id="issueRoot" name="rootTaskId" class="input">
+                                    <select id="issueParent" name="parentIssueId" class="input">
                                         <option value="0" selected>
                                             - Нет родительской задачи -
                                         </option>
@@ -582,7 +582,7 @@
                                     th:data-issue-status="${issue.getStatus().getId()}"
                                     th:data-assignee="${issue.getAssignee() != null ? issue.getAssignee().getId() : null}"
                                     th:data-due-date="${issue.getDueDate() != null ? issue.getDueDate() : null}"
-                                    th:data-root-task="0"
+                                    th:data-parent-issue="${issue.getParent() != null ? issue.getParent().getId() : null}"
                                     th:data-project="${issue.getProject().getId()}"
                             >
                                 &#128393;
@@ -682,7 +682,7 @@
             let issueStatusId = Number.parseInt(button.data('issue-status'));
             let projectId = Number.parseInt(button.data('project'));
             let assigneeId = Number.parseInt(button.data('assignee'));
-            let rootId = Number.parseInt(button.data('root-task'));
+            let parentId = Number.parseInt(button.data('parent-issue'));
             let dueDate = button.data('due-date');
 
             let modal = $(this);
@@ -697,18 +697,18 @@
             $("#issuePriorityId [value='" + issuePriorityId + "']").attr("selected", "selected");
             $("#issueStatusId [value='" + issueStatusId + "']").attr("selected", "selected");
             $("#issueAssignee [value='" + assigneeId + "']").attr("selected", "selected");
-            $("#issueRoot [value='" + rootId + "']").attr("selected", "selected");
+            $("#issueParent [value='" + parentId + "']").attr("selected", "selected");
         }
     );
 
     //date-pickers
     $(document).ready(function () {
-        $('#addDueDate').datepicker({
+        const format = {
             format: 'dd.mm.yyyy'
-        });
-        $('#editDueDate').datepicker({
-            format: 'dd.mm.yyyy'
-        });
+        };
+
+        $('#addDueDate').datepicker(format);
+        $('#editDueDate').datepicker(format);
     });
 </script>
 </body>

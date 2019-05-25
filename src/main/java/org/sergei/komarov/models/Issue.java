@@ -1,19 +1,21 @@
 package org.sergei.komarov.models;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "issues")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@Cacheable(false)
 public class Issue implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_id_seq")
@@ -66,9 +68,21 @@ public class Issue implements Serializable {
     @JoinColumn(name = "creator_id", nullable = false)
     private Employee creator;
 
+    @ManyToOne
+    @JoinColumn(name = "parent")
+    private Issue parent;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
+    private List<Issue> children;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")
     private List<IssueAction> issueActions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")
     private List<TimeSheet> associatedTimeSheets;
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }

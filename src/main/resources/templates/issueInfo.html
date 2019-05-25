@@ -18,13 +18,6 @@
         Создать задачу
     </button>
 
-    <button type="button" class="btn btn-success"
-            data-toggle="modal" data-target="#addSubIssue"
-            style="margin-left:10px;margin-bottom:20px;"
-    >
-        Создать подзадачу
-    </button>
-
     <!-- ADD ISSUE MODAL FORM -->
     <div class="modal fade" id="addIssue" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -177,7 +170,7 @@
                                     <b>Родительская задача:</b>
                                 </div>
                                 <div class="table-cell" style="vertical-align:top;">
-                                    <select name="rootTaskId" class="input">
+                                    <select name="parentIssueId" class="input">
                                         <option value="0" selected>
                                             - Нет родительской задачи -
                                         </option>
@@ -349,7 +342,7 @@
                                     <b>Родительская задача:</b>
                                 </div>
                                 <div class="table-cell" style="vertical-align:top;">
-                                    <select id="issueRoot" name="rootTaskId" class="input">
+                                    <select id="issueParent" name="parentIssueId" class="input">
                                         <option value="0" selected>
                                             - Нет родительской задачи -
                                         </option>
@@ -398,7 +391,7 @@
                                     th:data-issue-status="${issue.getStatus().getId()}"
                                     th:data-assignee="${issue.getAssignee() != null ? issue.getAssignee().getId() : null}"
                                     th:data-due-date="${issue.getDueDate() != null ? issue.getDueDate() : null}"
-                                    th:data-root-task="0"
+                                    th:data-parent-issue="${issue.getParent() != null ? issue.getParent().getId() : null}"
                                     th:data-project="${issue.getProject().getId()}"
                             >
                                 Изменить
@@ -456,6 +449,92 @@
                         <div style="display:table-cell;padding:15px 15px 15px 0;">
                             <b style="color:#575757;">Описание задачи</b>
                             <p th:text="${issue.getDescription()}"></p>
+
+                            <div>
+                                <h6>Подзадачи:</h6>
+
+                                <!-- Issues table -->
+
+                                <div>
+                                    <button type="button" class="btn btn-success"
+                                            data-toggle="modal" data-target="#addIssue"
+                                            th:data-project="${issue.getProject().getId()}"
+                                            style="margin-top:20px;"
+                                    >
+                                        Создать подзадачу
+                                    </button>
+                                </div>
+
+                                <table class="table" style="border:1px solid rgb(233, 236, 239);margin:10px 0;">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col" style="width:50px;">#</th>
+                                        <th scope="col">Название задачи</th>
+                                        <th scope="col">Приоритет</th>
+                                        <th scope="col">Статус</th>
+                                        <th scope="col">Ответственный</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                    </thead>
+                                    <!-- if issues exists -->
+                                    <tbody th:if="${issue.getChildren() != null && issue.getChildren().size() > 0}">
+                                    <tr th:id="'subtask-row-' + ${subtask.getId()}"
+                                        th:each="subtask : ${issue.getChildren()}">
+                                        <td style="border:1px solid rgb(233, 236, 239);"
+                                            th:text="${subtask.getId()}"></td>
+                                        <td style="border:1px solid rgb(233, 236, 239);">
+                                            <a th:href="'/issues/'+${subtask.getId()}"
+                                               th:text="${subtask.getTitle()}"
+                                               target="_blank"
+                                            >
+                                            </a>
+                                        </td>
+                                        <td style="border:1px solid rgb(233, 236, 239);"
+                                            th:text="${subtask.getPriority().getName()}"></td>
+                                        <td style="border:1px solid rgb(233, 236, 239);"
+                                            th:text="${subtask.getStatus().getName()}"></td>
+                                        <td style="border:1px solid rgb(233, 236, 239);"
+                                            th:text="${subtask.getAssignee() != null ? subtask.getAssignee() : 'не назначен'}"></td>
+                                        <td>
+                                            <button type="button"
+                                                    class="btn btn-primary"
+                                                    data-toggle="modal"
+                                                    data-target="#editIssue"
+                                                    th:data-id="${subtask.getId()}"
+                                                    th:data-title="${subtask.getTitle()}"
+                                                    th:data-description="${subtask.getDescription()}"
+                                                    th:data-issue-type="${subtask.getType().getId()}"
+                                                    th:data-issue-priority="${subtask.getPriority().getId()}"
+                                                    th:data-issue-status="${subtask.getStatus().getId()}"
+                                                    th:data-assignee="${subtask.getAssignee() != null ? subtask.getAssignee().getId() : null}"
+                                                    th:data-due-date="${subtask.getDueDate() != null ? subtask.getDueDate() : null}"
+                                                    th:data-parent-issue="${subtask.getParent() != null ? subtask.getParent().getId() : null}"
+                                                    th:data-project="${subtask.getProject().getId()}"
+                                            >
+                                                &#128393;
+                                            </button>
+                                            <button class="btn btn-danger"
+                                                    th:onclick="'deleteOperativeDataRequest('+${subtask.getId()}+',\'issues\')'"
+                                            >
+                                                &#128940;
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <!-- else -->
+                                    <tbody th:unless="${issue.getChildren() != null && issue.getChildren().size() > 0}">
+                                    <tr>
+                                        <td colspan="6">
+                                            Для данного проекта еще не создано ни одной задачи.
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <!-- endif -->
+                                </table>
+
+                                <!--/ Issues table -->
+
+                            </div>
                         </div>
 
                         <div style="display:table-cell;width:200px;padding:15px 0 15px 15px;border-left:1px solid #aaaaaa">
@@ -580,7 +659,7 @@
             let issueStatusId = Number.parseInt(button.data('issue-status'));
             let projectId = Number.parseInt(button.data('project'));
             let assigneeId = Number.parseInt(button.data('assignee'));
-            let rootId = Number.parseInt(button.data('root-task'));
+            let parentId = Number.parseInt(button.data('parent-issue'));
             let dueDate = button.data('due-date');
 
             let modal = $(this);
@@ -595,18 +674,18 @@
             $("#issuePriorityId [value='" + issuePriorityId + "']").attr("selected", "selected");
             $("#issueStatusId [value='" + issueStatusId + "']").attr("selected", "selected");
             $("#issueAssignee [value='" + assigneeId + "']").attr("selected", "selected");
-            $("#issueRoot [value='" + rootId + "']").attr("selected", "selected");
+            $("#issueParent [value='" + parentId + "']").attr("selected", "selected");
         }
     );
 
     //date-pickers
     $(document).ready(function () {
-        $('#addDueDate').datepicker({
+        const format = {
             format: 'dd.mm.yyyy'
-        });
-        $('#editDueDate').datepicker({
-            format: 'dd.mm.yyyy'
-        });
+        };
+
+        $('#addDueDate').datepicker(format);
+        $('#editDueDate').datepicker(format);
     });
 </script>
 </body>

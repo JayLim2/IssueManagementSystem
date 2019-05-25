@@ -79,6 +79,8 @@ public class IssuesService implements JpaService<Issue, Integer> {
             issue.setCreator(usersService.getCurrentUser().getEmployee());
             issue.setStatus(status);
 
+            issue.setParent(rootTask);
+
             LocalDateTime now = LocalDateTime.now();
             issue.setCreatedDateTime(now);
             issue.setUpdatedDateTime(now);
@@ -113,6 +115,8 @@ public class IssuesService implements JpaService<Issue, Integer> {
                 issue.setAssignee(assignee);
                 issue.setCreator(usersService.getCurrentUser().getEmployee());
                 issue.setStatus(status);
+
+                issue.setParent(rootTask);
 
                 LocalDateTime now = LocalDateTime.now();
                 issue.setCreatedDateTime(now);

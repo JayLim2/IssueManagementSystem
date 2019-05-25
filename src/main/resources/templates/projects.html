@@ -37,7 +37,7 @@
                         проекта</a>.
                     </div>
                     <form id="addForm" action="javascript:void(0)" method="post"
-                          onsubmit="addOperativeDataRequest('projects')"
+                          onsubmit="addOperativeDataRequest('projects', '#addForm', '#add-response')"
                           th:unless="${projectTypes == null || projectTypes.size() == 0}"
                     >
                         <div class="table-block">

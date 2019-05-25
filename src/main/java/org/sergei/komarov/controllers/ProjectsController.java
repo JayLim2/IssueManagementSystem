@@ -8,6 +8,7 @@ import org.sergei.komarov.utils.SQLExceptionParser;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class ProjectsController {
     private final ProjectTypesService projectTypesService;
 
     @PostMapping("/add")
-    public Map<String, Object> addProject(String title, int projectTypeId) {
+    public Map<String, Object> addProject(String title, @RequestParam int projectTypeId) {
 
         Map<String, Object> attrs = new HashMap<>();
         List<ProjectType> projectTypes = projectTypesService.getAll();
@@ -36,7 +37,7 @@ public class ProjectsController {
 
     @PostMapping("/edit")
     public Map<String, Object> editProject(int id,
-                                           String title, int projectTypeId) {
+                                           String title, @RequestParam int projectTypeId) {
 
         Map<String, Object> attrs = new HashMap<>();
         List<ProjectType> projectTypes = projectTypesService.getAll();

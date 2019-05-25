@@ -31,7 +31,7 @@ public class IssuesController {
     public Map<String, Object> addIssue(String title,
                                         String dueDateStr,
                                         Integer assigneeId,
-                                        Integer rootTaskId,
+                                        Integer parentIssueId,
                                         @RequestParam int projectId,
                                         @RequestParam int typeId,
                                         @RequestParam int priorityId,
@@ -42,7 +42,7 @@ public class IssuesController {
 
         Employee assignee = assigneeId != null && assigneeId != 0 ? employeesService.getById(assigneeId) : null;
         Project project = projectsService.getById(projectId);
-        Issue rootTask = rootTaskId != null && rootTaskId != 0 ? issuesService.getById(rootTaskId) : null;
+        Issue rootTask = parentIssueId != null && parentIssueId != 0 ? issuesService.getById(parentIssueId) : null;
         IssueType type = issueTypesService.getById(typeId);
         IssuePriority priority = issuePrioritiesService.getById(priorityId);
         IssueWorkflowStatus status = issueWorkflowStatusesService.getById(statusId);
@@ -61,7 +61,7 @@ public class IssuesController {
                                          String title,
                                          String dueDateStr,
                                          Integer assigneeId,
-                                         Integer rootTaskId,
+                                         Integer parentIssueId,
                                          int projectId, int typeId, int priorityId, int statusId,
                                          IssueDescriptionWrapper descriptionWrapper) {
 
@@ -69,7 +69,7 @@ public class IssuesController {
 
         Employee assignee = assigneeId != null && assigneeId != 0 ? employeesService.getById(assigneeId) : null;
         Project project = projectsService.getById(projectId);
-        Issue rootTask = rootTaskId != null && rootTaskId != 0 ? issuesService.getById(rootTaskId) : null;
+        Issue rootTask = parentIssueId != null && parentIssueId != 0 ? issuesService.getById(parentIssueId) : null;
         IssueType type = issueTypesService.getById(typeId);
         IssuePriority priority = issuePrioritiesService.getById(priorityId);
         IssueWorkflowStatus status = issueWorkflowStatusesService.getById(statusId);
