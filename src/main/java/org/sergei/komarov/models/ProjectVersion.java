@@ -1,14 +1,16 @@
 package org.sergei.komarov.models;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "versions")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class ProjectVersion {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_version_id_seq")
@@ -22,4 +24,9 @@ public class ProjectVersion {
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -159,3 +159,15 @@
 .issue-list-item-body {
     color: #252525;
 }
+
+
+.issue-action {
+    border: 1px solid #e4e4e4;
+    padding: 7px 15px;
+    font-size: 11pt;
+}
+
+.issue-action:hover {
+    background: #e4e4e4;
+    cursor: pointer;
+}

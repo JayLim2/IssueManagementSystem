@@ -26,6 +26,7 @@ public class Validators {
     private static final int MAX_PROJECT_TITLE_LENGTH = 300;
     private static final int MAX_ISSUE_TITLE_LENGTH = 300;
     private static final int MAX_ISSUE_DESCRIPTION_LENGTH = 2500;
+    private static final int MAX_COMMENT_LENGTH = 1000;
 
     public static boolean isArrayWithNulls(Object... data) {
         if (data == null) {
@@ -255,6 +256,18 @@ public class Validators {
             message = "Задача обязательно должна иметь описание.";
         } else if (dueDate != null && dueDate.isBefore(LocalDate.now())) {
             message = "Дата окончания выполнения задачи должна быть не раньше текущего дня.";
+        }
+
+        return message;
+    }
+
+    public static String validateComment(String comment) {
+        String message = null;
+
+        if (comment.isEmpty()) {
+            message = "Введите текст комментария.";
+        } else if (comment.length() > MAX_COMMENT_LENGTH) {
+            message = "Длина комментария не должна превышать " + MAX_COMMENT_LENGTH + " символов.";
         }
 
         return message;

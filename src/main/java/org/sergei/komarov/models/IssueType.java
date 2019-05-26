@@ -1,7 +1,8 @@
 package org.sergei.komarov.models;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "issue_types")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class IssueType {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_type_id_seq")
@@ -30,4 +32,9 @@ public class IssueType {
             inverseJoinColumns = @JoinColumn(name = "workflow_status_id")
     )
     private List<IssueWorkflowStatus> workflowStatuses;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

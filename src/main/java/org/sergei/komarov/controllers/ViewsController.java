@@ -24,6 +24,7 @@ public class ViewsController {
     private final UsersService usersService;
     private final ProjectsService projectsService;
     private final IssuesService issuesService;
+    private final IssueActionsService issueActionsService;
 
     @GetMapping("/handbook/projectTypes")
     public String getProjectTypesViewPage(Model model) {
@@ -168,12 +169,16 @@ public class ViewsController {
         List<IssueType> issueTypes = issueTypesService.getAll();
         List<IssuePriority> issuePriorities = issuePrioritiesService.getAll();
         List<IssueWorkflowStatus> issueWorkflowStatuses = issueWorkflowStatusesService.getAll();
+        List<IssueAction> actions = issueActionsService.getByIssue(issue);
         model.addAttribute("projects", projects);
         model.addAttribute("employees", employees);
         model.addAttribute("issueTypes", issueTypes);
         model.addAttribute("issuePriorities", issuePriorities);
         model.addAttribute("issueWorkflowStatuses", issueWorkflowStatuses);
+        model.addAttribute("actions", actions);
+
         model.addAttribute("descriptionWrapper", new IssueDescriptionWrapper());
+        model.addAttribute("commentWrapper", new CommentWrapper());
 
         List<Issue> issues = issuesService.getAll();
         model.addAttribute("issues", issues);

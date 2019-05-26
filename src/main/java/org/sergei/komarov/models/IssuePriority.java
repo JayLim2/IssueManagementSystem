@@ -1,7 +1,8 @@
 package org.sergei.komarov.models;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "issue_priorities")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class IssuePriority {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_priority_id_seq")
@@ -21,4 +23,9 @@ public class IssuePriority {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "priority")
     private List<Issue> issues;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

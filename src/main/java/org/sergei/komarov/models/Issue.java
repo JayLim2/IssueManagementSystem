@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Cacheable(false)
-public class Issue implements Serializable {
+public class Issue implements Serializable, Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issue_id_seq")
     @SequenceGenerator(name = "issue_id_seq")

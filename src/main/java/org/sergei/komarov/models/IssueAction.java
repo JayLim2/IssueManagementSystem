@@ -27,5 +27,9 @@ public class IssueAction {
     @JoinColumn(nullable = false)
     private LocalDateTime date;
 
-    private String comment;
+    @Column(name = "service_comment")
+    private ServiceComment serviceComment;
+
+    @Column(name = "employee_comment")
+    private String employeeComment;
 }

@@ -23,4 +23,9 @@ public class EmployeePosition {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "position")
     private List<Employee> employees;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

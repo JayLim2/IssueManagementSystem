@@ -178,3 +178,28 @@ function deleteOperativeDataRequest(id, entity) {
         }
     });
 }
+
+
+/* COMMENTS */
+
+//Add request
+function addCommentRequest() {
+    let serialized = $("#addComment").serialize();
+
+    $.post({
+        url: '/issueActions/add',
+        data: serialized,
+        statusCode: {
+            200: function () {
+                console.log('added')
+            }
+        }
+    }).done(function (data) {
+        let result = data.info ? data.info : data.error;
+
+        let msgClass = (data.info ? "info" : "err") + '-msg';
+        $("#add-comment-response").html("<div class='" + msgClass + "' style='margin-top:20px;'>" + result + "</div>");
+    }).fail(function (e) {
+        console.error(e);
+    });
+}

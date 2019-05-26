@@ -1,15 +1,21 @@
 package org.sergei.komarov.services;
 
 import lombok.AllArgsConstructor;
+import org.postgresql.util.PSQLException;
 import org.sergei.komarov.models.*;
 import org.sergei.komarov.repositories.IssuesRepository;
+import org.sergei.komarov.utils.SQLExceptionParser;
 import org.sergei.komarov.utils.Validators;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -17,6 +23,7 @@ public class IssuesService implements JpaService<Issue, Integer> {
 
     private final IssuesRepository issuesRepository;
     private final UsersService usersService;
+    private final IssueActionsService issueActionsService;
 
     @Override
     public List<Issue> getAll() {
@@ -40,6 +47,10 @@ public class IssuesService implements JpaService<Issue, Integer> {
     @Override
     public void save(Issue entity) {
         issuesRepository.save(entity);
+    }
+
+    public Issue saveAndGet(Issue entity) {
+        return issuesRepository.save(entity);
     }
 
     @Override
@@ -76,9 +87,9 @@ public class IssuesService implements JpaService<Issue, Integer> {
             issue.setPriority(priority);
             issue.setType(type);
             issue.setAssignee(assignee);
-            issue.setCreator(usersService.getCurrentUser().getEmployee());
+            Employee creator = usersService.getCurrentUser().getEmployee();
+            issue.setCreator(creator);
             issue.setStatus(status);
-
             issue.setParent(rootTask);
 
             LocalDateTime now = LocalDateTime.now();
@@ -86,6 +97,10 @@ public class IssuesService implements JpaService<Issue, Integer> {
             issue.setUpdatedDateTime(now);
 
             message = trySave(issue);
+
+            issueActionsService.createAndSave(
+                    issue, creator, ServiceComment.OPENED, null
+            );
         }
 
         addMessageToAttributes(attrs, message, "Задача успешно создана.");
@@ -106,6 +121,20 @@ public class IssuesService implements JpaService<Issue, Integer> {
 
             Issue issue = getById(id);
             if (message == null) {
+                Map<ServiceComment, Object> diffs = issueActionsService.getDifferences(
+                        issue,
+                        title,
+                        description,
+                        dueDate,
+                        project,
+                        null,
+                        priority,
+                        type,
+                        status,
+                        assignee,
+                        rootTask
+                );
+
                 issue.setTitle(title);
                 issue.setDescription(description);
                 issue.setDueDate(dueDate);
@@ -113,21 +142,56 @@ public class IssuesService implements JpaService<Issue, Integer> {
                 issue.setPriority(priority);
                 issue.setType(type);
                 issue.setAssignee(assignee);
-                issue.setCreator(usersService.getCurrentUser().getEmployee());
+                Employee updater = usersService.getCurrentUser().getEmployee();
                 issue.setStatus(status);
-
                 issue.setParent(rootTask);
 
                 LocalDateTime now = LocalDateTime.now();
-                issue.setCreatedDateTime(now);
                 issue.setUpdatedDateTime(now);
 
                 message = trySave(issue);
+
+                //заполнение журнала
+                // FIXME: 26.05.2019
+                List<IssueAction> actions = new ArrayList<>();
+                for (Map.Entry<ServiceComment, Object> diff : diffs.entrySet()) {
+                    ServiceComment serviceComment = diff.getKey();
+                    Object value = diff.getValue();
+                    if (value instanceof LocalDate) {
+                        value = DateTimeFormatter.ofPattern("dd.MM.yyyy").format((LocalDate) value);
+                    }
+                    actions.add(
+                            issueActionsService.create(issue, updater, serviceComment, value.toString())
+                    );
+                }
+                issueActionsService.saveAll(actions);
             }
         } else {
             message = "Задача с таким ID не существует.";
         }
 
         addMessageToAttributes(attrs, message, "Задача успешно изменена.");
+    }
+
+    @Override
+    public String trySave(Issue entity) {
+        String message = null;
+
+        if (entity == null) {
+            throw new NullPointerException();
+        }
+
+        Issue savedIssue;
+        try {
+            savedIssue = saveAndGet(entity);
+            entity.setId(savedIssue.getId());
+        } catch (TransactionSystemException e) {
+            PSQLException ex = (PSQLException) SQLExceptionParser.getUnwrappedPSQLException(e);
+            if (!Objects.equals(ex, null) && Objects.equals(ex.getSQLState(), UNIQUE_VIOLATION_CODE)) {
+                message = "Объект с таким названием уже существует.";
+            }
+        }
+
+        return message;
     }
 }

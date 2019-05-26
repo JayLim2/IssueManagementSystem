@@ -1,7 +1,8 @@
 package org.sergei.komarov.models;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "projects")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_id_seq")
@@ -34,4 +36,9 @@ public class Project {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private List<ProjectTeamMember> projectTeams;
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }
