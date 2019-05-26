@@ -185,4 +185,9 @@ public class ViewsController {
 
         return "issueInfo";
     }
+
+    @GetMapping("/static/reports")
+    public String getReports() {
+        return "reports";
+    }
 }

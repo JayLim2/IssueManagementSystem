@@ -16,6 +16,7 @@
     display: table-cell;
     font-size: 12pt;
     padding: 10px;
+    vertical-align: top;
 }
 
 .login-header {
@@ -170,4 +171,8 @@
 .issue-action:hover {
     background: #e4e4e4;
     cursor: pointer;
+}
+
+.date-mode-radio-group {
+    margin-top: 10px;
 }

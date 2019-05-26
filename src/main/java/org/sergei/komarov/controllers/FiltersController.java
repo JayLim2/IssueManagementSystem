@@ -1,10 +1,8 @@
 package org.sergei.komarov.controllers;
 
 import lombok.AllArgsConstructor;
-import org.sergei.komarov.models.Employee;
-import org.sergei.komarov.services.EmployeesService;
-import org.sergei.komarov.services.IssuesService;
-import org.sergei.komarov.services.ProjectsService;
+import org.sergei.komarov.models.*;
+import org.sergei.komarov.services.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +19,9 @@ public class FiltersController {
     private final IssuesService issuesService;
     private final ProjectsService projectsService;
     private final EmployeesService employeesService;
+    private final IssueTypesService issueTypesService;
+    private final IssuePrioritiesService issuePrioritiesService;
+    private final IssueWorkflowStatusesService issueWorkflowStatusesService;
 
     @GetMapping("/issues")
     public String getIssuesByCriteria(Model model,
@@ -32,6 +33,18 @@ public class FiltersController {
                                       @RequestParam(required = false) List<Integer> statusesIds,
                                       @RequestParam(required = false) List<Integer> prioritiesIds,
                                       @RequestParam(required = false) List<Employee> employeesIds) {
+
+        List<Project> projects = projectsService.getAll();
+        List<Employee> employees = employeesService.getAll();
+        List<IssueType> types = issueTypesService.getAll();
+        List<IssuePriority> priorities = issuePrioritiesService.getAll();
+        List<IssueWorkflowStatus> statuses = issueWorkflowStatusesService.getAll();
+
+        model.addAttribute("projects", projects);
+        model.addAttribute("employees", employees);
+        model.addAttribute("types", types);
+        model.addAttribute("priorities", priorities);
+        model.addAttribute("statuses", statuses);
 
         return "search";
     }

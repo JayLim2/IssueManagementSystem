@@ -203,3 +203,29 @@ function addCommentRequest() {
         console.error(e);
     });
 }
+
+/* REPORTS */
+
+//Build request
+function buildReportRequest() {
+    let serialized = $("#buildReportForm").serialize();
+
+    $.post({
+        url: '/reports/build',
+        data: serialized,
+        statusCode: {
+            200: function () {
+                console.log('built')
+            }
+        }
+    }).done(function (data) {
+        let result = data.info ? data.info : data.error;
+        let link = data.link;
+
+        let msgClass = (data.info ? "info" : "err") + '-msg';
+        $("#build-report-response").html("<div class='" + msgClass + "' style='margin-top:20px;'>" + result + "</div>");
+        $("#downloadLink").html("<a id='downloadLink' target='_blank' href='" + link + "'>скачать отчет</a>");
+    }).fail(function (e) {
+        console.error(e);
+    });
+}
