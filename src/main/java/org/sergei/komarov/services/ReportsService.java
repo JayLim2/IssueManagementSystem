@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JRDesignStyle;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.sergei.komarov.models.Employee;
@@ -59,6 +60,14 @@ public class ReportsService {
     }
 
     private <E> String buildReport(List<E> list, String reportPattern) throws JRException {
+        JRDesignStyle normalStyle = new JRDesignStyle();
+        normalStyle.setName("Tahoma");
+        normalStyle.setDefault(true);
+        normalStyle.setFontName("/static/fonts/Tahoma.ttf");
+        normalStyle.setPdfFontName("/static/fonts/Tahoma.ttf");
+        normalStyle.setPdfEncoding("Identity-H");
+        normalStyle.setPdfEmbedded(true);
+
         JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(list);
 
         File reportPatternFile = new File(getClass().getResource(reportPattern).getPath());
@@ -70,6 +79,7 @@ public class ReportsService {
                 new HashMap<>(),
                 beanColDataSource
         );
+        jasperPrint.addStyle(normalStyle);
 
         String prefix = "";
         String lowerCasePattern = reportPattern.toLowerCase();

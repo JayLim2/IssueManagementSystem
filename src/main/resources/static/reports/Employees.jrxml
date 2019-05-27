@@ -1,190 +1,186 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-              name="Positions" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20"
-              topMargin="20" bottomMargin="20" uuid="dbe6ef3c-8bfc-42d0-b44a-15c40045e6ce">
-    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="PostgreDB"/>
-    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-    <queryString>
-        <![CDATA[select * from positions]]>
-    </queryString>
-    <field name="employeeId" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="id"/>
-    </field>
-    <field name="employeeName" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="title"/>
-    </field>
-    <field name="overdueIssuesCount" class="java.lang.Integer"/>
-    <field name="withExpiringDueDateIssuesCount" class="java.lang.Integer"/>
-    <field name="withoutDueDateIssuesCount" class="java.lang.Integer"/>
-    <background>
-        <band splitType="Stretch"/>
-    </background>
-    <title>
-        <band height="79" splitType="Stretch">
-            <textField pattern="MMMMM dd, yyyy">
-                <reportElement x="0" y="40" width="140" height="30" uuid="679c8991-a092-4bd9-8e66-884ab1ab0913"/>
-                <textElement>
-                    <font isBold="true"/>
-                </textElement>
-                <textFieldExpression><![CDATA[java.time.LocalDate.now()]]></textFieldExpression>
-            </textField>
-            <staticText>
-                <reportElement stretchType="RelativeToBandHeight" x="0" y="10" width="380" height="30"
-                               uuid="7163c4f8-675e-4988-8608-31bccfa1b393"/>
-                <box>
-                    <pen lineWidth="0.0" lineStyle="Solid"/>
-                </box>
-                <textElement>
-                    <font size="18"/>
-                </textElement>
-                <text><![CDATA[The most efficient employees]]></text>
-            </staticText>
-        </band>
-    </title>
-    <pageHeader>
-        <band height="50" splitType="Stretch">
-            <textField>
-                <reportElement x="270" y="10" width="290" height="30" uuid="0add408b-0944-43ff-8947-b505f9d2c5be"/>
-                <textElement textAlignment="Right"/>
-                <textFieldExpression><![CDATA["Page: " + $V{PAGE_NUMBER}]]></textFieldExpression>
-            </textField>
-        </band>
-    </pageHeader>
-    <columnHeader>
-        <band height="50" splitType="Stretch">
-            <staticText>
-                <reportElement x="0" y="10" width="60" height="40" uuid="889a71fd-d479-47e2-9cf3-7306a84272ba"/>
-                <box>
-                    <pen lineWidth="1.0" lineStyle="Solid"/>
-                </box>
-                <textElement textAlignment="Center">
-                    <font size="12" isBold="true"/>
-                </textElement>
-                <text><![CDATA[ID]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="60" y="10" width="200" height="40" uuid="3e08cca1-a9ae-4b97-8a00-e4ee022e1220"/>
-                <box>
-                    <pen lineWidth="1.0" lineStyle="Solid"/>
-                </box>
-                <textElement textAlignment="Center">
-                    <font size="12" isBold="true"/>
-                </textElement>
-                <text><![CDATA[Employee]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="260" y="10" width="80" height="40" uuid="d2ce1539-41b9-4c9d-b14a-ba4e7ee9f996"/>
-                <box>
-                    <pen lineWidth="1.0" lineStyle="Solid"/>
-                </box>
-                <textElement textAlignment="Center">
-                    <font size="12" isBold="true"/>
-                </textElement>
-                <text><![CDATA[Overdue]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="340" y="10" width="110" height="40" uuid="fbe0559d-ced1-431c-863a-d80524520ee2"/>
-                <box>
-                    <pen lineWidth="1.0" lineStyle="Solid"/>
-                </box>
-                <textElement textAlignment="Center">
-                    <font size="12" isBold="true"/>
-                </textElement>
-                <text><![CDATA[With expiring
-   due date]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="450" y="10" width="110" height="40" uuid="e47b0118-78e8-4ce9-abf3-8ae19490bc7f"/>
-                <box>
-                    <pen lineWidth="1.0" lineStyle="Solid"/>
-                </box>
-                <textElement textAlignment="Center">
-                    <font size="12" isBold="true"/>
-                </textElement>
-                <text><![CDATA[ Without
-due date]]></text>
-            </staticText>
-        </band>
-    </columnHeader>
-    <detail>
-        <band height="30" splitType="Stretch">
-            <textField>
-                <reportElement x="0" y="0" width="60" height="30" uuid="9c2b0a7d-ea87-4516-8f0c-3ab3ad85355a"/>
-                <box>
-                    <pen lineWidth="1.0" lineStyle="Solid"/>
-                </box>
-                <textElement textAlignment="Center">
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{employeeId}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="60" y="0" width="200" height="30" uuid="97fa267c-8ab2-4a35-a4ec-fcbc59728f4f"/>
-                <box>
-                    <pen lineWidth="1.0" lineStyle="Solid"/>
-                </box>
-                <textElement textAlignment="Center">
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{employeeName}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="260" y="0" width="80" height="30" uuid="922e0102-9cdb-4638-a39d-e0bb53fb8955"/>
-                <box>
-                    <pen lineWidth="1.0" lineStyle="Solid"/>
-                </box>
-                <textElement textAlignment="Center">
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{overdueIssuesCount}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="340" y="0" width="110" height="30" uuid="8af30ddf-03c9-45f4-a10d-b13d62dedb66"/>
-                <box>
-                    <pen lineWidth="1.0" lineStyle="Solid"/>
-                </box>
-                <textElement textAlignment="Center">
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{withExpiringDueDateIssuesCount}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="450" y="0" width="110" height="30" uuid="f3bd7b1a-5100-437b-b281-0f1c13df6e21"/>
-                <box>
-                    <pen lineWidth="1.0" lineStyle="Solid"/>
-                </box>
-                <textElement textAlignment="Center">
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{withoutDueDateIssuesCount}]]></textFieldExpression>
-            </textField>
-        </band>
-    </detail>
-    <columnFooter>
-        <band height="45" splitType="Stretch"/>
-    </columnFooter>
-    <pageFooter>
-        <band height="54" splitType="Stretch">
-            <textField>
-                <reportElement x="270" y="10" width="290" height="30" uuid="4d833caa-3bc6-4cef-94d7-14e77ffb5de3"/>
-                <textElement textAlignment="Right"/>
-                <textFieldExpression><![CDATA["Page: " + $V{PAGE_NUMBER}]]></textFieldExpression>
-            </textField>
-        </band>
-    </pageFooter>
-    <summary>
-        <band height="54" splitType="Stretch">
-            <staticText>
-                <reportElement x="0" y="10" width="80" height="30" uuid="a9800ec2-3bdc-4ab2-97c3-e15992f5f2bc"/>
-                <text><![CDATA[Total employees:]]></text>
-            </staticText>
-            <textField>
-                <reportElement x="80" y="10" width="140" height="30" uuid="5fbb2d01-ed59-463e-b857-f3b5571de4bb"/>
-                <textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
-            </textField>
-        </band>
-    </summary>
+			  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			  xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+			  name="Positions" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20"
+			  topMargin="20" bottomMargin="20" uuid="dbe6ef3c-8bfc-42d0-b44a-15c40045e6ce">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PostgreDB"/>
+	<field name="employeeId" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+	</field>
+	<field name="employeeName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="title"/>
+	</field>
+	<field name="overdueIssuesCount" class="java.lang.Integer"/>
+	<field name="withExpiringDueDateIssuesCount" class="java.lang.Integer"/>
+	<field name="withoutDueDateIssuesCount" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="0" y="40" width="140" height="30" uuid="679c8991-a092-4bd9-8e66-884ab1ab0913"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.time.LocalDate.now()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="10" width="380" height="30"
+							   uuid="7163c4f8-675e-4988-8608-31bccfa1b393"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="18"/>
+				</textElement>
+				<text><![CDATA[Наиболее эффективные сотрудники]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement x="270" y="10" width="290" height="30" uuid="0add408b-0944-43ff-8947-b505f9d2c5be"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Страница: " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="50" height="40" uuid="889a71fd-d479-47e2-9cf3-7306a84272ba"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="10" width="189" height="40" uuid="3e08cca1-a9ae-4b97-8a00-e4ee022e1220"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ФИО сотрудника]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="239" y="10" width="100" height="40" uuid="d2ce1539-41b9-4c9d-b14a-ba4e7ee9f996"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Просроченные]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="10" width="110" height="40" uuid="fbe0559d-ced1-431c-863a-d80524520ee2"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Истекает срок
+выполнения]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="10" width="110" height="40" uuid="e47b0118-78e8-4ce9-abf3-8ae19490bc7f"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Без срока
+выполнения]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="50" height="30" uuid="9c2b0a7d-ea87-4516-8f0c-3ab3ad85355a"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employeeId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="189" height="30" uuid="97fa267c-8ab2-4a35-a4ec-fcbc59728f4f"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employeeName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="239" y="0" width="101" height="30" uuid="922e0102-9cdb-4638-a39d-e0bb53fb8955"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{overdueIssuesCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="0" width="110" height="30" uuid="8af30ddf-03c9-45f4-a10d-b13d62dedb66"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{withExpiringDueDateIssuesCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="0" width="110" height="30" uuid="f3bd7b1a-5100-437b-b281-0f1c13df6e21"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{withoutDueDateIssuesCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="270" y="10" width="290" height="30" uuid="4d833caa-3bc6-4cef-94d7-14e77ffb5de3"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Страница: " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="99" height="30" uuid="a9800ec2-3bdc-4ab2-97c3-e15992f5f2bc"/>
+				<text><![CDATA[Всего сотрудников:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="99" y="10" width="140" height="30" uuid="5fbb2d01-ed59-463e-b857-f3b5571de4bb"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>
