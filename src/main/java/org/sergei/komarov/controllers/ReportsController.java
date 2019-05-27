@@ -54,7 +54,6 @@ public class ReportsController {
         MediaType mediaType = MediaType.APPLICATION_PDF;
 
         File file = new File("./" + fileName);
-        System.out.println(file.getAbsolutePath());
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
         return ResponseEntity.ok()

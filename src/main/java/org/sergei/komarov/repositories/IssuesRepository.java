@@ -1,5 +1,6 @@
 package org.sergei.komarov.repositories;
 
+import org.sergei.komarov.models.Employee;
 import org.sergei.komarov.models.Issue;
 import org.sergei.komarov.models.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,6 +22,7 @@ public interface IssuesRepository extends JpaRepository<Issue, Integer> {
     @Query("SELECT issue FROM Issue issue WHERE :date <= issue.dueDate AND issue.project = :project")
     List<Issue> findIssuesWithExpiringDueDateByProject(@Param("date") LocalDate date, @Param("project") Project project);
 
+    //by projects
     @Query("SELECT count(issue) FROM Issue issue WHERE :now > issue.dueDate AND issue.project = :project")
     int countOverdueIssuesByProject(@Param("now") LocalDate now, @Param("project") Project project);
 
@@ -29,5 +31,15 @@ public interface IssuesRepository extends JpaRepository<Issue, Integer> {
 
     @Query("SELECT count(issue) FROM Issue issue WHERE :date <= issue.dueDate AND issue.project = :project")
     int countIssuesWithExpiringDueDateByProject(@Param("date") LocalDate date, @Param("project") Project project);
+
+    //by employees
+    @Query("SELECT count(issue) FROM Issue issue WHERE :now > issue.dueDate AND (issue.assignee = :employee OR issue.creator = :employee)")
+    int countOverdueIssuesByEmployee(@Param("now") LocalDate now, @Param("employee") Employee employee);
+
+    @Query("SELECT count(issue) FROM Issue issue WHERE issue.dueDate = null AND (issue.assignee = :employee OR issue.creator = :employee)")
+    int countIssuesWithoutDueDateByEmployee(@Param("employee") Employee employee);
+
+    @Query("SELECT count(issue) FROM Issue issue WHERE :date <= issue.dueDate AND (issue.assignee = :employee OR issue.creator = :employee)")
+    int countIssuesWithExpiringDueDateByEmployee(@Param("date") LocalDate date, @Param("employee") Employee employee);
 
 }
