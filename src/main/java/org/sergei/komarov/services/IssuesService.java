@@ -9,6 +9,7 @@ import org.sergei.komarov.utils.Validators;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,9 +22,13 @@ import java.util.Objects;
 @AllArgsConstructor
 public class IssuesService implements JpaService<Issue, Integer> {
 
+    private static final int EXPIRATION_PERIOD = 3;
+
     private final IssuesRepository issuesRepository;
     private final UsersService usersService;
     private final IssueActionsService issueActionsService;
+
+    private final EntityManager entityManager;
 
     @Override
     public List<Issue> getAll() {
@@ -193,5 +198,46 @@ public class IssuesService implements JpaService<Issue, Integer> {
         }
 
         return message;
+    }
+
+    public List<Issue> getOverdueIssuesByProject(Project project) {
+        List<Issue> issues = issuesRepository.findOverdueIssuesByProject(
+                LocalDate.now(),
+                project
+        );
+        return issues;
+    }
+
+    public List<Issue> getIssuesWithExpiringDueDateByProject(Project project) {
+        return issuesRepository.findIssuesWithExpiringDueDateByProject(
+                getExpirationPeriod(EXPIRATION_PERIOD),
+                project
+        );
+    }
+
+    public List<Issue> getIssuesWithoutDueDateByProject(Project project) {
+        return issuesRepository.findIssuesWithoutDueDateByProject(project);
+    }
+
+    public int getOverdueIssuesByProjectCount(Project project) {
+        return issuesRepository.countOverdueIssuesByProject(
+                LocalDate.now(),
+                project
+        );
+    }
+
+    public int getIssuesWithoutDueDateByProjectCount(Project project) {
+        return issuesRepository.countIssuesWithoutDueDateByProject(project);
+    }
+
+    public int findIssuesWithExpiringDueDateByProjectCount(Project project) {
+        return issuesRepository.countIssuesWithExpiringDueDateByProject(
+                getExpirationPeriod(EXPIRATION_PERIOD),
+                project
+        );
+    }
+
+    private LocalDate getExpirationPeriod(int daysToExpirationCount) {
+        return LocalDate.now().plusDays(Math.abs(daysToExpirationCount));
     }
 }

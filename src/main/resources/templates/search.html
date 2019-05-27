@@ -10,10 +10,6 @@
     <h1>Поиск по задачам</h1>
 
     <div>
-        <div class="warn-msg">
-            Поиск находится в разработке.
-        </div>
-
         <div class="info-msg">
             В поле "Поисковый запрос" можно ввести любой текст, поиск по данному критерию ведется в
             полях "Название" и "Описание задачи".
@@ -37,8 +33,21 @@
             </ul>
         </div>
 
+        <div>
+            Найдено <b th:text="${issues != null ? issues.size() : 0} + ' задач'"></b>.
+        </div>
+
         <div style="margin-top:20px;">
-            <form action="javascript:void(0)" method="post">
+            <button id="hideButton"
+                    class="btn btn-danger"
+                    style="margin-left:10px"
+                    onclick="hideSearch()"
+                    data-hidden=""
+            >
+                Свернуть форму поиска
+            </button>
+
+            <form id="searchForm" action="" method="get">
 
                 <div style="margin:10px 0 10px 10px;">
                     <b>Введите поисковый запрос:</b>
@@ -54,7 +63,7 @@
                             <b>Типы задач:</b>
                         </div>
                         <div class="table-cell">
-                            <select multiple name="types" class="input">
+                            <select multiple name="typesIds" class="input">
                                 <option th:each="type : ${types}"
                                         th:value="${type.getId()}"
                                         th:text="${type}">
@@ -65,7 +74,7 @@
                             <b>Приоритеты задач:</b>
                         </div>
                         <div class="table-cell">
-                            <select multiple name="priorities" class="input">
+                            <select multiple name="prioritiesIds" class="input">
                                 <option th:each="priority : ${priorities}"
                                         th:value="${priority.getId()}"
                                         th:text="${priority}">
@@ -78,7 +87,7 @@
                             <b>Статусы задач:</b>
                         </div>
                         <div class="table-cell">
-                            <select multiple name="statuses" class="input">
+                            <select multiple name="statusesIds" class="input">
                                 <option th:each="status : ${statuses}"
                                         th:value="${status.getId()}"
                                         th:text="${status}">
@@ -90,7 +99,7 @@
                             <b>Выберите проекты:</b>
                         </div>
                         <div class="table-cell">
-                            <select multiple name="projects" class="input">
+                            <select multiple name="projectsIds" class="input">
                                 <option th:each="project : ${projects}"
                                         th:value="${project.getId()}"
                                         th:text="${project}">
@@ -103,7 +112,7 @@
                             <b>Ответственные сотрудники:</b>
                         </div>
                         <div class="table-cell">
-                            <select multiple name="assignees" class="input">
+                            <select multiple name="assigneesIds" class="input">
                                 <option th:each="employee : ${employees}"
                                         th:value="${employee.getId()}"
                                         th:text="${employee}">
@@ -115,7 +124,7 @@
                             <b>Сотрудники, создавшие задачи:</b>
                         </div>
                         <div class="table-cell">
-                            <select multiple name="creators" class="input">
+                            <select multiple name="creatorsIds" class="input">
                                 <option th:each="employee : ${employees}"
                                         th:value="${employee.getId()}"
                                         th:text="${employee}">
@@ -128,38 +137,66 @@
                             <b>Дата окончания выполнения:</b>
                         </div>
                         <div class="table-cell">
-                            <input type="text"
-                                   name="dueDate"
-                                   class="form-control"
-                                   style="width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
-                                   id="dueDate"
-                                   placeholder="Например, 01.01.1970"
-                            />
 
-                            <div class="date-mode-radio-group">
-                                <input type="radio" name="dueDateMode"> до
-                                <input type="radio" name="dueDateMode"> после
-                                <input type="radio" name="dueDateMode" checked> эквивалентна
+                            <div>
+                                <label for="dueDateTo">от: &nbsp;</label>
+                                <input type="text"
+                                       name="dueDateFromStr"
+                                       class="form-control"
+                                       style="display:inline-block;margin-left:2px;width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
+                                       id="dueDateFrom"
+                                       placeholder="Например, 01.01.1970"
+                                />
                             </div>
+
+                            <div style="margin-top:7px;">
+                                <label for="dueDateTo">до: &nbsp;</label>
+                                <input type="text"
+                                       name="dueDateToStr"
+                                       class="form-control"
+                                       style="display:inline-block;width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
+                                       id="dueDateTo"
+                                       placeholder="Например, 01.01.1970"
+                                />
+                            </div>
+                            <!--<div class="date-mode-radio-group">
+                                <input type="radio" name="dueDateMode" value="b"> до
+                                <input type="radio" name="dueDateMode" value="a"> после
+                                <input type="radio" name="dueDateMode" value="e" checked> эквивалентна
+                            </div>-->
                         </div>
 
                         <div class="table-cell" style="width:200px">
                             <b>Дата создания:</b>
                         </div>
                         <div class="table-cell">
-                            <input type="text"
-                                   name="dueDate"
-                                   class="form-control"
-                                   style="width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
-                                   id="createdDate"
-                                   placeholder="Например, 01.01.1970"
-                            />
-
-                            <div class="date-mode-radio-group">
-                                <input type="radio" name="createdDateMode"> до
-                                <input type="radio" name="createdDateMode"> после
-                                <input type="radio" name="createdDateMode" checked> эквивалентна
+                            <div>
+                                <label for="createdDateFrom">от: &nbsp;</label>
+                                <input type="text"
+                                       name="createdDateFromStr"
+                                       class="form-control"
+                                       style="display:inline-block;margin-left:2px;width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
+                                       id="createdDateFrom"
+                                       placeholder="Например, 01.01.1970"
+                                />
                             </div>
+
+                            <div style="margin-top:7px;">
+                                <label for="createdDateTo">до: &nbsp;</label>
+                                <input type="text"
+                                       name="createdDateToStr"
+                                       class="form-control"
+                                       style="display:inline-block;width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
+                                       id="createdDateTo"
+                                       placeholder="Например, 01.01.1970"
+                                />
+                            </div>
+
+                            <!--<div class="date-mode-radio-group">
+                                <input type="radio" name="createdDateMode" value="b"> до
+                                <input type="radio" name="createdDateMode" value="a"> после
+                                <input type="radio" name="createdDateMode" value="e" checked> эквивалентна
+                            </div>-->
                         </div>
                     </div>
                     <div class="table-row">
@@ -167,38 +204,66 @@
                             <b>Дата последнего обновления:</b>
                         </div>
                         <div class="table-cell">
-                            <input type="text"
-                                   name="dueDate"
-                                   class="form-control"
-                                   style="width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
-                                   id="updatedDate"
-                                   placeholder="Например, 01.01.1970"
-                            />
-
-                            <div class="date-mode-radio-group">
-                                <input type="radio" name="updatedDateMode"> до
-                                <input type="radio" name="updatedDateMode"> после
-                                <input type="radio" name="updatedDateMode" checked> эквивалентна
+                            <div>
+                                <label for="updatedDateFrom">от: &nbsp;</label>
+                                <input type="text"
+                                       name="updatedDateFromStr"
+                                       class="form-control"
+                                       style="display:inline-block;margin-left:2px;width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
+                                       id="updatedDateFrom"
+                                       placeholder="Например, 01.01.1970"
+                                />
                             </div>
+
+                            <div style="margin-top:7px;">
+                                <label for="updatedDateTo">до: &nbsp;</label>
+                                <input type="text"
+                                       name="updatedDateToStr"
+                                       class="form-control"
+                                       style="display:inline-block;width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
+                                       id="updatedDateTo"
+                                       placeholder="Например, 01.01.1970"
+                                />
+                            </div>
+
+                            <!--<div class="date-mode-radio-group">
+                                <input type="radio" name="updatedDateMode" value="b"> до
+                                <input type="radio" name="updatedDateMode" value="a"> после
+                                <input type="radio" name="updatedDateMode" value="e" checked> эквивалентна
+                            </div>-->
                         </div>
 
                         <div class="table-cell" style="width:200px">
                             <b>Дата закрытия:</b>
                         </div>
                         <div class="table-cell">
-                            <input type="text"
-                                   name="dueDate"
-                                   class="form-control"
-                                   style="width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
-                                   id="closedDate"
-                                   placeholder="Например, 01.01.1970"
-                            />
-
-                            <div class="date-mode-radio-group">
-                                <input type="radio" name="closedDateMode"> до
-                                <input type="radio" name="closedDateMode"> после
-                                <input type="radio" name="closedDateMode" checked> эквивалентна
+                            <div>
+                                <label for="closedDateFrom">от: &nbsp;</label>
+                                <input type="text"
+                                       name="closedDateFromStr"
+                                       class="form-control"
+                                       style="display:inline-block;margin-left:2px;width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
+                                       id="closedDateFrom"
+                                       placeholder="Например, 01.01.1970"
+                                />
                             </div>
+
+                            <div style="margin-top:7px;">
+                                <label for="closedDateTo">до: &nbsp;</label>
+                                <input type="text"
+                                       name="closedDateToStr"
+                                       class="form-control"
+                                       style="display:inline-block;width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
+                                       id="closedDateTo"
+                                       placeholder="Например, 01.01.1970"
+                                />
+                            </div>
+
+                            <!--<div class="date-mode-radio-group">
+                                <input type="radio" name="closedDateMode" value="b"> до
+                                <input type="radio" name="closedDateMode" value="a"> после
+                                <input type="radio" name="closedDateMode" value="e" checked> эквивалентна
+                            </div>-->
                         </div>
                     </div>
 
@@ -213,6 +278,62 @@
 
             </form>
         </div>
+
+
+        <!-- Issues table -->
+
+        <table class="table" style="border:1px solid rgb(233, 236, 239);margin:20px 0;">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" style="width:50px;">#</th>
+                <th scope="col">Название задачи</th>
+                <th scope="col">Проект</th>
+                <th scope="col">Приоритет</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Ответственный</th>
+                <th scope="col">Срок выполнения</th>
+            </tr>
+            </thead>
+            <!-- if issues exists -->
+            <tbody th:if="${issues != null && issues.size() > 0}">
+            <tr th:id="'issue-row-' + ${issue.getId()}" th:each="issue : ${issues}">
+                <td style="border:1px solid rgb(233, 236, 239);" th:text="${issue.getId()}"></td>
+                <td style="border:1px solid rgb(233, 236, 239);">
+                    <a th:href="'/issues/'+${issue.getId()}"
+                       th:text="${issue}"
+                       target="_blank"
+                    >
+                    </a>
+                </td>
+                <td style="border:1px solid rgb(233, 236, 239);">
+                    <a th:href="'/projects/'+${issue.getProject().getId()}"
+                       th:text="${issue.getProject()}"
+                       target="_blank"
+                    >
+                    </a>
+                </td>
+                <td style="border:1px solid rgb(233, 236, 239);"
+                    th:text="${issue.getPriority()}"></td>
+                <td style="border:1px solid rgb(233, 236, 239);" th:text="${issue.getStatus()}"></td>
+                <td style="border:1px solid rgb(233, 236, 239);"
+                    th:text="${issue.getAssignee() != null ? issue.getAssignee() : 'не назначен'}"></td>
+                <td style="border:1px solid rgb(233, 236, 239);"
+                    th:text="${issue.getDueDate() != null ? #dates.format(issue.getAssignee(), 'dd MMM yyyy') : 'не назначена'}"></td>
+
+            </tr>
+            </tbody>
+            <!-- else -->
+            <tbody th:unless="${issues != null && issues.size() > 0}">
+            <tr>
+                <td colspan="6">
+                    Не найдено ни одной задачи.
+                </td>
+            </tr>
+            </tbody>
+            <!-- endif -->
+        </table>
+
+        <!--/ Issues table -->
     </div>
 </div>
 
@@ -223,11 +344,30 @@
             format: 'dd.mm.yyyy'
         };
 
-        $('#dueDate').datepicker(format);
-        $('#createdDate').datepicker(format);
-        $('#updatedDate').datepicker(format);
-        $('#closedDate').datepicker(format);
+        [
+            '#dueDateFrom', '#dueDateTo',
+            '#createdDateFrom', '#createdDateTo',
+            '#updatedDateFrom', '#updatedDateTo',
+            '#closedDateFrom', '#closedDateTo'
+        ].forEach(id => {
+            $(id).datepicker(format);
+        });
+
     });
+
+    function hideSearch() {
+        let form = $("#searchForm");
+        let button = $("#hideButton");
+        let hidden = button.data("hidden");
+
+        let newButtonText = !hidden ? "Показать форму поиска" : "Свернуть форму поиска";
+        let newDisplay = !hidden ? 'display:none' : null;
+        let newHidden = !hidden ? 'hidden' : null;
+
+        button.text(newButtonText);
+        form.attr('style', newDisplay);
+        button.data("hidden", newHidden);
+    }
 </script>
 </body>
 </html>

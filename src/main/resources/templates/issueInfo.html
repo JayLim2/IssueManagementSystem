@@ -141,7 +141,7 @@
                                 </div>
                                 <div class="table-cell" style="vertical-align:top;">
                                     <input type="text"
-                                           name="dueDate"
+                                           name="dueDateStr"
                                            class="form-control"
                                            style="width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
                                            id="addDueDate"
@@ -313,7 +313,7 @@
                                 </div>
                                 <div class="table-cell" style="vertical-align:top;">
                                     <input type="text"
-                                           name="dueDate"
+                                           name="dueDateStr"
                                            class="form-control"
                                            style="width:200px;height:45px;border: 2px solid #010051;font-size:12pt;padding:10px;border-radius:0;"
                                            id="editDueDate"
@@ -606,7 +606,7 @@
                                 </div>
                                 <div style="display:table-row">
                                     <div style="display:table-cell;padding-bottom: 8px;"
-                                         th:text="${issue.getDueDate() != null ? #dates.format(issue.getDueDate(), 'dd MMM yyyy') : 'не назначен'}"
+                                         th:text="${issue.getDueDate() != null ? #temporals.format(issue.getDueDate(), 'dd MMM yyyy') : 'не назначен'}"
                                     >
                                     </div>
                                 </div>
@@ -709,6 +709,8 @@
             modal.find("#issueDescription").val(description);
             modal.find("#editDueDate").val(dueDate);
 
+            console.log('asda;fdf')
+
             $("#editIssueProjectId [value='" + projectId + "']").attr("selected", "selected");
             $("#issueTypeId [value='" + issueTypeId + "']").attr("selected", "selected");
             $("#issuePriorityId [value='" + issuePriorityId + "']").attr("selected", "selected");
@@ -724,8 +726,15 @@
             format: 'dd.mm.yyyy'
         };
 
-        $('#addDueDate').datepicker(format);
-        $('#editDueDate').datepicker(format);
+        ['#addDueDate', '#editDueDate'].forEach(date => {
+            $(date).datepicker(format).on(
+                'show.bs.modal',
+                function (event) {
+                    event.stopPropagation();
+                }
+            )
+        });
+
     });
 </script>
 </body>

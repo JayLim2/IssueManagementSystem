@@ -26,7 +26,17 @@ public class ReportsController {
         Map<String, Object> attrs = new HashMap<>();
 
         try {
-            String reportName = reportsService.create();
+            String reportName = null;
+
+            switch (reportType) {
+                case 1:
+                    reportName = reportsService.createProjectsReport();
+                    break;
+                case 2:
+                    reportName = reportsService.createEmployeesReport();
+                    break;
+            }
+
             String link = "/reports/download/" + reportName;
             attrs.put("info", "Отчет успешно построен.");
             attrs.put("link", link);
