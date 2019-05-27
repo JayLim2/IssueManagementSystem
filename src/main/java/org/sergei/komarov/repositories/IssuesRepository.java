@@ -15,19 +15,19 @@ public interface IssuesRepository extends JpaRepository<Issue, Integer> {
     @Query("SELECT issue FROM Issue issue WHERE :now > issue.dueDate AND issue.project = :project")
     List<Issue> findOverdueIssuesByProject(@Param("now") LocalDate now, @Param("project") Project project);
 
-    @Query("SELECT issue FROM Issue issue WHERE issue.dueDate = null")
+    @Query("SELECT issue FROM Issue issue WHERE issue.dueDate = null AND issue.project = :project")
     List<Issue> findIssuesWithoutDueDateByProject(@Param("project") Project project);
 
-    @Query("SELECT issue FROM Issue issue WHERE :date <= issue.dueDate AND issue.dueDate")
+    @Query("SELECT issue FROM Issue issue WHERE :date <= issue.dueDate AND issue.project = :project")
     List<Issue> findIssuesWithExpiringDueDateByProject(@Param("date") LocalDate date, @Param("project") Project project);
 
     @Query("SELECT count(issue) FROM Issue issue WHERE :now > issue.dueDate AND issue.project = :project")
     int countOverdueIssuesByProject(@Param("now") LocalDate now, @Param("project") Project project);
 
-    @Query("SELECT count(issue) FROM Issue issue WHERE issue.dueDate = null")
+    @Query("SELECT count(issue) FROM Issue issue WHERE issue.dueDate = null AND issue.project = :project")
     int countIssuesWithoutDueDateByProject(@Param("project") Project project);
 
-    @Query("SELECT count(issue) FROM Issue issue WHERE :date <= issue.dueDate AND issue.dueDate")
+    @Query("SELECT count(issue) FROM Issue issue WHERE :date <= issue.dueDate AND issue.project = :project")
     int countIssuesWithExpiringDueDateByProject(@Param("date") LocalDate date, @Param("project") Project project);
 
 }

@@ -208,6 +208,11 @@ function addCommentRequest() {
 
 //Build request
 function buildReportRequest() {
+
+    $("#build-report-response").html('<div class="warn-msg" style="margin-top:20px;margin-left:10px;">Построение отчета...</div>');
+    let defaultLinkBlock = "не подготовлена";
+    $("#downloadBlock").html(defaultLinkBlock);
+
     let serialized = $("#buildReportForm").serialize();
 
     $.post({
@@ -223,8 +228,11 @@ function buildReportRequest() {
         let link = data.link;
 
         let msgClass = (data.info ? "info" : "err") + '-msg';
-        $("#build-report-response").html("<div class='" + msgClass + "' style='margin-top:20px;'>" + result + "</div>");
-        $("#downloadLink").html("<a id='downloadLink' target='_blank' href='" + link + "'>скачать отчет</a>");
+        $("#build-report-response").html("<div class='" + msgClass + "' style='margin-top:20px;margin-left:10px;'>" + result + "</div>");
+
+        let linkBlock = data.info ? "<a target='_blank' href='" + link + "'>скачать отчет</a>"
+            : "отчет не построен";
+        $("#downloadBlock").html(linkBlock);
     }).fail(function (e) {
         console.error(e);
     });

@@ -230,7 +230,7 @@ public class IssuesService implements JpaService<Issue, Integer> {
         return issuesRepository.countIssuesWithoutDueDateByProject(project);
     }
 
-    public int findIssuesWithExpiringDueDateByProjectCount(Project project) {
+    public int getIssuesWithExpiringDueDateByProjectCount(Project project) {
         return issuesRepository.countIssuesWithExpiringDueDateByProject(
                 getExpirationPeriod(EXPIRATION_PERIOD),
                 project
