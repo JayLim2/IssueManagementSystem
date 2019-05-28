@@ -257,6 +257,15 @@ function addProjectTeamMemberRequest() {
 
         let msgClass = (data.info ? "info" : "err") + '-msg';
         $("#add-project-team-member-response").html("<div class='" + msgClass + "' style='margin-top:20px;'>" + result + "</div>");
+
+        if (data.info) {
+            setTimeout(
+                function () {
+                    location.reload();
+                },
+                1500
+            )
+        }
     }).fail(function (e) {
         console.error(e);
     });
@@ -279,6 +288,15 @@ function editProjectTeamMemberRequest() {
 
         let msgClass = (data.info ? "info" : "err") + '-msg';
         $("#edit-project-team-member-response").html("<div class='" + msgClass + "' style='margin-top:20px;'>" + result + "</div>");
+
+        if (data.info) {
+            setTimeout(
+                function () {
+                    location.reload();
+                },
+                1500
+            )
+        }
     }).fail(function (e) {
         console.error(e);
     });
@@ -301,9 +319,8 @@ function deleteProjectTeamMemberRequest(projectId, employeeId) {
         let msgClass = (data.info ? "info" : "err") + '-msg';
         $("#response").html("<div class='" + msgClass + "' style='margin:0 35px 10px 35px'>" + result + "</div>");
 
-        let rowId = entity === 'projects' ? "#row-" + id : "#issue-row-" + id;
         if (data.info) {
-            $(rowId).html(null);
+            $("#member-row-" + employeeId).html(null);
         }
     });
 }

@@ -6,6 +6,7 @@ import org.sergei.komarov.repositories.ProjectTeamMembersRepository;
 import org.sergei.komarov.repositories.ProjectsRepository;
 import org.sergei.komarov.utils.Validators;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -122,6 +123,7 @@ public class ProjectsService implements JpaService<Project, Integer> {
         return projectTeamMembersRepository.save(projectTeamMember);
     }
 
+    @Transactional
     public void deleteProjectTeamMember(Project project, Employee employee) {
         if (project == null || employee == null) {
             throw new NullPointerException();
