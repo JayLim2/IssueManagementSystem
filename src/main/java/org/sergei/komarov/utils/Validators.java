@@ -25,7 +25,7 @@ public class Validators {
     private static final int MAX_EMPLOYEE_NAME_LENGTH = 150;
     private static final int MAX_PROJECT_TITLE_LENGTH = 300;
     private static final int MAX_ISSUE_TITLE_LENGTH = 300;
-    private static final int MAX_ISSUE_DESCRIPTION_LENGTH = 2500;
+    public static final int MAX_ISSUE_DESCRIPTION_LENGTH = 2500;
     private static final int MAX_COMMENT_LENGTH = 1000;
 
     public static boolean isArrayWithNulls(Object... data) {
@@ -250,10 +250,10 @@ public class Validators {
             message = "Название задачи не должно превышать "
                     + MAX_ISSUE_TITLE_LENGTH
                     + " символов.";
-        } else if (EXCLUDED_PATTERN.matcher(title).find()) {
-            message = "Название проекта не должно содержать цифры.";
         } else if (description.isEmpty()) {
             message = "Задача обязательно должна иметь описание.";
+        } else if (description.length() > MAX_ISSUE_DESCRIPTION_LENGTH) {
+            message = "Описание задачи не должно превышать " + MAX_ISSUE_DESCRIPTION_LENGTH + " символов.";
         } else if (dueDate != null && dueDate.isBefore(LocalDate.now())) {
             message = "Дата окончания выполнения задачи должна быть не раньше текущего дня.";
         }

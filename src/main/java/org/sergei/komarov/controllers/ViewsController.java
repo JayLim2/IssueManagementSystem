@@ -131,6 +131,8 @@ public class ViewsController {
         List<Issue> issues = issuesService.getByProject(project);
         List<Project> projects = projectsService.getAll();
         List<ProjectType> projectTypes = projectTypesService.getAll();
+        List<ProjectTeamMember> projectTeamMembers = projectsService.getProjectTeam(project);
+        List<ProjectRole> projectRoles = projectRolesService.getAll();
 
         List<Employee> employees = employeesService.getAll();
         List<IssueType> issueTypes = issueTypesService.getAll();
@@ -139,6 +141,7 @@ public class ViewsController {
 
         //project attributes
         model.addAttribute("projectTypes", projectTypes);
+        model.addAttribute("projectRoles", projectRoles);
         model.addAttribute("project", project);
         model.addAttribute("issues", issues);
 
@@ -151,6 +154,7 @@ public class ViewsController {
 
         //common
         model.addAttribute("projects", projects);
+        model.addAttribute("projectTeamMembers", projectTeamMembers);
 
         return "projectInfo";
     }

@@ -3,6 +3,7 @@ package org.sergei.komarov.models;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.sergei.komarov.utils.Validators;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,7 +26,7 @@ public class Issue implements Serializable, Cloneable {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = Validators.MAX_ISSUE_DESCRIPTION_LENGTH)
     private String description;
 
     @Column(name = "created", nullable = false, columnDefinition = "TIMESTAMP")

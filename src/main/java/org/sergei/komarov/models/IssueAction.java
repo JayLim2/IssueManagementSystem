@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 public class IssueAction {
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "issue_id", nullable = false)
     private Issue issue;
 

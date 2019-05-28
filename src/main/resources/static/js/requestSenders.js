@@ -237,3 +237,73 @@ function buildReportRequest() {
         console.error(e);
     });
 }
+
+/* PROJECT TEAM MEMBERS */
+
+//Add request
+function addProjectTeamMemberRequest() {
+    let serialized = $("#addProjectTeamMemberForm").serialize();
+
+    $.post({
+        url: '/projects/team/add',
+        data: serialized,
+        statusCode: {
+            200: function () {
+                console.log('added')
+            }
+        }
+    }).done(function (data) {
+        let result = data.info ? data.info : data.error;
+
+        let msgClass = (data.info ? "info" : "err") + '-msg';
+        $("#add-project-team-member-response").html("<div class='" + msgClass + "' style='margin-top:20px;'>" + result + "</div>");
+    }).fail(function (e) {
+        console.error(e);
+    });
+}
+
+//Edit request
+function editProjectTeamMemberRequest() {
+    let serialized = $("#editProjectTeamMemberForm").serialize();
+
+    $.post({
+        url: '/projects/team/edit',
+        data: serialized,
+        statusCode: {
+            200: function () {
+                console.log('edited')
+            }
+        }
+    }).done(function (data) {
+        let result = data.info ? data.info : data.error;
+
+        let msgClass = (data.info ? "info" : "err") + '-msg';
+        $("#edit-project-team-member-response").html("<div class='" + msgClass + "' style='margin-top:20px;'>" + result + "</div>");
+    }).fail(function (e) {
+        console.error(e);
+    });
+}
+
+function deleteProjectTeamMemberRequest(projectId, employeeId) {
+    $.post({
+        url: '/projects/team/delete/',
+        data: {
+            projectId: projectId,
+            employeeId: employeeId
+        },
+        statusCode: {
+            200: function () {
+                console.log("Row # " + id + " has been removed (team member).");
+            }
+        }
+    }).done(function (data) {
+        let result = data.info ? data.info : data.error;
+        let msgClass = (data.info ? "info" : "err") + '-msg';
+        $("#response").html("<div class='" + msgClass + "' style='margin:0 35px 10px 35px'>" + result + "</div>");
+
+        let rowId = entity === 'projects' ? "#row-" + id : "#issue-row-" + id;
+        if (data.info) {
+            $(rowId).html(null);
+        }
+    });
+}

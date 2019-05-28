@@ -1,7 +1,12 @@
 package org.sergei.komarov.controllers;
 
 import lombok.AllArgsConstructor;
+import org.sergei.komarov.models.Employee;
+import org.sergei.komarov.models.Project;
+import org.sergei.komarov.models.ProjectRole;
 import org.sergei.komarov.models.ProjectType;
+import org.sergei.komarov.services.EmployeesService;
+import org.sergei.komarov.services.ProjectRolesService;
 import org.sergei.komarov.services.ProjectTypesService;
 import org.sergei.komarov.services.ProjectsService;
 import org.sergei.komarov.utils.SQLExceptionParser;
@@ -22,6 +27,8 @@ public class ProjectsController {
 
     private final ProjectsService projectsService;
     private final ProjectTypesService projectTypesService;
+    private final EmployeesService employeesService;
+    private final ProjectRolesService projectRolesService;
 
     @PostMapping("/add")
     public Map<String, Object> addProject(String title, @RequestParam int projectTypeId) {
@@ -73,6 +80,65 @@ public class ProjectsController {
             attrs.put("info", "Проект с ID " + id + " удален.");
         } else {
             attrs.put("error", message);
+        }
+
+        return attrs;
+    }
+
+    @PostMapping("/team/add")
+    public Map<String, Object> addProjectTeamMember(int employeeId, int projectId, int projectRoleId) {
+        Map<String, Object> attrs = new HashMap<>();
+
+        try {
+            Employee employee = employeesService.getById(employeeId);
+            Project project = projectsService.getById(projectId);
+            ProjectRole projectRole = projectRolesService.getById(projectRoleId);
+
+            projectsService.addProjectTeamMember(project, employee, projectRole);
+
+            attrs.put("info", "Сотрудник добавлен в команду проекта.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            attrs.put("error", "Невозможно добавить сотрудника в команду проекта.");
+        }
+
+        return attrs;
+    }
+
+    @PostMapping("/team/edit")
+    public Map<String, Object> editProjectTeamMember(int employeeId, int projectId, int projectRoleId) {
+        Map<String, Object> attrs = new HashMap<>();
+
+        try {
+            Employee employee = employeesService.getById(employeeId);
+            Project project = projectsService.getById(projectId);
+            ProjectRole projectRole = projectRolesService.getById(projectRoleId);
+
+            projectsService.editProjectTeamMember(project, employee, projectRole);
+
+            attrs.put("info", "Параметры участника проектной команды изменены.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            attrs.put("error", "Невозможно изменить параметры участника проектной команды");
+        }
+
+        return attrs;
+    }
+
+    @PostMapping("/team/delete")
+    public Map<String, Object> deleteProjectTeamMember(int projectId, int employeeId) {
+        Map<String, Object> attrs = new HashMap<>();
+
+        try {
+            Employee employee = employeesService.getById(employeeId);
+            Project project = projectsService.getById(projectId);
+
+            projectsService.deleteProjectTeamMember(project, employee);
+
+            attrs.put("info", "Участник проектной команды удален.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            attrs.put("error", "Невозможно удалить участника проектной команды");
         }
 
         return attrs;

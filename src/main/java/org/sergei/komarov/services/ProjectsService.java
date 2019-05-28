@@ -1,8 +1,8 @@
 package org.sergei.komarov.services;
 
 import lombok.AllArgsConstructor;
-import org.sergei.komarov.models.Project;
-import org.sergei.komarov.models.ProjectType;
+import org.sergei.komarov.models.*;
+import org.sergei.komarov.repositories.ProjectTeamMembersRepository;
 import org.sergei.komarov.repositories.ProjectsRepository;
 import org.sergei.komarov.utils.Validators;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,7 @@ import java.util.Map;
 public class ProjectsService implements JpaService<Project, Integer> {
 
     private final ProjectsRepository projectsRepository;
+    private final ProjectTeamMembersRepository projectTeamMembersRepository;
 
     @Override
     public List<Project> getAll() {
@@ -88,5 +89,44 @@ public class ProjectsService implements JpaService<Project, Integer> {
         }
 
         addMessageToAttributes(attrs, message, "Проект успешно изменен.");
+    }
+
+    public List<ProjectTeamMember> getProjectTeam(Project project) {
+        return projectTeamMembersRepository.findProjectMembers(project);
+    }
+
+    public ProjectTeamMember addProjectTeamMember(Project project, Employee employee, ProjectRole role) {
+        if (project == null || employee == null || role == null) {
+            throw new NullPointerException();
+        }
+
+        ProjectTeamMember projectTeamMember = new ProjectTeamMember();
+        projectTeamMember.setEmployee(employee);
+        projectTeamMember.setProject(project);
+        projectTeamMember.setProjectRole(role);
+
+        return projectTeamMembersRepository.save(projectTeamMember);
+    }
+
+    public ProjectTeamMember editProjectTeamMember(Project project, Employee employee, ProjectRole role) {
+        if (project == null || employee == null || role == null) {
+            throw new NullPointerException();
+        }
+
+        ProjectTeamMember projectTeamMember = projectTeamMembersRepository.findByProjectAndEmployee(
+                project,
+                employee
+        );
+        projectTeamMember.setProjectRole(role);
+
+        return projectTeamMembersRepository.save(projectTeamMember);
+    }
+
+    public void deleteProjectTeamMember(Project project, Employee employee) {
+        if (project == null || employee == null) {
+            throw new NullPointerException();
+        }
+
+        projectTeamMembersRepository.deleteProjectTeamMemberByProjectAndEmployee(project, employee);
     }
 }

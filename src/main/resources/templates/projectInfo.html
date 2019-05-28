@@ -34,13 +34,14 @@
 
                     <div id="add-response"></div>
 
-                    <div class="warn-msg" th:if="${projectTypes == null || projectTypes.size() == 0}">
-                        Создание проектов ограничено, т.к. нет ни одного <a href="/handbook/projectTypes/add">типа
-                        проекта</a>.
+                    <div class="warn-msg"
+                         th:if="${projectTypes == null || projectTypes.size() == 0 || projectRoles == null || projectRoles.size() == 0}">
+                        Создание проектов ограничено, т.к. нет ни одного типа
+                        проекта или ни одной проектной роли.
                     </div>
                     <form id="addForm" action="javascript:void(0)" method="post"
                           onsubmit="addOperativeDataRequest('projects', '#addForm', '#add-response')"
-                          th:unless="${projectTypes == null || projectTypes.size() == 0}"
+                          th:unless="${projectTypes == null || projectTypes.size() == 0 || projectRoles == null || projectRoles.size() == 0}"
                     >
                         <div class="table-block">
                             <div class="table-row">
@@ -497,6 +498,132 @@
 
     <!--/ EDIT ISSUE MODAL FORM -->
 
+
+    <!-- ADD PROJECT MEMBER MODAL FORM -->
+    <div class="modal fade" id="addProjectTeamMember" tabindex="-1" role="dialog"
+         aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Добавить сотрудника в проектную команду</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div id="add-project-team-member-response"></div>
+
+                    <div class="warn-msg"
+                         th:if="${employees == null || employees.size() == 0 || projectRoles == null || projectRoles.size() == 0}">
+                        Добавление членов проектной команды ограничено, т.к. нет ни одного сотрудника
+                        или ни одной проектной роли.
+                    </div>
+                    <form id="addProjectTeamMemberForm" action="javascript:void(0)" method="post"
+                          onsubmit="addProjectTeamMemberRequest()"
+                          th:unless="${employees == null || employees.size() == 0 || projectRoles == null || projectRoles.size() == 0}"
+                    >
+                        <input type="hidden" name="projectId" th:value="${project.getId()}"/>
+
+                        <div class="table-block">
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Сотрудник:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select name="employeeId" class="input">
+                                        <option th:each="employee : ${employees}"
+                                                th:value="${employee.getId()}"
+                                                th:text="${employee}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Проектная роль:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select name="projectRoleId" class="input">
+                                        <option th:each="projectRole : ${projectRoles}"
+                                                th:value="${projectRole.getId()}"
+                                                th:text="${projectRole.getName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="width:200px">
+                                </div>
+                                <div class="table-cell">
+                                    <input type="submit" class="submit-btn" value="Добавить"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--/ ADD PROJECT MEMBER MODAL FORM -->
+
+    <!-- EDIT PROJECT MEMBER MODAL FORM -->
+    <div class="modal fade" id="editProjectTeamMember" tabindex="-1" role="dialog"
+         aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Редактировать участника проектной команды</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div id="edit-project-team-member-response"></div>
+
+                    <form id="editProjectTeamMemberForm" action="javascript:void(0)" method="post"
+                          onsubmit="editProjectTeamMemberRequest()"
+                    >
+                        <input type="hidden" id="projectTeamEmployeeId" name="employeeId"/>
+                        <input type="hidden" id="projectTeamProjectId" name="projectId" th:value="${project.getId()}"/>
+
+                        <div class="table-block">
+                            <div class="table-row">
+                                <div class="table-cell" style="vertical-align:top;width:200px">
+                                    <b class="required-field-marker">Проектная роль:</b>
+                                </div>
+                                <div class="table-cell" style="vertical-align:top;">
+                                    <select id="projectRoleId" name="projectRoleId" class="input">
+                                        <option th:each="projectRole : ${projectRoles}"
+                                                th:value="${projectRole.getId()}"
+                                                th:text="${projectRole.getName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell" style="width:200px">
+                                </div>
+                                <div class="table-cell">
+                                    <input type="submit" class="submit-btn" value="Сохранить изменения"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--/ EDIT PROJECT MEMBER MODAL FORM -->
+
+
     <div class="issues-frame">
         <div style="display:table-row">
             <div th:if="${projects != null && projects.size() > 0}" class="issue-body-frame" id="info-block">
@@ -608,6 +735,72 @@
 
                 <!--/ Issues table -->
 
+                <!-- Project team members table -->
+
+                <div>
+                    <button type="button" class="btn btn-success"
+                            data-toggle="modal" data-target="#addProjectTeamMember"
+                            th:data-project="${project.getId()}"
+                            style="margin-top:20px;"
+                    >
+                        Добавить сотрудника в команду проекта
+                    </button>
+                </div>
+
+                <table class="table" style="border:1px solid rgb(233, 236, 239);margin:10px 0;">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Номер сотрудника</th>
+                        <th scope="col">ФИО сотрудника</th>
+                        <th scope="col">Должность</th>
+                        <th scope="col">Проектная роль</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <!-- if members exists -->
+                    <tbody th:if="${projectTeamMembers != null && projectTeamMembers.size() > 0}">
+                    <tr th:id="'member-row-' + ${projectTeamMember.getEmployee().getId()}"
+                        th:each="projectTeamMember : ${projectTeamMembers}"
+                    >
+                        <td style="border:1px solid rgb(233, 236, 239);"
+                            th:text="${projectTeamMember.getEmployee().getId()}"></td>
+                        <td style="border:1px solid rgb(233, 236, 239);" th:text="${projectTeamMember.getEmployee()}">
+                        </td>
+                        <td style="border:1px solid rgb(233, 236, 239);"
+                            th:text="${projectTeamMember.getEmployee().getPosition()}"></td>
+                        <td style="border:1px solid rgb(233, 236, 239);"
+                            th:text="${projectTeamMember.getProjectRole()}"></td>
+                        <td>
+                            <button type="button"
+                                    class="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#editProjectTeamMember"
+                                    th:data-employee="${projectTeamMember.getEmployee().getId()}"
+                                    th:data-project-role="${projectTeamMember.getProjectRole().getId()}"
+                            >
+                                &#128393;
+                            </button>
+                            <button class="btn btn-danger"
+                                    th:onclick="'deleteProjectTeamMemberRequest('+${projectTeamMember.getProject().getId()}+','+${projectTeamMember.getEmployee().getId()}+')'"
+                            >
+                                &#128940;
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <!-- else -->
+                    <tbody th:unless="${projectTeamMembers != null && projectTeamMembers.size() > 0}">
+                    <tr>
+                        <td colspan="6">
+                            Проектная команда не сформирована.
+                        </td>
+                    </tr>
+                    </tbody>
+                    <!-- endif -->
+                </table>
+
+                <!--/ Project team members table -->
+
             </div>
 
             <div th:unless="${projects != null && projects.size() > 0}" class="issue-body-frame no-content">
@@ -656,6 +849,21 @@
             modal.find("#projectId").val(id);
 
             $("#projectTypeId [value='" + projectTypeId + "']").attr("selected", "selected");
+        }
+    );
+
+    //edit project team member form
+    $('#editProjectTeamMember').on(
+        'show.bs.modal',
+        function (event) {
+            let button = $(event.relatedTarget);
+            let employeeId = Number.parseInt(button.data('employee'));
+            let projectRoleId = Number.parseInt(button.data('project-role'));
+
+            let modal = $(this);
+
+            modal.find("#projectTeamEmployeeId").val(employeeId);
+            $("#projectRoleId [value='" + projectRoleId + "']").attr("selected", "selected");
         }
     );
 

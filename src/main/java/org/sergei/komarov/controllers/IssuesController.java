@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +47,12 @@ public class IssuesController {
         IssueType type = issueTypesService.getById(typeId);
         IssuePriority priority = issuePrioritiesService.getById(priorityId);
         IssueWorkflowStatus status = issueWorkflowStatusesService.getById(statusId);
-        LocalDate dueDate = dueDateStr != null ? LocalDate.parse(dueDateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy")) : null;
+        LocalDate dueDate = null;
+        try {
+            dueDate = LocalDate.parse(dueDateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        } catch (DateTimeParseException | NullPointerException e) {
+            e.printStackTrace();
+        }
 
         String description = descriptionWrapper.getDescription();
 
@@ -73,7 +79,12 @@ public class IssuesController {
         IssueType type = issueTypesService.getById(typeId);
         IssuePriority priority = issuePrioritiesService.getById(priorityId);
         IssueWorkflowStatus status = issueWorkflowStatusesService.getById(statusId);
-        LocalDate dueDate = dueDateStr != null ? LocalDate.parse(dueDateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy")) : null;
+        LocalDate dueDate = null;
+        try {
+            dueDate = LocalDate.parse(dueDateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        } catch (DateTimeParseException | NullPointerException e) {
+            e.printStackTrace();
+        }
 
         String description = descriptionWrapper.getDescription();
 
@@ -99,7 +110,7 @@ public class IssuesController {
                 Throwable ex = SQLExceptionParser.getUnwrappedPSQLException(e);
                 if (ex != null) {
                     ex.printStackTrace();
-                    message = ex.getMessage();
+                    message = "Невозможно удалить задачу, т.к. есть зависимые сущности.";
                 }
             }
         }

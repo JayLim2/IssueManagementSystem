@@ -444,6 +444,15 @@
                     ></a>
                 </div>
 
+                <div style="margin-top:20px;"
+                     th:if="${issue.getParent() != null}"
+                >
+                    <b>Родительская задача: </b>
+                    <a th:href="'/issues/' + ${issue.getParent().getId()}"
+                       th:text="${issue.getParent().getTitle()}"
+                    ></a>
+                </div>
+
                 <div style="display:table;width:100%;border-bottom:1px solid #aaaaaa;">
                     <div style="display:table-row">
                         <div style="display:table-cell;padding:15px 15px 15px 0;">
