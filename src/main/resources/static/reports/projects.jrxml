@@ -6,15 +6,129 @@
 			  name="Positions" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20"
 			  topMargin="20" bottomMargin="20" uuid="dbe6ef3c-8bfc-42d0-b44a-15c40045e6ce">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PostgreDB"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString>
+		<![CDATA[select * from positions]]>
+	</queryString>
 	<field name="projectId" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="id"/>
 	</field>
 	<field name="projectTitle" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="title"/>
 	</field>
+	<field name="issueTitle" class="java.lang.String"/>
+	<field name="issueId" class="java.lang.Integer"/>
 	<field name="overdueIssuesCount" class="java.lang.Integer"/>
 	<field name="withExpiringDueDateIssuesCount" class="java.lang.Integer"/>
 	<field name="withoutDueDateIssuesCount" class="java.lang.Integer"/>
+	<group name="ProjectsGroup">
+		<groupExpression><![CDATA[$F{projectId}]]></groupExpression>
+		<groupHeader>
+			<band height="60">
+				<rectangle>
+					<reportElement x="0" y="0" width="560" height="30" forecolor="#06429C" backcolor="#06429C"
+								   uuid="78693aaa-54cd-4822-9914-3086a7ac91c7"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement x="0" y="0" width="560" height="30" forecolor="#FFFFFF"
+								   uuid="b7f12dfc-344f-425f-9ad5-ddc4a981b573"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{projectTitle}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement x="0" y="30" width="560" height="30" backcolor="#EDEDED"
+								   uuid="2494945a-4cfb-4079-acde-1cd641638eab"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="30" width="80" height="30" uuid="5f54f4a3-d03f-4188-afb5-309517ef49e7"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[ID задачи]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="80" y="30" width="480" height="30" uuid="1131e771-c2e9-4933-8795-3f03c7932801"/>
+					<box>
+						<pen lineWidth="0.75" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Название задачи]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="87">
+				<rectangle>
+					<reportElement x="0" y="0" width="560" height="79" backcolor="#C4C4C4"
+								   uuid="155d247d-0ad7-4cfc-b1d8-6e70bebd4e13"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="10" y="10" width="100" height="20" uuid="f6eb741a-fcfe-4cc9-96ad-546c43b5aafd"/>
+					<text><![CDATA[Просрочено задач:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="10" y="30" width="150" height="20" uuid="d208e8fa-76ba-476e-b956-83ae906022d0"/>
+					<text><![CDATA[Задач с истекающим сроком:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="10" y="50" width="100" height="20" uuid="690846b1-da04-4063-9b6b-ddf4a598e8c1"/>
+					<text><![CDATA[Задачи без срока:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="160" y="10" width="170" height="20" uuid="98ad0d5f-f9b5-410a-b953-7fb0dfe927f8"/>
+					<box>
+						<pen lineWidth="0.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" markup="none">
+						<font size="12" isBold="true"/>
+						<paragraph lineSpacing="1_1_2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{overdueIssuesCount}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="160" y="30" width="170" height="20" uuid="a77ca753-2a91-4a08-80cc-2c5feba47cbf"/>
+					<box>
+						<pen lineWidth="0.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" markup="none">
+						<font size="12" isBold="true"/>
+						<paragraph lineSpacing="1_1_2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{withExpiringDueDateIssuesCount}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="160" y="50" width="170" height="20" uuid="edc15ef2-e369-4d13-9839-ecff8d0c5d44"/>
+					<box>
+						<pen lineWidth="0.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" markup="none">
+						<font size="12" isBold="true"/>
+						<paragraph lineSpacing="1_1_2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{withExpiringDueDateIssuesCount}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -41,7 +155,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="50" splitType="Stretch">
+		<band height="86" splitType="Stretch">
 			<textField>
 				<reportElement x="270" y="10" width="290" height="30" uuid="0add408b-0944-43ff-8947-b505f9d2c5be"/>
 				<textElement textAlignment="Right"/>
@@ -50,112 +164,45 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="50" splitType="Stretch">
+		<band height="38" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="560" height="30" forecolor="#000000" backcolor="#000000"
+							   uuid="e3fafbe3-745b-4c53-a2a9-28229f2bd260"/>
+			</rectangle>
 			<staticText>
-				<reportElement x="0" y="10" width="50" height="40" uuid="889a71fd-d479-47e2-9cf3-7306a84272ba"/>
+				<reportElement x="0" y="0" width="560" height="30" forecolor="#FFFFFF"
+							   uuid="3e08cca1-a9ae-4b97-8a00-e4ee022e1220"/>
 				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[ID]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="50" y="10" width="190" height="40" uuid="3e08cca1-a9ae-4b97-8a00-e4ee022e1220"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Название проекта]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="240" y="10" width="100" height="40" uuid="d2ce1539-41b9-4c9d-b14a-ba4e7ee9f996"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Просроченные]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="340" y="10" width="110" height="40" uuid="fbe0559d-ced1-431c-863a-d80524520ee2"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Истекает срок
-выполнения]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="450" y="10" width="110" height="40" uuid="e47b0118-78e8-4ce9-abf3-8ae19490bc7f"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Без срока
-выполнения]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="30" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="50" height="30" uuid="9c2b0a7d-ea87-4516-8f0c-3ab3ad85355a"/>
+				<reportElement x="80" y="0" width="480" height="30" uuid="b5e5034f-4fb6-463e-a93b-6bbf38564634"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{projectId}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{issueTitle}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="50" y="0" width="190" height="30" uuid="97fa267c-8ab2-4a35-a4ec-fcbc59728f4f"/>
+				<reportElement x="0" y="0" width="80" height="30" uuid="706e4a62-2cbc-45e0-9c8e-12d6aee310ae"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{projectTitle}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="240" y="0" width="100" height="30" uuid="922e0102-9cdb-4638-a39d-e0bb53fb8955"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{overdueIssuesCount}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="340" y="0" width="110" height="30" uuid="8af30ddf-03c9-45f4-a10d-b13d62dedb66"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{withExpiringDueDateIssuesCount}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="450" y="0" width="110" height="30" uuid="f3bd7b1a-5100-437b-b281-0f1c13df6e21"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{withoutDueDateIssuesCount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{issueId}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -175,7 +222,7 @@
 		<band height="54" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="10" width="80" height="30" uuid="a9800ec2-3bdc-4ab2-97c3-e15992f5f2bc"/>
-				<text><![CDATA[Всего проектов:]]></text>
+				<text><![CDATA[Всего задач:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="80" y="10" width="140" height="30" uuid="5fbb2d01-ed59-463e-b857-f3b5571de4bb"/>

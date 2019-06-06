@@ -2,12 +2,14 @@ package org.sergei.komarov.services;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JRDesignStyle;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.sergei.komarov.models.Employee;
+import org.sergei.komarov.models.Issue;
 import org.sergei.komarov.models.Project;
 import org.springframework.stereotype.Service;
 
@@ -37,10 +39,23 @@ public class ReportsService {
         //Data
         List<Project> projects = projectsService.getAll();
         List<ProjectsReportData> projectsReportDataList = new ArrayList<>();
+
+        ProjectsComparator projectComparator = new ProjectsComparator();
+        projects.sort(projectComparator);
         for (Project project : projects) {
-            projectsReportDataList.add(new ProjectsReportData(project));
+            List<Issue> issuesByProject = issuesService.getByProject(project);
+
+            int overdue = issuesService.getOverdueIssuesByProjectCount(project);
+            int expiring = issuesService.getIssuesWithExpiringDueDateByProjectCount(project);
+            int withoutDueDate = issuesService.getIssuesWithoutDueDateByProjectCount(project);
+
+            for (Issue issue : issuesByProject) {
+                projectsReportDataList.add(new ProjectsReportData(
+                        project, issue,
+                        overdue, expiring, withoutDueDate
+                ));
+            }
         }
-        projectsReportDataList.sort(new ProjectsReportDataComparator());
 
         //Reporting
         return buildReport(projectsReportDataList, PROJECTS_REPORT_TEMPLATE);
@@ -50,10 +65,23 @@ public class ReportsService {
         //Data
         List<Employee> employees = employeesService.getAll();
         List<EmployeesReportData> employeesReportDataList = new ArrayList<>();
+
+        EmployeesComparator employeesComparator = new EmployeesComparator();
+        employees.sort(employeesComparator);
         for (Employee employee : employees) {
-            employeesReportDataList.add(new EmployeesReportData(employee));
+            List<Issue> issues = issuesService.getByEmployee(employee);
+
+            int overdue = issuesService.getOverdueIssuesByEmployeeCount(employee);
+            int expiring = issuesService.getIssuesWithExpiringDueDateByEmployeeCount(employee);
+            int withoutDueDate = issuesService.getIssuesWithoutDueDateByEmployeeCount(employee);
+
+            for (Issue issue : issues) {
+                employeesReportDataList.add(new EmployeesReportData(
+                        employee, issue,
+                        overdue, expiring, withoutDueDate
+                ));
+            }
         }
-        employeesReportDataList.sort(new EmployeesReportDataComparator().reversed());
 
         //Reporting
         return buildReport(employeesReportDataList, EMPLOYEES_REPORT_TEMPLATE);
@@ -99,20 +127,39 @@ public class ReportsService {
         return reportName;
     }
 
+    // TODO: 07.06.2019 data duplications!
     @Data
     public class ProjectsReportData implements Comparable<ProjectsReportData> {
         private int projectId;
         private String projectTitle;
+        private int issueId;
+        private String issueTitle;
+
         private int overdueIssuesCount;
         private int withExpiringDueDateIssuesCount;
         private int withoutDueDateIssuesCount;
 
-        public ProjectsReportData(Project project) {
+        public ProjectsReportData(Project project, Issue issue) {
             projectId = project.getId();
             projectTitle = project.getTitle();
+            issueId = issue.getId();
+            issueTitle = issue.getTitle();
             overdueIssuesCount = issuesService.getOverdueIssuesByProjectCount(project);
             withExpiringDueDateIssuesCount = issuesService.getIssuesWithExpiringDueDateByProjectCount(project);
             withoutDueDateIssuesCount = issuesService.getIssuesWithoutDueDateByProjectCount(project);
+        }
+
+        public ProjectsReportData(Project project, Issue issue,
+                                  int overdueIssuesCount,
+                                  int withExpiringDueDateIssuesCount,
+                                  int withoutDueDateIssuesCount) {
+            projectId = project.getId();
+            projectTitle = project.getTitle();
+            issueId = issue.getId();
+            issueTitle = issue.getTitle();
+            this.overdueIssuesCount = overdueIssuesCount;
+            this.withExpiringDueDateIssuesCount = withExpiringDueDateIssuesCount;
+            this.withoutDueDateIssuesCount = withoutDueDateIssuesCount;
         }
 
         @Override
@@ -129,20 +176,39 @@ public class ReportsService {
         }
     }
 
+    // TODO: 07.06.2019 data duplications!
     @Data
     public class EmployeesReportData implements Comparable<EmployeesReportData> {
         private int employeeId;
         private String employeeName;
+        private int issueId;
+        private String issueTitle;
+
         private int overdueIssuesCount;
         private int withExpiringDueDateIssuesCount;
         private int withoutDueDateIssuesCount;
 
-        public EmployeesReportData(Employee employee) {
+        public EmployeesReportData(Employee employee, Issue issue) {
             employeeId = employee.getId();
             employeeName = employee.toString();
+            issueId = issue.getId();
+            issueTitle = issue.getTitle();
             overdueIssuesCount = issuesService.getOverdueIssuesByEmployeeCount(employee);
             withExpiringDueDateIssuesCount = issuesService.getIssuesWithExpiringDueDateByEmployeeCount(employee);
             withoutDueDateIssuesCount = issuesService.getIssuesWithoutDueDateByEmployeeCount(employee);
+        }
+
+        public EmployeesReportData(Employee employee, Issue issue,
+                                   int overdueIssuesCount,
+                                   int withExpiringDueDateIssuesCount,
+                                   int withoutDueDateIssuesCount) {
+            employeeId = employee.getId();
+            employeeName = employee.toString();
+            issueId = issue.getId();
+            issueTitle = issue.getTitle();
+            this.overdueIssuesCount = overdueIssuesCount;
+            this.withExpiringDueDateIssuesCount = withExpiringDueDateIssuesCount;
+            this.withoutDueDateIssuesCount = withoutDueDateIssuesCount;
         }
 
         @Override
@@ -160,38 +226,96 @@ public class ReportsService {
     }
 
     private class ProjectsReportDataComparator implements Comparator<ProjectsReportData> {
-
         @Override
         public int compare(ProjectsReportData o1, ProjectsReportData o2) {
-
-            int total1 = o1.overdueIssuesCount
-                    + o1.withExpiringDueDateIssuesCount
-                    + o1.withoutDueDateIssuesCount;
-
-            int total2 = o2.overdueIssuesCount
-                    + o2.withExpiringDueDateIssuesCount
-                    + o2.withoutDueDateIssuesCount;
-
-            return total2 - total1;
+            return o1.compareTo(o2);
         }
-
     }
 
     private class EmployeesReportDataComparator implements Comparator<EmployeesReportData> {
-
         @Override
         public int compare(EmployeesReportData o1, EmployeesReportData o2) {
+            return o1.compareTo(o2);
+        }
+    }
 
-            int total1 = o1.overdueIssuesCount
-                    + o1.withExpiringDueDateIssuesCount
-                    + o1.withoutDueDateIssuesCount;
+    @NoArgsConstructor
+    @Data
+    private class ProjectsComparator implements Comparator<Project> {
 
-            int total2 = o2.overdueIssuesCount
-                    + o2.withExpiringDueDateIssuesCount
-                    + o2.withoutDueDateIssuesCount;
+        private int overdueIssuesCount1;
+        private int withExpiringDueDateIssuesCount1;
+        private int withoutDueDateIssuesCount1;
 
-            return total2 - total1;
+        private int overdueIssuesCount2;
+        private int withExpiringDueDateIssuesCount2;
+        private int withoutDueDateIssuesCount2;
+
+        private void cache(Project project1, Project project2) {
+            overdueIssuesCount1 = issuesService.getOverdueIssuesByProjectCount(project1);
+            overdueIssuesCount2 = issuesService.getOverdueIssuesByProjectCount(project2);
+
+            withExpiringDueDateIssuesCount1 = issuesService.getIssuesWithExpiringDueDateByProjectCount(project1);
+            withExpiringDueDateIssuesCount2 = issuesService.getIssuesWithExpiringDueDateByProjectCount(project2);
+
+            withoutDueDateIssuesCount1 = issuesService.getIssuesWithoutDueDateByProjectCount(project1);
+            withoutDueDateIssuesCount2 = issuesService.getIssuesWithoutDueDateByProjectCount(project2);
         }
 
+        @Override
+        public int compare(Project o1, Project o2) {
+
+            cache(o1, o2);
+
+            int currentTotal = overdueIssuesCount1
+                    + withExpiringDueDateIssuesCount1
+                    + withoutDueDateIssuesCount1;
+
+            int otherTotal = overdueIssuesCount2
+                    + withExpiringDueDateIssuesCount2
+                    + withoutDueDateIssuesCount2;
+
+            return otherTotal - currentTotal;
+        }
+    }
+
+    @NoArgsConstructor
+    @Data
+    private class EmployeesComparator implements Comparator<Employee> {
+
+        private int overdueIssuesCount1;
+        private int withExpiringDueDateIssuesCount1;
+        private int withoutDueDateIssuesCount1;
+
+        private int overdueIssuesCount2;
+        private int withExpiringDueDateIssuesCount2;
+        private int withoutDueDateIssuesCount2;
+
+        private void cache(Employee employee1, Employee employee2) {
+            overdueIssuesCount1 = issuesService.getOverdueIssuesByEmployeeCount(employee1);
+            overdueIssuesCount2 = issuesService.getOverdueIssuesByEmployeeCount(employee2);
+
+            withExpiringDueDateIssuesCount1 = issuesService.getIssuesWithExpiringDueDateByEmployeeCount(employee1);
+            withExpiringDueDateIssuesCount2 = issuesService.getIssuesWithExpiringDueDateByEmployeeCount(employee2);
+
+            withoutDueDateIssuesCount1 = issuesService.getIssuesWithoutDueDateByEmployeeCount(employee1);
+            withoutDueDateIssuesCount2 = issuesService.getIssuesWithoutDueDateByEmployeeCount(employee2);
+        }
+
+        @Override
+        public int compare(Employee o1, Employee o2) {
+
+            cache(o1, o2);
+
+            int currentTotal = overdueIssuesCount1
+                    + withExpiringDueDateIssuesCount1
+                    + withoutDueDateIssuesCount1;
+
+            int otherTotal = overdueIssuesCount2
+                    + withExpiringDueDateIssuesCount2
+                    + withoutDueDateIssuesCount2;
+
+            return otherTotal - currentTotal;
+        }
     }
 }

@@ -13,6 +13,9 @@ import java.util.List;
 public interface IssuesRepository extends JpaRepository<Issue, Integer> {
     List<Issue> findByProject(Project project);
 
+    @Query("SELECT issue FROM Issue issue WHERE issue.assignee = :employee OR issue.creator = :employee")
+    List<Issue> findByAssigneeOrCreator(@Param("employee") Employee employee);
+
     @Query("SELECT issue FROM Issue issue WHERE :now > issue.dueDate AND issue.project = :project")
     List<Issue> findOverdueIssuesByProject(@Param("now") LocalDate now, @Param("project") Project project);
 

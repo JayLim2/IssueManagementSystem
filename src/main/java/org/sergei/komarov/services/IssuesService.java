@@ -39,6 +39,10 @@ public class IssuesService implements JpaService<Issue, Integer> {
         return issuesRepository.findByProject(project);
     }
 
+    public List<Issue> getByEmployee(Employee employee) {
+        return issuesRepository.findByAssigneeOrCreator(employee);
+    }
+
     @Override
     public Issue getById(Integer id) {
         return isExistsById(id) ? issuesRepository.getOne(id) : null;
