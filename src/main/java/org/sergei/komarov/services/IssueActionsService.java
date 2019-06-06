@@ -100,6 +100,10 @@ public class IssueActionsService implements JpaService<IssueAction, IssueActionK
         }
 
         if (!Objects.equals(old.getDueDate(), dueDate)) {
+            System.out.println();
+            System.out.println(old.getDueDate());
+            System.out.println(dueDate);
+            System.out.println();
             serviceComments.put(ServiceComment.CHANGED_DUE_DATE, dueDate);
         }
 

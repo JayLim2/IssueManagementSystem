@@ -318,7 +318,7 @@
                 <td style="border:1px solid rgb(233, 236, 239);"
                     th:text="${issue.getAssignee() != null ? issue.getAssignee() : 'не назначен'}"></td>
                 <td style="border:1px solid rgb(233, 236, 239);"
-                    th:text="${issue.getDueDate() != null ? #dates.format(issue.getAssignee(), 'dd MMM yyyy') : 'не назначена'}"></td>
+                    th:text="${issue.getDueDate() != null ? #temporals.format(issue.getDueDate(), 'dd MMM yyyy') : 'не назначена'}"></td>
 
             </tr>
             </tbody>

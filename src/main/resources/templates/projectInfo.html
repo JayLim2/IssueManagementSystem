@@ -36,8 +36,8 @@
 
                     <div class="warn-msg"
                          th:if="${projectTypes == null || projectTypes.size() == 0 || projectRoles == null || projectRoles.size() == 0}">
-                        Создание проектов ограничено, т.к. нет ни одного типа
-                        проекта или ни одной проектной роли.
+                        Создание проектов ограничено, т.к. нет ни одного <a href="/handbook/projectTypes">типа
+                        проекта</a> или ни одной <a href="/handbook/projectRoles">проектной роли</a>.
                     </div>
                     <form id="addForm" action="javascript:void(0)" method="post"
                           onsubmit="addOperativeDataRequest('projects', '#addForm', '#add-response')"
@@ -168,11 +168,11 @@
                          || issueWorkflowStatuses == null || issueWorkflowStatuses.size() == 0}"
                     >
                         Создание новых задач ограничено, т.к. нет ни одного
-                        <a href="/handbook/issueTypes/add">типа</a>,
-                        <a href="/handbook/issuePriorities/add">приоритета</a> задачи,
-                        <a href="/handbook/issueWorkflowStatuses/add">статуса рабочего процесса</a> задачи,
-                        <a href="/projects/add">проекта</a>
-                        или ни одного <a href="/handbook/employees/add">сотрудника</a>.
+                        <a href="/handbook/issueTypes">типа</a>,
+                        <a href="/handbook/issuePriorities">приоритета</a> задачи,
+                        <a href="/handbook/issueWorkflowStatuses">статуса рабочего процесса</a> задачи,
+                        <a href="/projects/all">проекта</a>
+                        или ни одного <a href="/handbook/employees">сотрудника</a>.
                     </div>
                     <form style="vertical-align:top;margin-bottom:30px;"
                           id="addIssueForm" action="javascript:void(0)" method="post"
@@ -708,7 +708,7 @@
                                     th:data-issue-priority="${issue.getPriority().getId()}"
                                     th:data-issue-status="${issue.getStatus().getId()}"
                                     th:data-assignee="${issue.getAssignee() != null ? issue.getAssignee().getId() : null}"
-                                    th:data-due-date="${issue.getDueDate() != null ? issue.getDueDate() : null}"
+                                    th:data-due-date="${issue.getDueDate() != null ? #temporals.format(issue.getDueDate(), 'dd.MM.yyyy') : null}"
                                     th:data-parent-issue="${issue.getParent() != null ? issue.getParent().getId() : null}"
                                     th:data-project="${issue.getProject().getId()}"
                             >
@@ -915,8 +915,15 @@
             format: 'dd.mm.yyyy'
         };
 
-        $('#addDueDate').datepicker(format);
-        $('#editDueDate').datepicker(format);
+        ['#addDueDate', '#editDueDate'].forEach(date => {
+            $(date).datepicker(format).on(
+                'show.bs.modal',
+                function (event) {
+                    event.stopPropagation();
+                }
+            )
+        });
+
     });
 </script>
 </body>

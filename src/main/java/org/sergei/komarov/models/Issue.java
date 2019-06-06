@@ -76,7 +76,7 @@ public class Issue implements Serializable, Cloneable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
     private List<Issue> children;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", cascade = CascadeType.ALL)
     private List<IssueAction> issueActions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")

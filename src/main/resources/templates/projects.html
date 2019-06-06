@@ -33,7 +33,7 @@
                     <div id="add-response"></div>
 
                     <div class="warn-msg" th:if="${projectTypes == null || projectTypes.size() == 0}">
-                        Создание проектов ограничено, т.к. нет ни одного <a href="/handbook/projectTypes/add">типа
+                        Создание проектов ограничено, т.к. нет ни одного <a href="/handbook/projectTypes">типа
                         проекта</a>.
                     </div>
                     <form id="addForm" action="javascript:void(0)" method="post"
@@ -93,7 +93,7 @@
             <div th:unless="${projects != null && projects.size() > 0}" class="issue-body-frame no-content">
                 Проекты не найдены
                 <p style="font-size:12pt;">
-                    <a href="/projects/add">Создайте</a> первый проект или повторите попытку позже.
+                    Создайте первый проект или повторите попытку позже.
                 </p>
             </div>
 

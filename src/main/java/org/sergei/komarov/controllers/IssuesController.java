@@ -86,6 +86,11 @@ public class IssuesController {
             e.printStackTrace();
         }
 
+        // TODO: 06.06.2019 refactor!
+        if (dueDate == null) {
+            dueDate = issuesService.getById(issueId).getDueDate();
+        }
+
         String description = descriptionWrapper.getDescription();
 
         issuesService.validateAndUpdate(attrs, issueId, title, description, dueDate, assignee, project, rootTask, type, priority, status);
