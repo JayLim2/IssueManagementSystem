@@ -272,4 +272,21 @@ public class Validators {
 
         return message;
     }
+
+    public static String validateWeekValues(float[] values) {
+        String message = null;
+
+        float total = Handlers.aggregateTotal(values);
+
+        if (values.length != 7) {
+            message = "Длина массива значений отработанных часов в течение недели должна быть равна 7.";
+        } else if (Float.compare(total, 0) == 0) {
+            message = "Не заполнены значения отработанных часов.";
+        } else if (Float.compare(total, 0) < 0) {
+            message = "Отрицательные значения отработанных часов не допускаются.";
+        }
+
+        return message;
+    }
+
 }

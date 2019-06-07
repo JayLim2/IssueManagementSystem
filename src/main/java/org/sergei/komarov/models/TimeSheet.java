@@ -40,4 +40,22 @@ public class TimeSheet {
                 monday, tuesday, wednesday, thursday, friday, saturday, sunday
         };
     }
+
+    public void setWeekValues(float[] values) {
+        if (values == null) {
+            throw new NullPointerException();
+        }
+
+        if (values.length != 7) {
+            throw new RuntimeException("Массив со значениями часов по дням недели не соответствует количеству дней в неделе.");
+        }
+
+        setMonday(values[0]);
+        setTuesday(values[1]);
+        setWednesday(values[2]);
+        setThursday(values[3]);
+        setFriday(values[4]);
+        setSaturday(values[5]);
+        setSunday(values[6]);
+    }
 }

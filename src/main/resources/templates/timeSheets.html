@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="libs :: headerFragment">
+    <title id="pageTitle">Учет рабочего времени</title>
+</head>
+<body>
+<div th:replace="menu :: menu"></div>
+
+<!-- body -->
+<div class="container" style="padding-top:20px">
+    <h1>Учет рабочего времени</h1>
+
+    Заполнение отчетности по использованию рабочего времени.
+
+    <div id="time-sheet-response" style="margin:15px 0;">
+    </div>
+
+    <form action="javascript:void(0)" id="addTimeSheetForm" method="post"
+          onsubmit="addTimeSheetRequest()"
+    >
+        <input id="startDate" type="hidden"/>
+        <table class="table"
+               style="border:1px solid gray;margin-top:20px;"
+        >
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">Неделя</th>
+                <th scope="col">Код задачи</th>
+                <th scope="col">ПН</th>
+                <th scope="col">ВТ</th>
+                <th scope="col">СР</th>
+                <th scope="col">ЧТ</th>
+                <th scope="col">ПТ</th>
+                <th scope="col">СБ</th>
+                <th scope="col">ВС</th>
+                <th scope="col" style="width:250px"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="timeSheet : ${timeSheets}">
+                <td th:text="${timeSheet.getStartDate()}">
+                </td>
+                <td th:text="${timeSheet.issue.getId()}">
+                </td>
+
+                <td th:text="${timeSheet.getMonday()}">
+                </td>
+                <td th:text="${timeSheet.getTuesday()}">
+                </td>
+                <td th:text="${timeSheet.getWednesday()}">
+                </td>
+                <td th:text="${timeSheet.getThursday()}">
+                </td>
+                <td th:text="${timeSheet.getFriday()}">
+                </td>
+                <td th:text="${timeSheet.getSaturday()}">
+                </td>
+                <td th:text="${timeSheet.getSunday()}">
+                </td>
+
+                <td style="width:250px">
+                    <input type="button" class="btn btn-primary"
+                           th:data-start-date="${timeSheet.getStartDate()}"
+                           th:data-task-id="${timeSheet.issue.getId()}"
+                           th:data-day-1="${timeSheet.getMonday()}"
+                           th:data-day-2="${timeSheet.getTuesday()}"
+                           th:data-day-3="${timeSheet.getWednesday()}"
+                           th:data-day-4="${timeSheet.getThursday()}"
+                           th:data-day-5="${timeSheet.getFriday()}"
+                           th:data-day-6="${timeSheet.getSaturday()}"
+                           th:data-day-7="${timeSheet.getSunday()}"
+                           onclick="fillTimeSheetForm(this)"
+                           value="Изменить"/>
+
+                    <input type="button" class="btn btn-danger"
+                           th:onclick="'deleteTimeSheetRequest('+${timeSheet.getEmployee().getId()}+', '+${timeSheet.getIssue().getId()}+', \''+${timeSheet.getStartDate()}+'\')'"
+                           value="Удалить"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td th:text="${currentWeek}">
+                </td>
+                <td>
+                    <input type="text" class="time-sheet-input"
+                           style="width:120px;"
+                           id="taskId"
+                           name="taskId"
+                    >
+                </td>
+
+                <td>
+                    <input type="number" class="time-sheet-input"
+                           id="day1"
+                           name="day1"
+                    >
+                </td>
+                <td>
+                    <input type="number" class="time-sheet-input"
+                           id="day2"
+                           name="day2"
+                    >
+                </td>
+                <td>
+                    <input type="number" class="time-sheet-input"
+                           id="day3"
+                           name="day3"
+                    >
+                </td>
+                <td>
+                    <input type="number" class="time-sheet-input"
+                           id="day4"
+                           name="day4"
+                    >
+                </td>
+                <td>
+                    <input type="number" class="time-sheet-input"
+                           id="day5"
+                           name="day5"
+                    >
+                </td>
+                <td>
+                    <input type="number" class="time-sheet-input"
+                           id="day6"
+                           name="day6"
+                    >
+                </td>
+                <td>
+                    <input type="number" class="time-sheet-input"
+                           id="day7"
+                           name="day7"
+                    >
+                </td>
+
+                <td style="width:250px">
+                    <input type="submit" class="btn btn-dark"
+                           value="Сохранить"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+</html>

@@ -324,3 +324,85 @@ function deleteProjectTeamMemberRequest(projectId, employeeId) {
         }
     });
 }
+
+/*
+ADD TIMESHEET
+ */
+
+//Add request
+function addTimeSheetRequest() {
+    let serialized = $("#addTimeSheetForm").serialize();
+
+    $.post({
+        url: '/timeSheets/add',
+        data: serialized,
+        statusCode: {
+            200: function () {
+                console.log('added')
+            }
+        }
+    }).done(function (data) {
+        let result = data.info ? data.info : data.error;
+        let msgClass = (data.info ? "info" : "err") + '-msg';
+        $("#time-sheet-response").html("<div class='" + msgClass + "' style='margin-top:20px;'>" + result + "</div>");
+
+        if (data.info) {
+            setTimeout(
+                function () {
+                    location.reload();
+                },
+                1500
+            )
+        }
+    }).fail(function (e) {
+        console.error(e);
+    });
+}
+
+//Remove request
+function deleteTimeSheetRequest(employeeId, taskId, startDate) {
+
+    console.log(startDate);
+
+    $.post({
+        url: '/timeSheets/delete',
+        data: {
+            employeeId: employeeId,
+            taskId: taskId,
+            startDate: startDate
+        },
+        statusCode: {
+            200: function () {
+                console.log('removed')
+            }
+        }
+    }).done(function (data) {
+        let result = data.info ? data.info : data.error;
+        let msgClass = (data.info ? "info" : "err") + '-msg';
+        $("#time-sheet-response").html("<div class='" + msgClass + "' style='margin-top:20px;'>" + result + "</div>");
+
+        if (data.info) {
+            setTimeout(
+                function () {
+                    location.reload();
+                },
+                1500
+            )
+        }
+    }).fail(function (e) {
+        console.error(e);
+    });
+}
+
+function fillTimeSheetForm(buttonObject) {
+    let button = $(buttonObject);
+    let startDate = button.data('start-date');
+    let taskId = button.data('task-id');
+
+    $("#taskId").val(taskId);
+    $("#startDate").val(startDate);
+    for (let i = 1; i <= 7; i++) {
+        let value = button.data('day-' + i);
+        $("#day" + i).val(value);
+    }
+}

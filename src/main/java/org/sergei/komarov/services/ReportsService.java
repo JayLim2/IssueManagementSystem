@@ -26,12 +26,10 @@ import java.util.List;
 @AllArgsConstructor
 public class ReportsService {
     private final EmployeesService employeesService;
-    private final EmployeePositionsService employeePositionsService;
-
     private final ProjectsService projectsService;
     private final IssuesService issuesService;
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("-yyyy-MM-dd-HH-mm-ss");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("-yyyy-MM-dd-HH-mm-ss");
     private static final String PROJECTS_REPORT_TEMPLATE = "/static/reports/Projects.jrxml";
     private static final String EMPLOYEES_REPORT_TEMPLATE = "/static/reports/Employees.jrxml";
 
@@ -117,7 +115,7 @@ public class ReportsService {
             prefix = "projects-";
         }
 
-        String reportName = prefix + "report" + dateTimeFormatter.format(LocalDateTime.now()) + ".pdf";
+        String reportName = prefix + "report" + DATE_TIME_FORMATTER.format(LocalDateTime.now()) + ".pdf";
 
         JasperExportManager.exportReportToPdfFile(
                 jasperPrint,
@@ -129,7 +127,7 @@ public class ReportsService {
 
     // TODO: 07.06.2019 data duplications!
     @Data
-    public class ProjectsReportData implements Comparable<ProjectsReportData> {
+    public class ProjectsReportData {
         private int projectId;
         private String projectTitle;
         private int issueId;
@@ -161,24 +159,11 @@ public class ReportsService {
             this.withExpiringDueDateIssuesCount = withExpiringDueDateIssuesCount;
             this.withoutDueDateIssuesCount = withoutDueDateIssuesCount;
         }
-
-        @Override
-        public int compareTo(ProjectsReportData o) {
-            int currentTotal = overdueIssuesCount
-                    + withExpiringDueDateIssuesCount
-                    + withoutDueDateIssuesCount;
-
-            int otherTotal = o.overdueIssuesCount
-                    + o.withExpiringDueDateIssuesCount
-                    + o.withoutDueDateIssuesCount;
-
-            return otherTotal - currentTotal;
-        }
     }
 
     // TODO: 07.06.2019 data duplications!
     @Data
-    public class EmployeesReportData implements Comparable<EmployeesReportData> {
+    public class EmployeesReportData {
         private int employeeId;
         private String employeeName;
         private int issueId;
@@ -209,33 +194,6 @@ public class ReportsService {
             this.overdueIssuesCount = overdueIssuesCount;
             this.withExpiringDueDateIssuesCount = withExpiringDueDateIssuesCount;
             this.withoutDueDateIssuesCount = withoutDueDateIssuesCount;
-        }
-
-        @Override
-        public int compareTo(EmployeesReportData o) {
-            int currentTotal = overdueIssuesCount
-                    + withExpiringDueDateIssuesCount
-                    + withoutDueDateIssuesCount;
-
-            int otherTotal = o.overdueIssuesCount
-                    + o.withExpiringDueDateIssuesCount
-                    + o.withoutDueDateIssuesCount;
-
-            return otherTotal - currentTotal;
-        }
-    }
-
-    private class ProjectsReportDataComparator implements Comparator<ProjectsReportData> {
-        @Override
-        public int compare(ProjectsReportData o1, ProjectsReportData o2) {
-            return o1.compareTo(o2);
-        }
-    }
-
-    private class EmployeesReportDataComparator implements Comparator<EmployeesReportData> {
-        @Override
-        public int compare(EmployeesReportData o1, EmployeesReportData o2) {
-            return o1.compareTo(o2);
         }
     }
 

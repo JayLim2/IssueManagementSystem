@@ -3,6 +3,7 @@ package org.sergei.komarov.controllers;
 import lombok.AllArgsConstructor;
 import org.sergei.komarov.models.*;
 import org.sergei.komarov.services.*;
+import org.sergei.komarov.utils.Handlers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ public class ViewsController {
     private final ProjectsService projectsService;
     private final IssuesService issuesService;
     private final IssueActionsService issueActionsService;
+    private final TimeSheetsService timeSheetsService;
 
     @GetMapping("/handbook/projectTypes")
     public String getProjectTypesViewPage(Model model) {
@@ -193,5 +195,33 @@ public class ViewsController {
     @GetMapping("/static/reports")
     public String getReports() {
         return "reports";
+    }
+
+    @GetMapping("/timeSheets/current")
+    public String getTimeSheets(Model model) {
+
+        User user = usersService.getCurrentUser();
+        Employee associatedEmployee = user.getEmployee();
+        List<TimeSheet> timeSheets = timeSheetsService.getByEmployee(associatedEmployee);
+
+        model.addAttribute("currentWeek", Handlers.getCurrentWeek());
+        model.addAttribute("timeSheets", timeSheets);
+
+        List<Project> projects = projectsService.getAll();
+        model.addAttribute("projects", projects);
+
+        return "timeSheets";
+    }
+
+    @GetMapping("/timeSheets/{userId}")
+    public String getTimeSheets(Model model, @PathVariable String userId) {
+
+        User user = usersService.getById(userId);
+        Employee associatedEmployee = user.getEmployee();
+        List<TimeSheet> timeSheets = timeSheetsService.getByEmployee(associatedEmployee);
+
+        model.addAttribute("timeSheets", timeSheets);
+
+        return "timeSheets";
     }
 }

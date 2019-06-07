@@ -1,4 +1,8 @@
 
+.modal-backdrop {
+    opacity: 0.1 !important;
+}
+
 .dropdown-menu.dropdown-fix {
     margin-top: 8px;
     box-shadow: 0 0 20px 0 rgba(150, 150, 150, 0.5);
@@ -175,4 +179,12 @@
 
 .date-mode-radio-group {
     margin-top: 10px;
+}
+
+.time-sheet-input {
+    border: 1px solid #010051;
+    padding: 5px;
+    font-size: 11pt;
+    width: 50px;
+    height: 38px;
 }
