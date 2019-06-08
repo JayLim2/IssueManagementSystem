@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="libs :: headerFragment">
+    <title id="pageTitle">Главная страница</title>
+</head>
+<body>
+<div th:replace="menu :: menu"></div>
+
+<!-- body -->
+<div class="container" style="padding-top:20px">
+    <h1>Главная страница</h1>
+
+    На главной странице будут размещены данные, актуальные для сотрудника.
+
+    <div style="margin-top:20px;">
+        <button class="btn btn-dark"
+                onclick="window.location.href = '/dashboards/projects'"
+        >
+            Проекты, отстающие от сроков выполнения
+        </button>
+        <button class="btn btn-dark"
+                onclick="window.location.href = '/dashboards/employees'"
+        >
+            Наиболее эффективные сотрудники
+        </button>
+    </div>
+
+    <div style="margin:20px 0;border:1px solid rgb(3, 84, 150)">
+        <table class="table" th:each="dashboardEntry : ${employeesDashboard}">
+            <tbody>
+            <tr>
+                <td th:text="${dashboardEntry.getKey()}"
+                    style="border:0;background:rgb(3, 84, 150);color:white;font-size:14pt;padding-left:15px;font-weight:bold;"></td>
+            </tr>
+            <tr>
+                <td style="padding:0;border:0;">
+                    <table style="width:100%;margin:0;border:0;">
+                        <tbody>
+                        <tr th:each="entry : ${dashboardEntry.getValue()}">
+                            <td th:if="${entry.getValue().size() > 0}" style="border:0;">
+                                <div th:text="${entry.getKey()}"
+                                     style="background:rgb(208, 106, 8);padding:10px;color:white;padding-left:15px;font-weight:bold;"></div>
+                                <table class="table" style="margin:0;">
+                                    <thead class="thead-light">
+                                    <tr style="border-left:2px solid rgb(233, 236, 339);border-right:2px solid rgb(233, 236, 339); border-bottom:2px solid rgb(233, 236, 339);">
+                                        <th style="width:130px;">ID задачи</th>
+                                        <th>Название задачи</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="issue : ${entry.getValue()}"
+                                        style="border-left:2px solid rgb(233, 236, 339);border-right:2px solid rgb(233, 236, 339); border-bottom:2px solid rgb(233, 236, 339);"
+                                    >
+                                        <td th:text="${issue.getId()}"></td>
+                                        <td th:text="${issue.getTitle()}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

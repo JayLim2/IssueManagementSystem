@@ -241,6 +241,24 @@ public class IssuesService implements JpaService<Issue, Integer> {
         );
     }
 
+    public List<Issue> getOverdueIssuesByEmployee(Employee employee) {
+        return issuesRepository.findOverdueIssuesByEmployee(
+                LocalDate.now(),
+                employee
+        );
+    }
+
+    public List<Issue> getIssuesWithExpiringDueDateByEmployee(Employee employee) {
+        return issuesRepository.findIssuesWithExpiringDueDateByEmployee(
+                getExpirationPeriod(EXPIRATION_PERIOD),
+                employee
+        );
+    }
+
+    public List<Issue> getIssuesWithoutDueDateByEmployee(Employee employee) {
+        return issuesRepository.findIssuesWithoutDueDateByEmployee(employee);
+    }
+
     public int getOverdueIssuesByEmployeeCount(Employee employee) {
         return issuesRepository.countOverdueIssuesByEmployee(
                 LocalDate.now(),
