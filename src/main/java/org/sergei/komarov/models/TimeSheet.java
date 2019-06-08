@@ -3,6 +3,7 @@ package org.sergei.komarov.models;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.sergei.komarov.models.keys.TimeSheetKey;
+import org.sergei.komarov.utils.Handlers;
 
 import javax.persistence.*;
 
@@ -57,5 +58,27 @@ public class TimeSheet {
         setFriday(values[4]);
         setSaturday(values[5]);
         setSunday(values[6]);
+    }
+
+    public void appendWeekValues(float[] values) {
+        if (values == null) {
+            throw new NullPointerException();
+        }
+
+        if (values.length != 7) {
+            throw new RuntimeException("Массив со значениями часов по дням недели не соответствует количеству дней в неделе.");
+        }
+
+        setMonday(getMonday() + values[0]);
+        setTuesday(getTuesday() + values[1]);
+        setWednesday(getWednesday() + values[2]);
+        setThursday(getThursday() + values[3]);
+        setFriday(getFriday() + values[4]);
+        setSaturday(getSaturday() + values[5]);
+        setSunday(getSunday() + values[6]);
+    }
+
+    public float getTotal() {
+        return Handlers.aggregateTotal(getWeekValues());
     }
 }

@@ -201,26 +201,27 @@ public class ViewsController {
     public String getTimeSheets(Model model) {
 
         User user = usersService.getCurrentUser();
-        Employee associatedEmployee = user.getEmployee();
-        List<TimeSheet> timeSheets = timeSheetsService.getByEmployee(associatedEmployee);
-
-        model.addAttribute("currentWeek", Handlers.getCurrentWeek());
-        model.addAttribute("timeSheets", timeSheets);
-
-        List<Project> projects = projectsService.getAll();
-        model.addAttribute("projects", projects);
-
-        return "timeSheets";
+        return getTimeSheetsToView(model, user);
     }
 
     @GetMapping("/timeSheets/{userId}")
     public String getTimeSheets(Model model, @PathVariable String userId) {
 
         User user = usersService.getById(userId);
+        return getTimeSheetsToView(model, user);
+    }
+
+    private String getTimeSheetsToView(Model model, User user) {
         Employee associatedEmployee = user.getEmployee();
         List<TimeSheet> timeSheets = timeSheetsService.getByEmployee(associatedEmployee);
+        TimeSheet totalRow = timeSheetsService.getTotalRow(timeSheets);
 
+        model.addAttribute("currentWeek", Handlers.getCurrentWeek());
         model.addAttribute("timeSheets", timeSheets);
+        model.addAttribute("totalRow", totalRow);
+
+        List<Project> projects = projectsService.getAll();
+        model.addAttribute("projects", projects);
 
         return "timeSheets";
     }

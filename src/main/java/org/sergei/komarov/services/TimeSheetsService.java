@@ -53,4 +53,14 @@ public class TimeSheetsService implements JpaService<TimeSheet, TimeSheetKey> {
     public List<TimeSheet> getByEmployee(Employee employee) {
         return timeSheetsRepository.findByEmployee(employee);
     }
+
+    public TimeSheet getTotalRow(List<TimeSheet> rows) {
+        TimeSheet totalRow = new TimeSheet();
+
+        for (TimeSheet row : rows) {
+            totalRow.appendWeekValues(row.getWeekValues());
+        }
+
+        return totalRow;
+    }
 }

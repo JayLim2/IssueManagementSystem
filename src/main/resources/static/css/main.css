@@ -188,3 +188,14 @@
     width: 50px;
     height: 38px;
 }
+
+.time-sheet-total-cell {
+    background: #f7ffd4;
+    font-weight: bold;
+}
+
+.time-sheet-total-cell-in-total-row {
+    background: #ffdd84;
+    font-weight: bold;
+    color: #50000e;
+}

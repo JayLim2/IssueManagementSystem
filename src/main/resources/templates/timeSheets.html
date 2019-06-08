@@ -33,6 +33,7 @@
                 <th scope="col">ПТ</th>
                 <th scope="col">СБ</th>
                 <th scope="col">ВС</th>
+                <th scope="col">Total</th>
                 <th scope="col" style="width:250px"></th>
             </tr>
             </thead>
@@ -58,6 +59,9 @@
                 <td th:text="${timeSheet.getSunday()}">
                 </td>
 
+                <td class="time-sheet-total-cell" th:text="${timeSheet.getTotal()}">
+                </td>
+
                 <td style="width:250px">
                     <input type="button" class="btn btn-primary"
                            th:data-start-date="${timeSheet.getStartDate()}"
@@ -75,6 +79,35 @@
                     <input type="button" class="btn btn-danger"
                            th:onclick="'deleteTimeSheetRequest('+${timeSheet.getEmployee().getId()}+', '+${timeSheet.getIssue().getId()}+', \''+${timeSheet.getStartDate()}+'\')'"
                            value="Удалить"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="time-sheet-total-cell">
+                    Total:
+                </td>
+                <td class="time-sheet-total-cell">
+                </td>
+
+                <td class="time-sheet-total-cell" th:text="${totalRow.getMonday()}">
+                </td>
+                <td class="time-sheet-total-cell" th:text="${totalRow.getTuesday()}">
+                </td>
+                <td class="time-sheet-total-cell" th:text="${totalRow.getWednesday()}">
+                </td>
+                <td class="time-sheet-total-cell" th:text="${totalRow.getThursday()}">
+                </td>
+                <td class="time-sheet-total-cell" th:text="${totalRow.getFriday()}">
+                </td>
+                <td class="time-sheet-total-cell" th:text="${totalRow.getSaturday()}">
+                </td>
+                <td class="time-sheet-total-cell" th:text="${totalRow.getSunday()}">
+                </td>
+
+                <td class="time-sheet-total-cell-in-total-row" th:text="${totalRow.getTotal()}">
+                </td>
+
+                <td style="width:250px">
                 </td>
             </tr>
 
@@ -132,9 +165,15 @@
                     >
                 </td>
 
+                <td>
+                </td>
+
                 <td style="width:250px">
                     <input type="submit" class="btn btn-dark"
                            value="Сохранить"/>
+                    <input type="reset" class="btn btn-danger"
+                           form="addTimeSheetForm"
+                           value="Очистить"/>
                 </td>
             </tr>
             </tbody>
