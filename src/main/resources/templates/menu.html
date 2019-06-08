@@ -17,8 +17,19 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/}">Главная страница</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="mainPageDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Главная страница
+                </a>
+                <div class="dropdown-menu dropdown-fix" aria-labelledby="mainPageDropdown">
+                    <a class="dropdown-item" th:href="@{/dashboards/employees}">
+                        Проекты, отстающие от сроков выполнения
+                    </a>
+                    <a class="dropdown-item" th:href="@{/dashboards/projects}">
+                        Наиболее эффективные сотрудники
+                    </a>
+                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/projects/all}">Учет проектов</a>
