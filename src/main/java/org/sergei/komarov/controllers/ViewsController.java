@@ -201,17 +201,19 @@ public class ViewsController {
     public String getTimeSheets(Model model) {
 
         User user = usersService.getCurrentUser();
-        return getTimeSheetsToView(model, user);
+        getTimeSheetsToView(model, user);
+        return "timeSheets";
     }
 
     @GetMapping("/timeSheets/{userId}")
     public String getTimeSheets(Model model, @PathVariable String userId) {
 
         User user = usersService.getById(userId);
-        return getTimeSheetsToView(model, user);
+        getTimeSheetsToView(model, user);
+        return "timeSheets";
     }
 
-    private String getTimeSheetsToView(Model model, User user) {
+    private void getTimeSheetsToView(Model model, User user) {
         Employee associatedEmployee = user.getEmployee();
         List<TimeSheet> timeSheets = timeSheetsService.getByEmployee(associatedEmployee);
         TimeSheet totalRow = timeSheetsService.getTotalRow(timeSheets);
@@ -222,7 +224,5 @@ public class ViewsController {
 
         List<Project> projects = projectsService.getAll();
         model.addAttribute("projects", projects);
-
-        return "timeSheets";
     }
 }
