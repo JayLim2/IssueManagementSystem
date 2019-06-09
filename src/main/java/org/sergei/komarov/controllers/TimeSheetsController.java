@@ -28,13 +28,14 @@ public class TimeSheetsController {
     private final IssuesService issuesService;
     private final TimeSheetsService timeSheetsService;
 
-    // TODO: 07.06.2019 totalize, comment, grouping 
+    // TODO: 07.06.2019 grouping
 
     @PostMapping("/add")
     public Map<String, Object> addTimeSheet(String taskId,
                                             String day1, String day2, String day3,
                                             String day4, String day5, String day6,
-                                            String day7) {
+                                            String day7,
+                                            String comment) {
 
         Map<String, Object> attrs = new HashMap<>();
 
@@ -58,6 +59,10 @@ public class TimeSheetsController {
         timeSheet.setEmployee(employee);
         timeSheet.setIssue(issue);
         timeSheet.setWeekValues(hours);
+        if (comment != null) {
+            comment = comment.trim();
+        }
+        timeSheet.setComment(comment);
         timeSheetsService.save(timeSheet);
 
         attrs.put("info", "Отчет об использовании рабочего времени сохранен.");

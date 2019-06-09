@@ -1,3 +1,12 @@
+$(function () {
+    $('[data-toggle="popover"]').popover()
+});
+
+$('.popover-dismiss').popover({
+    trigger: 'focus'
+});
+
+
 //Add request
 function addRequest(entity) {
     let serialized = $("#addForm").serialize();
@@ -398,9 +407,11 @@ function fillTimeSheetForm(buttonObject) {
     let button = $(buttonObject);
     let startDate = button.data('start-date');
     let taskId = button.data('task-id');
+    let comment = button.data('comment');
 
     $("#taskId").val(taskId);
     $("#startDate").val(startDate);
+    $("#comment").val(comment);
     for (let i = 1; i <= 7; i++) {
         let value = button.data('day-' + i);
         $("#day" + i).val(value);

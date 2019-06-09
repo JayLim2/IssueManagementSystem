@@ -199,3 +199,8 @@
     font-weight: bold;
     color: #50000e;
 }
+
+.btn.btn-outline-dark.show-comment-button:hover > img.comment-icon {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+}
