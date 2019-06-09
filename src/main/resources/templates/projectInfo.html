@@ -659,13 +659,18 @@
 
                 <!-- Issues table -->
 
-                <div>
-                    <button type="button" class="btn btn-success"
+                <div style="margin-top:20px;">
+                    <button class="btn btn-success"
                             data-toggle="modal" data-target="#addIssue"
                             th:data-project="${project.getId()}"
-                            style="margin-top:20px;"
                     >
                         Создать задачу
+                    </button>
+
+                    <button class="btn btn-info"
+                            th:onclick="'location.assign(\'/dashboards/projectSchedule/'+${project.getId()}+'\')'"
+                    >
+                        Расписание проекта
                     </button>
                 </div>
 

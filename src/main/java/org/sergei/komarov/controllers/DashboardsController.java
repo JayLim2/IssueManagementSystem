@@ -11,6 +11,7 @@ import org.sergei.komarov.utils.Comparators;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -81,5 +82,24 @@ public class DashboardsController {
         model.addAttribute("employeesDashboard", dashboard);
 
         return "employeesDashboard";
+    }
+
+    @GetMapping("/dashboards/projectSchedule/{projectId}")
+    public String getProjectSchedule(Model model, @PathVariable int projectId) {
+
+        Project project = projectsService.getById(projectId);
+
+        if (project == null) {
+            model.addAttribute("error", "Проект с таким ID не существует.");
+            return "projectSchedule";
+        }
+
+        List<Issue> issues = issuesService.getByProject(project);
+        issues.sort(comparators.getIssuesComparator());
+
+        model.addAttribute("project", project);
+        model.addAttribute("issues", issues);
+
+        return "projectSchedule";
     }
 }

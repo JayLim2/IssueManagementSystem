@@ -4,11 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.sergei.komarov.models.Employee;
+import org.sergei.komarov.models.Issue;
 import org.sergei.komarov.models.Project;
 import org.sergei.komarov.services.IssuesService;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -21,6 +24,10 @@ public class Comparators {
 
     public Comparator<Employee> getEmployeesComparator() {
         return new EmployeesComparator();
+    }
+
+    public Comparator<Issue> getIssuesComparator() {
+        return new IssuesComparator();
     }
 
     @NoArgsConstructor
@@ -100,6 +107,28 @@ public class Comparators {
                     + withoutDueDateIssuesCount2;
 
             return otherTotal - currentTotal;
+        }
+    }
+
+    @NoArgsConstructor
+    @Data
+    private class IssuesComparator implements Comparator<Issue> {
+
+        @Override
+        public int compare(Issue o1, Issue o2) {
+            LocalDate max = LocalDate.MAX;
+
+            LocalDate dueDate1 = Optional.ofNullable(o1.getDueDate()).orElse(max);
+            LocalDate dueDate2 = Optional.ofNullable(o2.getDueDate()).orElse(max);
+
+            int cmp = 0;
+            if (dueDate1.isBefore(dueDate2)) {
+                cmp = -1;
+            } else if (dueDate1.isAfter(dueDate2)) {
+                cmp = 1;
+            }
+
+            return cmp;
         }
     }
 }

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="libs :: headerFragment">
+    <title id="pageTitle">Главная страница</title>
+</head>
+<body>
+<div th:replace="menu :: menu"></div>
+
+<!-- body -->
+<div class="container" style="padding-top:20px">
+    <h1>Расписание проекта</h1>
+
+    <div class="err-msg" th:if="${error != null}" th:text="${error}">
+    </div>
+
+    <div>
+        <p>
+            Перечень задач, отсортированных по сроку выполнения.
+        </p>
+
+        <ul>
+            <li>
+                Задачи, срок выполнения которых ближе к текущей дате, находятся выше в таблице.
+            </li>
+            <li>
+                Задачи, срок выполнения которых не указан, расположены в таблицы после всех остальных задач.
+            </li>
+        </ul>
+    </div>
+
+    <div th:unless="${error != null}">
+        <div style="display:table;margin:20px 0;width:100%;">
+            <div style="display:table-row;">
+                <div style="display:table-cell;font-size:16pt;vertical-align: middle;">
+                    <b>Проект: </b>
+                    <span th:text="'['+${project.getId()}+'] '" style="font-weight:bold;color:#022c74"></span>
+                    <span th:text="${project}" style="font-weight: bold;color:#575757"></span>
+                </div>
+                <div style="display:table-cell;width:260px;text-align:right;vertical-align:top;">
+                    <button class="btn btn-info"
+                            th:onclick="'location.assign(\'/projects/'+${project.getId()}+'\')'"
+                    >
+                        Вернуться на страницу проекта
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th>
+                    ID задачи
+                </th>
+                <th>
+                    Название задачи
+                </th>
+                <th>
+                    Ответственный
+                </th>
+                <th>
+                    Срок выполнения
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="issue : ${issues}">
+                <td th:text="${issue.getId()}">
+                </td>
+                <td>
+                    <a th:href="'/issues/' + ${issue.getId()}"
+                       th:text="${issue.getTitle()}"
+                       target="_blank"></a>
+                </td>
+                <td th:text="${issue.getAssignee() != null ? issue.getAssignee() : 'не назначен'}">
+                </td>
+                <td>
+                    <span th:text="${issue.getDueDate() != null ? #temporals.format(issue.getDueDate(), 'dd MMMM yyyy') : 'не указан'}">
+                    </span>
+                    <br/>
+                    <span th:text="${#temporals.format(#temporals.createNow(), 'dd MMMM yyyy') + ' — сегодня'}"
+                          style="color:#223d56;"
+                    ></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
