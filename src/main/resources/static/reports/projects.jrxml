@@ -21,10 +21,12 @@
 	<field name="overdueIssuesCount" class="java.lang.Integer"/>
 	<field name="withExpiringDueDateIssuesCount" class="java.lang.Integer"/>
 	<field name="withoutDueDateIssuesCount" class="java.lang.Integer"/>
+	<field name="issueAssigneeName" class="java.lang.String"/>
+	<field name="issueDueDate" class="java.lang.String"/>
 	<group name="ProjectsGroup">
 		<groupExpression><![CDATA[$F{projectId}]]></groupExpression>
 		<groupHeader>
-			<band height="60">
+			<band height="65">
 				<rectangle>
 					<reportElement x="0" y="0" width="560" height="30" forecolor="#06429C" backcolor="#06429C"
 								   uuid="78693aaa-54cd-4822-9914-3086a7ac91c7"/>
@@ -44,14 +46,14 @@
 					<textFieldExpression><![CDATA[$F{projectTitle}]]></textFieldExpression>
 				</textField>
 				<rectangle>
-					<reportElement x="0" y="30" width="560" height="30" backcolor="#EDEDED"
+					<reportElement x="0" y="30" width="560" height="35" backcolor="#EDEDED"
 								   uuid="2494945a-4cfb-4079-acde-1cd641638eab"/>
 					<graphicElement>
 						<pen lineWidth="0.0"/>
 					</graphicElement>
 				</rectangle>
 				<staticText>
-					<reportElement x="0" y="30" width="80" height="30" uuid="5f54f4a3-d03f-4188-afb5-309517ef49e7"/>
+					<reportElement x="0" y="30" width="80" height="35" uuid="fc053674-ed1c-47d9-9806-5dffbeb7a199"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Solid"/>
 					</box>
@@ -61,7 +63,7 @@
 					<text><![CDATA[ID задачи]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="80" y="30" width="480" height="30" uuid="1131e771-c2e9-4933-8795-3f03c7932801"/>
+					<reportElement x="80" y="30" width="180" height="35" uuid="e9867e3d-d930-4285-8b28-97876e17105b"/>
 					<box>
 						<pen lineWidth="0.75" lineStyle="Solid"/>
 					</box>
@@ -69,6 +71,27 @@
 						<font size="12" isBold="true" isItalic="true"/>
 					</textElement>
 					<text><![CDATA[Название задачи]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="260" y="30" width="170" height="35" uuid="62138b4a-cee3-4fe1-a4c4-32c48c2cf121"/>
+					<box>
+						<pen lineWidth="0.75" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Ответственный]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="430" y="30" width="130" height="35" uuid="f343b9a3-86ac-4df7-b851-d63a1f840cd9"/>
+					<box>
+						<pen lineWidth="0.75" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Срок
+выполнения]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
@@ -124,7 +147,7 @@
 						<font size="12" isBold="true"/>
 						<paragraph lineSpacing="1_1_2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{withExpiringDueDateIssuesCount}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{withoutDueDateIssuesCount}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -185,7 +208,17 @@
 	<detail>
 		<band height="30" splitType="Stretch">
 			<textField>
-				<reportElement x="80" y="0" width="480" height="30" uuid="b5e5034f-4fb6-463e-a93b-6bbf38564634"/>
+				<reportElement x="0" y="0" width="80" height="30" uuid="7237e56b-46e3-4f40-afe7-b75c50dab3d9"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{issueId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="180" height="30" uuid="a0475573-d254-49c4-b1fd-0d82dd5473e9"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -195,14 +228,24 @@
 				<textFieldExpression><![CDATA[$F{issueTitle}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="80" height="30" uuid="706e4a62-2cbc-45e0-9c8e-12d6aee310ae"/>
+				<reportElement x="260" y="0" width="170" height="30" uuid="7a105077-77f1-4c47-a348-7a5710faec63"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{issueId}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{issueAssigneeName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="0" width="130" height="30" uuid="22f27710-bd21-4480-9d28-17dc0acc284f"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{issueDueDate}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

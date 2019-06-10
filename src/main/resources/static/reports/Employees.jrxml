@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
-			  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			  xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-			  name="Positions" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20"
-			  topMargin="20" bottomMargin="20" uuid="dbe6ef3c-8bfc-42d0-b44a-15c40045e6ce">
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="Positions" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20" uuid="dbe6ef3c-8bfc-42d0-b44a-15c40045e6ce">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PostgreDB"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<queryString>
@@ -21,20 +21,22 @@
 	<field name="withoutDueDateIssuesCount" class="java.lang.Integer"/>
 	<field name="issueId" class="java.lang.Integer"/>
 	<field name="issueTitle" class="java.lang.String"/>
+    <field name="issueAssigneeName" class="java.lang.String"/>
+    <field name="issueDueDate" class="java.lang.String"/>
 	<group name="EmployeesGroup">
 		<groupExpression><![CDATA[$F{employeeId}]]></groupExpression>
 		<groupHeader>
-			<band height="60">
+            <band height="65">
 				<rectangle>
-					<reportElement x="0" y="0" width="560" height="30" forecolor="#06429C" backcolor="#06429C"
-								   uuid="37f6c755-b37e-4b0f-80cf-4bc486196616"/>
+                    <reportElement x="0" y="0" width="560" height="30" forecolor="#06429C" backcolor="#06429C"
+                                   uuid="37f6c755-b37e-4b0f-80cf-4bc486196616"/>
 					<graphicElement>
 						<pen lineWidth="0.0"/>
 					</graphicElement>
 				</rectangle>
 				<textField>
-					<reportElement x="0" y="0" width="560" height="30" forecolor="#FFFFFF"
-								   uuid="02f81622-9a22-4b79-bc15-44a6a8d8ccb4"/>
+                    <reportElement x="0" y="0" width="560" height="30" forecolor="#FFFFFF"
+                                   uuid="02f81622-9a22-4b79-bc15-44a6a8d8ccb4"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
@@ -44,14 +46,14 @@
 					<textFieldExpression><![CDATA[$F{employeeName}]]></textFieldExpression>
 				</textField>
 				<rectangle>
-					<reportElement x="0" y="30" width="560" height="30" backcolor="#EDEDED"
-								   uuid="99d96d1e-5ee6-432a-84c0-8aa39fdc5fe9"/>
+                    <reportElement x="0" y="30" width="560" height="35" backcolor="#EDEDED"
+                                   uuid="99d96d1e-5ee6-432a-84c0-8aa39fdc5fe9"/>
 					<graphicElement>
 						<pen lineWidth="0.0"/>
 					</graphicElement>
 				</rectangle>
 				<staticText>
-					<reportElement x="0" y="30" width="80" height="30" uuid="e636f077-76e9-49f0-a6f7-95dc67387b6c"/>
+                    <reportElement x="0" y="30" width="80" height="35" uuid="e636f077-76e9-49f0-a6f7-95dc67387b6c"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Solid"/>
 					</box>
@@ -61,7 +63,7 @@
 					<text><![CDATA[ID задачи]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="80" y="30" width="480" height="30" uuid="e18cb6cc-6756-4192-94ef-ca93810663a4"/>
+                    <reportElement x="80" y="30" width="180" height="35" uuid="e18cb6cc-6756-4192-94ef-ca93810663a4"/>
 					<box>
 						<pen lineWidth="0.75" lineStyle="Solid"/>
 					</box>
@@ -70,13 +72,34 @@
 					</textElement>
 					<text><![CDATA[Название задачи]]></text>
 				</staticText>
+                <staticText>
+                    <reportElement x="260" y="30" width="170" height="35" uuid="7aefe761-c662-40af-a09a-7d698046976f"/>
+                    <box>
+                        <pen lineWidth="0.75" lineStyle="Solid"/>
+                    </box>
+                    <textElement textAlignment="Center">
+                        <font size="12" isBold="true" isItalic="true"/>
+                    </textElement>
+                    <text><![CDATA[Ответственный]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="430" y="30" width="130" height="35" uuid="545b6e96-ae2f-4c07-a9db-55797f497f5f"/>
+                    <box>
+                        <pen lineWidth="0.75" lineStyle="Solid"/>
+                    </box>
+                    <textElement textAlignment="Center">
+                        <font size="12" isBold="true" isItalic="true"/>
+                    </textElement>
+                    <text><![CDATA[Срок
+выполнения]]></text>
+                </staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="88">
 				<rectangle>
-					<reportElement x="0" y="0" width="560" height="79" backcolor="#C4C4C4"
-								   uuid="2bdd835a-1bf7-4512-9174-7911d116e5c0"/>
+                    <reportElement x="0" y="0" width="560" height="79" backcolor="#C4C4C4"
+                                   uuid="2bdd835a-1bf7-4512-9174-7911d116e5c0"/>
 					<graphicElement>
 						<pen lineWidth="1.0"/>
 					</graphicElement>
@@ -124,7 +147,7 @@
 						<font size="12" isBold="true"/>
 						<paragraph lineSpacing="1_1_2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{withExpiringDueDateIssuesCount}]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[$F{withoutDueDateIssuesCount}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -142,8 +165,8 @@
 				<textFieldExpression><![CDATA[java.time.LocalDate.now()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="10" width="380" height="30"
-							   uuid="7163c4f8-675e-4988-8608-31bccfa1b393"/>
+                <reportElement stretchType="RelativeToBandHeight" x="0" y="10" width="380" height="30"
+                               uuid="7163c4f8-675e-4988-8608-31bccfa1b393"/>
 				<box>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
@@ -166,12 +189,12 @@
 	<columnHeader>
 		<band height="38" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="560" height="30" forecolor="#000000" backcolor="#000000"
-							   uuid="a711e000-3fdc-437c-80b7-7b9e181cfb16"/>
+                <reportElement x="0" y="0" width="560" height="30" forecolor="#000000" backcolor="#000000"
+                               uuid="a711e000-3fdc-437c-80b7-7b9e181cfb16"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="560" height="30" forecolor="#FFFFFF"
-							   uuid="b379d21c-fa66-4b55-bdfa-b757be9c7712"/>
+                <reportElement x="0" y="0" width="560" height="30" forecolor="#FFFFFF"
+                               uuid="b379d21c-fa66-4b55-bdfa-b757be9c7712"/>
 				<box>
 					<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
@@ -185,7 +208,7 @@
 	<detail>
 		<band height="30" splitType="Stretch">
 			<textField>
-				<reportElement x="80" y="0" width="480" height="30" uuid="52f9ee4f-7d5b-4577-953f-5ef4437d9e66"/>
+                <reportElement x="80" y="0" width="180" height="30" uuid="52f9ee4f-7d5b-4577-953f-5ef4437d9e66"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -203,7 +226,27 @@
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{issueId}]]></textFieldExpression>
-			</textField>
+            </textField>
+            <textField>
+                <reportElement x="260" y="0" width="170" height="30" uuid="9d2f9c00-237d-407a-b27b-850ccd00d384"/>
+                <box>
+                    <pen lineWidth="1.0" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{issueAssigneeName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="430" y="0" width="130" height="30" uuid="b9caf4a1-4c92-4ee5-ab35-f01253b93235"/>
+                <box>
+                    <pen lineWidth="1.0" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{issueDueDate}]]></textFieldExpression>
+            </textField>
 		</band>
 	</detail>
 	<columnFooter>

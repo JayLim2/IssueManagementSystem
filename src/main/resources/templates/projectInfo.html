@@ -677,8 +677,9 @@
                 <table class="table" style="border:1px solid rgb(233, 236, 239);margin:10px 0;">
                     <thead class="thead-light">
                     <tr>
-                        <th scope="col">Номер задачи</th>
-                        <th scope="col">Название задачи</th>
+                        <th scope="col"># задачи</th>
+                        <th scope="col" style="width:250px">Название задачи</th>
+                        <th scope="col">Тип</th>
                         <th scope="col">Приоритет</th>
                         <th scope="col">Статус</th>
                         <th scope="col">Ответственный</th>
@@ -689,13 +690,15 @@
                     <tbody th:if="${issues != null && issues.size() > 0}">
                     <tr th:id="'issue-row-' + ${issue.getId()}" th:each="issue : ${issues}">
                         <td style="border:1px solid rgb(233, 236, 239);" th:text="${issue.getId()}"></td>
-                        <td style="border:1px solid rgb(233, 236, 239);">
+                        <td style="border:1px solid rgb(233, 236, 239);width:250px;">
                             <a th:href="'/issues/'+${issue.getId()}"
                                th:text="${issue.getTitle()}"
                                target="_blank"
                             >
                             </a>
                         </td>
+                        <td style="border:1px solid rgb(233, 236, 239);"
+                            th:text="${issue.getType()}"></td>
                         <td style="border:1px solid rgb(233, 236, 239);"
                             th:text="${issue.getPriority().getName()}"></td>
                         <td style="border:1px solid rgb(233, 236, 239);" th:text="${issue.getStatus().getName()}"></td>
@@ -755,9 +758,9 @@
                 <table class="table" style="border:1px solid rgb(233, 236, 239);margin:10px 0;">
                     <thead class="thead-light">
                     <tr>
-                        <th scope="col">Номер сотрудника</th>
+                        <th scope="col"># сотрудника</th>
                         <th scope="col">ФИО сотрудника</th>
-                        <th scope="col">Должность</th>
+                        <th scope="col" style="width:250px;">Должность</th>
                         <th scope="col">Проектная роль</th>
                         <th scope="col"></th>
                     </tr>

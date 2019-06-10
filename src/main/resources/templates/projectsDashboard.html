@@ -44,7 +44,9 @@
                                     <thead class="thead-light">
                                     <tr style="border-left:2px solid rgb(233, 236, 339);border-right:2px solid rgb(233, 236, 339); border-bottom:2px solid rgb(233, 236, 339);">
                                         <th style="width:130px;">ID задачи</th>
-                                        <th>Название задачи</th>
+                                        <th style="width:250px;">Название задачи</th>
+                                        <th style="width:200px;">Ответственный</th>
+                                        <th style="width:155px;">Срок выполнения</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -53,6 +55,15 @@
                                     >
                                         <td th:text="${issue.getId()}"></td>
                                         <td th:text="${issue.getTitle()}"></td>
+                                        <td th:text="${issue.getAssignee() != null ? issue.getAssignee() : 'не назначен'}"></td>
+                                        <td>
+                                            <span th:text="${issue.getDueDate() != null ? #temporals.format(issue.getDueDate(), 'dd MMMM yyyy') : 'не назначена'}">
+                                            </span>
+                                            <br/>
+                                            <span th:text="${#temporals.format(#temporals.createNow(), 'dd MMMM yyyy') + ' — сегодня'}"
+                                                  style="color:#223d56;"
+                                            ></span>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>

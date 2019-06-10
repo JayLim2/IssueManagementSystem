@@ -23,7 +23,7 @@ public interface IssuesRepository extends JpaRepository<Issue, Integer> {
     @Query("SELECT issue FROM Issue issue WHERE issue.dueDate = null AND issue.project = :project")
     List<Issue> findIssuesWithoutDueDateByProject(@Param("project") Project project);
 
-    @Query("SELECT issue FROM Issue issue WHERE :date <= issue.dueDate AND issue.project = :project")
+    @Query("SELECT issue FROM Issue issue WHERE issue.dueDate <> null AND :date <= issue.dueDate AND issue.project = :project")
     List<Issue> findIssuesWithExpiringDueDateByProject(@Param("date") LocalDate date, @Param("project") Project project);
 
     @Query("SELECT count(issue) FROM Issue issue WHERE :now > issue.dueDate AND issue.project = :project")
@@ -32,7 +32,7 @@ public interface IssuesRepository extends JpaRepository<Issue, Integer> {
     @Query("SELECT count(issue) FROM Issue issue WHERE issue.dueDate = null AND issue.project = :project")
     int countIssuesWithoutDueDateByProject(@Param("project") Project project);
 
-    @Query("SELECT count(issue) FROM Issue issue WHERE :date <= issue.dueDate AND issue.project = :project")
+    @Query("SELECT count(issue) FROM Issue issue WHERE issue.dueDate <> null AND :date <= issue.dueDate AND issue.project = :project")
     int countIssuesWithExpiringDueDateByProject(@Param("date") LocalDate date, @Param("project") Project project);
 
     //by employees
@@ -42,7 +42,7 @@ public interface IssuesRepository extends JpaRepository<Issue, Integer> {
     @Query("SELECT issue FROM Issue issue WHERE issue.dueDate = null AND issue.assignee = :employee")
     List<Issue> findIssuesWithoutDueDateByEmployee(@Param("employee") Employee employee);
 
-    @Query("SELECT issue FROM Issue issue WHERE :date <= issue.dueDate AND issue.assignee = :employee")
+    @Query("SELECT issue FROM Issue issue WHERE issue.dueDate <> null AND :date <= issue.dueDate AND issue.assignee = :employee")
     List<Issue> findIssuesWithExpiringDueDateByEmployee(@Param("date") LocalDate date, @Param("employee") Employee employee);
 
     @Query("SELECT count(issue) FROM Issue issue WHERE :now > issue.dueDate AND (issue.assignee = :employee OR issue.creator = :employee)")
@@ -51,7 +51,7 @@ public interface IssuesRepository extends JpaRepository<Issue, Integer> {
     @Query("SELECT count(issue) FROM Issue issue WHERE issue.dueDate = null AND (issue.assignee = :employee OR issue.creator = :employee)")
     int countIssuesWithoutDueDateByEmployee(@Param("employee") Employee employee);
 
-    @Query("SELECT count(issue) FROM Issue issue WHERE :date <= issue.dueDate AND (issue.assignee = :employee OR issue.creator = :employee)")
+    @Query("SELECT count(issue) FROM Issue issue WHERE issue.dueDate <> null AND :date <= issue.dueDate AND (issue.assignee = :employee OR issue.creator = :employee)")
     int countIssuesWithExpiringDueDateByEmployee(@Param("date") LocalDate date, @Param("employee") Employee employee);
 
 }

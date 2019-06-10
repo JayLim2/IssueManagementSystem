@@ -143,6 +143,8 @@ public class ReportsService {
         private String projectTitle;
         private int issueId;
         private String issueTitle;
+        private String issueAssigneeName;
+        private String issueDueDate;
 
         private int overdueIssuesCount;
         private int withExpiringDueDateIssuesCount;
@@ -153,6 +155,8 @@ public class ReportsService {
             projectTitle = project.getTitle();
             issueId = issue.getId();
             issueTitle = issue.getTitle();
+            issueAssigneeName = issue.getAssignee() != null ? issue.getAssignee().toString() : "не назначен";
+            issueDueDate = issue.getDueDate() != null ? DateTimeFormatter.ofPattern("dd MMMM yyyy").format(issue.getDueDate()) : "не назначен";
             overdueIssuesCount = issuesService.getOverdueIssuesByProjectCount(project);
             withExpiringDueDateIssuesCount = issuesService.getIssuesWithExpiringDueDateByProjectCount(project);
             withoutDueDateIssuesCount = issuesService.getIssuesWithoutDueDateByProjectCount(project);
@@ -166,6 +170,8 @@ public class ReportsService {
             projectTitle = project.getTitle();
             issueId = issue.getId();
             issueTitle = issue.getTitle();
+            issueAssigneeName = issue.getAssignee() != null ? issue.getAssignee().toString() : "не назначен";
+            issueDueDate = issue.getDueDate() != null ? DateTimeFormatter.ofPattern("dd MMMM yyyy").format(issue.getDueDate()) : "не назначен";
             this.overdueIssuesCount = overdueIssuesCount;
             this.withExpiringDueDateIssuesCount = withExpiringDueDateIssuesCount;
             this.withoutDueDateIssuesCount = withoutDueDateIssuesCount;
@@ -179,6 +185,8 @@ public class ReportsService {
         private String employeeName;
         private int issueId;
         private String issueTitle;
+        private String issueAssigneeName;
+        private String issueDueDate;
 
         private int overdueIssuesCount;
         private int withExpiringDueDateIssuesCount;
@@ -189,6 +197,8 @@ public class ReportsService {
             employeeName = employee.toString();
             issueId = issue.getId();
             issueTitle = issue.getTitle();
+            issueAssigneeName = issue.getAssignee() != null ? issue.getAssignee().toString() : "не назначен";
+            issueDueDate = issue.getDueDate() != null ? DateTimeFormatter.ofPattern("dd MMMM yyyy").format(issue.getDueDate()) : "не назначен";
             overdueIssuesCount = issuesService.getOverdueIssuesByEmployeeCount(employee);
             withExpiringDueDateIssuesCount = issuesService.getIssuesWithExpiringDueDateByEmployeeCount(employee);
             withoutDueDateIssuesCount = issuesService.getIssuesWithoutDueDateByEmployeeCount(employee);
@@ -202,6 +212,8 @@ public class ReportsService {
             employeeName = employee.toString();
             issueId = issue.getId();
             issueTitle = issue.getTitle();
+            issueAssigneeName = issue.getAssignee() != null ? issue.getAssignee().toString() : "не назначен";
+            issueDueDate = issue.getDueDate() != null ? DateTimeFormatter.ofPattern("dd MMMM yyyy").format(issue.getDueDate()) : "не назначен";
             this.overdueIssuesCount = overdueIssuesCount;
             this.withExpiringDueDateIssuesCount = withExpiringDueDateIssuesCount;
             this.withoutDueDateIssuesCount = withoutDueDateIssuesCount;

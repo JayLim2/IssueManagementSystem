@@ -102,7 +102,7 @@ public class EmployeesService implements JpaService<Employee, Integer> {
             if (message == null) {
                 employee.setFirstName(firstName);
                 employee.setMiddleName(middleName);
-                employee.setLastName(middleName);
+                employee.setLastName(lastName);
                 employee.setPosition(employeePosition);
                 message = trySave(employee);
             }

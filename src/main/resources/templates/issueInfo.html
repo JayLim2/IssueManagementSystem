@@ -677,13 +677,18 @@
                     Все задачи
                 </div>
                 <div>
-                    <div th:if="${issues != null && issues.size() > 0}" th:each="currentIssue : ${issues}"
+                    <div th:if="${issues != null && issues.size() > 0}"
+                         th:each="currentIssue : ${issues}"
                          th:class="${issue.getId() == currentIssue.getId() ? 'issue-list-item selected' : 'issue-list-item'}"
                          th:onclick="'window.location.href = \'/issues/'+${currentIssue.getId()}+'\''"
                          th:id="'row-'+${issue.getId()}"
                     >
-                        <div class="issue-list-item-header" th:text="${currentIssue.getTitle()}"></div>
-                        <div class="issue-list-item-body" th:text="${currentIssue.getDescription()}"></div>
+                        <div class="issue-list-item-header"
+                             th:text="${currentIssue.getTitle().length() > 30 ? currentIssue.getTitle().substring(0, 30) + '...' : currentIssue.getTitle()}"
+                        ></div>
+                        <div class="issue-list-item-body"
+                             th:text="${currentIssue.getDescription().length() > 50 ? currentIssue.getDescription().substring(0, 50) + '...' : currentIssue.getDescription()}"
+                        ></div>
                     </div>
                     <div th:unless="${issues != null && issues.size() > 0}"
                          style="padding-top:10px;text-align: center;">

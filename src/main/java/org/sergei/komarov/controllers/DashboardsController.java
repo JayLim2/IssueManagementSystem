@@ -29,7 +29,7 @@ public class DashboardsController {
 
     @GetMapping(value = {"/", "/index", "/dashboards"})
     public String indexPage() {
-        return "index";
+        return "redirect:/dashboards/projects";
     }
 
     @GetMapping("/dashboards/projects")
