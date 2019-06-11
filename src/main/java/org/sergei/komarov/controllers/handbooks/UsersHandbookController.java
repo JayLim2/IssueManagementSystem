@@ -2,7 +2,6 @@ package org.sergei.komarov.controllers.handbooks;
 
 import lombok.AllArgsConstructor;
 import org.sergei.komarov.models.UserRole;
-import org.sergei.komarov.services.EmployeesService;
 import org.sergei.komarov.services.UsersService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +15,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class UsersHandbookController {
 
-    private final EmployeesService employeesService;
     private final UsersService usersService;
 
     @PostMapping("/edit")

@@ -45,9 +45,9 @@ public class TimeSheetsController {
                 tryParseFloat(day4), tryParseFloat(day5), tryParseFloat(day6),
                 tryParseFloat(day7)
         };
-        String hoursValidationMessage = Validators.validateWeekValues(hours);
-        if (hoursValidationMessage != null) {
-            attrs.put("error", hoursValidationMessage);
+        String validationMessage = Validators.validateWeekValues(hours);
+        if (validationMessage != null) {
+            attrs.put("error", validationMessage);
             return attrs;
         }
 
@@ -56,8 +56,14 @@ public class TimeSheetsController {
 
         TimeSheet timeSheet = new TimeSheet();
         timeSheet.setStartDate(Handlers.getCurrentWeek());
+        if (employee == null) {
+            validationMessage = "Такой сотрудник не существует.";
+        }
         timeSheet.setEmployee(employee);
         timeSheet.setIssue(issue);
+        if (issue == null) {
+            validationMessage = "Задача с таким ID не существует.";
+        }
         timeSheet.setWeekValues(hours);
         if (comment != null) {
             comment = comment.trim();

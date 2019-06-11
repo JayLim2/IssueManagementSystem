@@ -111,14 +111,14 @@ public class IssueActionsService implements JpaService<IssueAction, IssueActionK
             serviceComments.put(ServiceComment.CHANGED_PROJECT, project);
         }
 
-        boolean oldVersionIsNull = old.getVersion() == null;
+        /*boolean oldVersionIsNull = old.getVersion() == null;
         boolean newVersionIsNull = projectVersion == null;
         if ((oldVersionIsNull && !newVersionIsNull)
                 || (!oldVersionIsNull && newVersionIsNull)
                 || (!oldVersionIsNull && !old.getVersion().getId().equals(projectVersion.getId()))) {
 
             serviceComments.put(ServiceComment.CHANGED_PROJECT_VERSION, projectVersion);
-        }
+        }*/
 
         if (!old.getPriority().getId().equals(priority.getId())) {
             serviceComments.put(ServiceComment.CHANGED_PRIORITY, priority);

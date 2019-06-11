@@ -46,10 +46,6 @@ public class Issue implements Serializable, Cloneable {
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "version_id")
-    private ProjectVersion version;
-
-    @ManyToOne
     @JoinColumn(name = "priority_id", nullable = false)
     private IssuePriority priority;
 
